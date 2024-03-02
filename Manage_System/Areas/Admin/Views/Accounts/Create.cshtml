@@ -56,10 +56,9 @@
 
             <div class="form-group">
                 <label>Faculty</label>
-                <div>
-                    
+                <div>                   
                     <select asp-for="facultyId" class="form-control" asp-items="ViewBag.facultyId">
-                        <option>Choose Faculty</option>
+                        <option value="">Choose Faculty</option>
                     </select>
                     <span asp-validation-for="facultyId" class="text-danger"></span>
                 </div>
