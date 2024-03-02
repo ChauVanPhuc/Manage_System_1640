@@ -1,0 +1,110 @@
+﻿@model  Manage_System.Areas.Admin.ModelView.AccountModelView
+
+
+<div class="header-sub-title">
+    <nav class="breadcrumb breadcrumb-dash">
+        <a class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+        <a class="breadcrumb-item" asp-area="Admin" asp-controller="Accounts" asp-action="Index">Account</a>
+        <span class="breadcrumb-item active">New Account</span>
+    </nav>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form id="form-validation" asp-controller="Accounts" asp-action="Create" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label>Avatar</label>
+                <img class="avatar" src="~/images/NoImage.png" style="height:250px;width:250px; margin-top:10px" id="image" />
+
+                <input type="file" asp-for="avatar" onchange="chooseFile(this)" accept="image/gif, image/jpeg, image/png" />
+                <br />
+                <span asp-validation-for="avatar" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label control-label">Full Name</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" asp-for="FullName" placeholder="Name">
+                    <span asp-validation-for="FullName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label control-label">Email</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" asp-for="Email" placeholder="Email">
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+
+
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label control-label">Phone</label>
+                <div class="col-sm-10">
+                    <input type="tel" class="form-control" asp-for="Phone" placeholder="Phone">
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Role</label>
+                <div>
+                    <select asp-for="roleId" class="form-control" asp-items="ViewBag.roleId">
+                    </select>
+                    <span asp-validation-for="roleId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Faculty</label>
+                <div>
+                    
+                    <select asp-for="facultyId" class="form-control" asp-items="ViewBag.facultyId">
+                        <option>Choose Faculty</option>
+                    </select>
+                    <span asp-validation-for="facultyId" class="text-danger"></span>
+                </div>
+            </div>
+
+
+                
+
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label control-label">Password</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" asp-for="Password" placeholder="Password">
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label control-label">Confirm Password</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" asp-for="ConfirmPassword" placeholder="Confirm Password">
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary m-r-5">Submit</button>
+            <a class="btn btn-secondary m-r-5" asp-controller="Accounts" asp-action="Index">Back to List</a>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+
+
+    <script>
+        function chooseFile(fileInput) {
+            if (fileInput.files && fileInput.files[0]) {
+                var render = new FileReader();
+
+                render.onload = function (e) {
+                    $('#image').attr('src', e.target.result);
+                }
+                render.readAsDataURL(fileInput.files[0]);
+            }
+        }
+    </script>
+    <partial name="_ValidationScriptsPartial" />
+
+}

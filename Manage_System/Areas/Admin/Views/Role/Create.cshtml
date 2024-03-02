@@ -1,0 +1,64 @@
+﻿@model Manage_System.Areas.Admin.ModelView.RoleModelView
+@{
+
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="header-sub-title">
+    <nav class="breadcrumb breadcrumb-dash">
+        <a class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+        <a class="breadcrumb-item" asp-area="Admin" asp-controller="Role" asp-action="Index">Role</a>
+        <span class="breadcrumb-item active">Add Role</span>
+    </nav>
+</div>
+
+
+<div class="card">
+    <div class="card-body">
+        <form id="form-validation" asp-area="Admin" asp-controller="Role" asp-action="Create" method="post">
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label control-label">Role Name</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" asp-for="Name" placeholder="Role Name">
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label control-label">Role Description</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" asp-for="Description" placeholder="Role Description">
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary m-r-5">Submit</button>
+            <a class="btn btn-secondary m-r-5" asp-controller="Role" asp-action="Index">Back to List</a>
+        </form>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+
+        $("#form-validation").validate({
+            ignore: ':hidden:not(:checkbox)',
+            errorElement: 'label',
+            errorClass: 'is-invalid',
+            validClass: 'is-valid',
+            rules: {
+                name: {
+                    required: true
+                },
+                description: {
+                    required: true
+                }
+            }
+        });
+    </script>
+
+    <partial name="_ValidationScriptsPartial" />
+}

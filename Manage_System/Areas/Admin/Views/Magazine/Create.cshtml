@@ -1,0 +1,85 @@
+﻿@model Manage_System.Areas.Admin.ModelView.MagazineModelView
+@{
+
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<!-- page css -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Bootstrap Datepicker CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet">
+
+
+<div class="header-sub-title">
+    <nav class="breadcrumb breadcrumb-dash">
+        <a class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+        <a class="breadcrumb-item" asp-area="Admin" asp-controller="Magazine" asp-action="Index">Magazine</a>
+        <span class="breadcrumb-item active">Add Magazine</span>
+    </nav>
+</div>
+
+
+<div class="card">
+    <div class="card-body">
+        <form id="form-validation" asp-area="Admin" asp-controller="Magazine" asp-action="Create" method="post">
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label control-label">Magazine Description</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" asp-for="Description" placeholder="Magazine Description">
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label>Range Years</label>
+                <div class="input-group input-daterange col-6">
+                    <input type="datetime" asp-for="StartYear" class="form-control" >
+                    <div class="input-group-addon">to</div>
+                    <input type="datetime" asp-for="CloseYear" class="form-control">
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary m-r-5">Submit</button>
+            <a class="btn btn-secondary m-r-5" asp-controller="Magazine" asp-action="Index">Back to List</a>
+        </form>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+
+        $("#form-validation").validate({
+            ignore: ':hidden:not(:checkbox)',
+            errorElement: 'label',
+            errorClass: 'is-invalid',
+            validClass: 'is-valid',
+            rules: {
+                name: {
+                    required: true
+                },
+                description: {
+                    required: true
+                }
+            }
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.input-daterange').datepicker({
+                format: "yyyy-mm-dd",
+                autoclose: true,
+                todayHighlight: true
+            });
+        });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <!-- Bootstrap Datepicker JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <partial name="_ValidationScriptsPartial" />
+}

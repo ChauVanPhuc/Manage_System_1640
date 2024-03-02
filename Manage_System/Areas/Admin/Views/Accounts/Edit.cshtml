@@ -1,0 +1,98 @@
+﻿@model Manage_System.Areas.Admin.ModelView.AccountModelView
+
+
+<div class="header-sub-title">
+    <nav class="breadcrumb breadcrumb-dash">
+        <a class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+        <a class="breadcrumb-item" asp-area="Admin" asp-controller="Accounts" asp-action="Index">Account</a>
+        <span class="breadcrumb-item active">Edit Account</span>
+    </nav>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form id="form-validation" asp-controller="Accounts" asp-action="Edit" asp-route-id="@Model.id" asp-route-img="@Model.img" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label>Avatar</label>
+                @if(Model.img == null){
+                    <img class="avatar" src="~/images/NoImage.png" style="height:250px;width:250px; margin-top:10px" id="image" />
+                }else{
+                    <img class="avatar" src="~/uploads/@Model.img" style="height:250px;width:250px; margin-top:10px" id="image" />
+                }
+                <input type="file" asp-for="avatar" onchange="chooseFile(this)" accept="image/gif, image/jpeg, image/png" />
+                <br />
+                <span asp-validation-for="avatar" class="text-danger"></span>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label control-label">Full Name</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" asp-for="FullName" placeholder="Category Name">
+                    <span asp-validation-for="FullName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label control-label">Email</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" asp-for="Email" placeholder="Category Name">
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+
+
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label control-label">Phone</label>
+                <div class="col-sm-10">
+                    <input type="tel" class="form-control" asp-for="Phone" placeholder="Category Name">
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Role</label>
+                <div>
+                    <select asp-for="roleId" class="form-control" asp-items="ViewBag.roleId">
+                    </select>
+                    <span asp-validation-for="roleId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Faculty</label>
+                <div>
+                    <select asp-for="facultyId" class="form-control" asp-items="ViewBag.facultyId">
+                    </select>
+                    <span asp-validation-for="facultyId" class="text-danger"></span>
+                </div>
+            </div>
+            <input asp-for="Password" class="text-danger" hidden></span>
+            <input asp-for="ConfirmPassword" class="text-danger" hidden></span>
+            <input asp-for="status" class="text-danger" hidden></span>
+            <input asp-for="createDay" class="text-danger" hidden></span>
+
+
+            <button type="submit" class="btn btn-primary m-r-5">Update</button>
+            <a class="btn btn-secondary m-r-5" asp-controller="Accounts" asp-action="Index">Back to List</a>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+
+
+    <script>
+        function chooseFile(fileInput) {
+            if (fileInput.files && fileInput.files[0]) {
+                var render = new FileReader();
+
+                render.onload = function (e) {
+                    $('#image').attr('src', e.target.result);
+                }
+                render.readAsDataURL(fileInput.files[0]);
+            }
+        }
+    </script>
+    <partial name="_ValidationScriptsPartial" />
+
+}
