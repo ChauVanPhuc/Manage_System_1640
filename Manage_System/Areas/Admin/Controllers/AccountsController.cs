@@ -31,7 +31,7 @@ namespace Manage_System.Areas.Admin.Controllers
         [Route("/Admin/Accounts")]
         public async Task<IActionResult> Index()
         {
-            var account = await _db.Users.Include(x => x.Role).ToListAsync();
+            var account = await _db.Users.Include(x => x.Role).Include(x => x.Faculty).ToListAsync();
             return View(account);
         }
 

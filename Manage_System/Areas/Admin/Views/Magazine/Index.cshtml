@@ -13,7 +13,7 @@
     New Magazine <i class="bx bx-list-plus"></i>
 </a>
 <div class="card">
-    <div class="card-body">
+    <div class="card-body table-responsive">
         <table id="data-table" class="table">
             <thead>
                 <tr>
@@ -33,16 +33,15 @@
                         <td>@account.StartYear.ToString("yyyy/MM/dd")</td>
                         <td>@account.CloseYear.ToString("yyyy/MM/dd")</td>
 
-                        <td style="width: 20px">
+                        <td >
                             <a class="btn btn-outline-success btn-sm edit" asp-area="Admin" asp-action="Edit" asp-route-id="@account.Id" title="Edit">
                                 Edit <i class="fas fa-pencil-alt"></i>
                             </a>
-                        </td>
-                        <td style="width: 20px">
                             <a class="btn btn-outline-danger btn-sm delete" asp-area="Admin" asp-action="Delete" asp-route-id="@account.Id" title="Delete">
                                 Delete <i class="fas fa-trash-alt danger"></i>
                             </a>
                         </td>
+                        
                     </tr>
 
                 }
@@ -61,7 +60,6 @@
 </div>
 
 @section Scripts{
-            $('#data-table').DataTable();
 
     <!-- page js -->
     <script src="~/student/assets/vendors/datatables/jquery.dataTables.min.js"></script>

@@ -1,0 +1,71 @@
+﻿@model IEnumerable<Manage_System.models.Contribution>
+
+
+
+<div class="page-header">
+    <h2 class="header-title">Blog List</h2>
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a href="#" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+            <a class="breadcrumb-item" href="#">Pages</a>
+            <span class="breadcrumb-item active">Blog List</span>
+        </nav>
+    </div>
+</div>
+
+
+<div class="container">
+
+    @foreach (var item in Model)
+    {
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        @foreach (var img in item.ImgFiles.Select((value, index) => new { value, index }))
+                        {
+                            if (img.index == 0)
+                            {
+                                <img class="img-fluid" src="~/Uploads/@img.value.Url" alt="">
+                            }
+                        }
+                        
+                    </div>
+                    <div class="col-md-8">
+                        <h4 class="m-b-10">@item.Title</h4>
+                        <div class="d-flex align-items-center m-t-5 m-b-15">
+                            <div class="avatar avatar-image avatar-sm">
+                                
+                                <img src="~/uploads/@item.User.Avatar" alt="">
+
+                            </div>
+                            <div class="m-l-10">
+                                <span class="text-gray font-weight-semibold">@item.User.FullName</span>
+                                <span class="m-h-5 text-gray">|</span>
+                                <span class="text-gray">@item.SubmissionDate</span>
+                            </div>
+                        </div>
+                        <p class="m-b-20">@item.ShortDescription</p>
+                        <div class="text-right">
+                            <a class="btn btn-hover font-weight-semibold" asp-controller="Contributions" asp-action="Detail" asp-route-id="@item.Id">
+                                <span>Read More</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+<div class="m-t-30">
+    <nav>
+        <ul class="pagination justify-content-center">
+            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+        </ul>
+    </nav>
+</div>

@@ -15,73 +15,73 @@
 </a>
 <div class="card">
     <div class="card-body">
-        <table id="data-table" class="table">
-            <thead>
-                <tr>
-                    <th>Email</th>
-                    <th>Full Name</th>
-                    <th>Phone</th>
-                    <th>Avatar</th>
-                    <th>Role</th>
-                    <th>Create</th>
-                    <th>Status</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var account in Model)
-                {
+        <div class="m-t-25 table-responsive">
+            <table id="data-table" class="table table-hover ">
+                <thead>
                     <tr>
-                        <td>@account.Email</td>
-                        <td>@account.FullName</td>
-                        <td>@account.Phone</td>
-
-                        <td>
-                        @if (string.IsNullOrEmpty(account.Avatar))
-                        {
-                            <div class="avatar avatar-image">
-                                <img src="~/images/NoImage.png" alt="avatar">
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="avatar avatar-image">
-                                <img src="~/Uploads/@account.Avatar" alt="avatar">
-                            </div>
-                        }
-                        </td>
-
-                        <td>@account.Role.Name</td>
-                        <td>@account.CreateDay</td>
-                        <td>@account.Status</td>
-
-                        <td style="width: 20px">
-                            <a class="btn btn-outline-success btn-sm edit" asp-action="Edit" asp-route-id="@account.Id" title="Edit">
-                                Edit <i class="fas fa-pencil-alt"></i>
-                            </a>
-                        </td>
-                        <td style="width: 20px">
-                            <a class="btn btn-outline-danger btn-sm delete" asp-action="Delete" asp-route-id="@account.Id" title="Delete">
-                                Delete <i class="fas fa-trash-alt danger"></i>
-                            </a>
-                        </td>
+                        <th>Email</th>
+                        <th>Full Name</th>
+                        <th>avatar</th>
+                        <th>Phone</th>
+                        <th>Role</th> 
+                        <th></th>
                     </tr>
+                </thead>
+                <tbody>
+                    @foreach (var account in Model)
+                    {
+                        <tr>
+                            <td>@account.Email</td>
+                            <td>@account.FullName</td>
+                            <td>
+                                @if (string.IsNullOrEmpty(account.Avatar))
+                                {
+                                    <div class="avatar avatar-image">
+                                        <img src="~/images/NoImage.png" alt="avatar">
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="avatar avatar-image">
+                                        <img src="~/Uploads/@account.Avatar" alt="avatar">
+                                    </div>
+                                }
+                            </td>
+                            <td>@account.Phone</td>
+                            <td>@account.Role.Name</td>
+                            <td>
+                                <div>
+                                    <a class="btn btn-outline-success btn-sm edit" asp-action="Edit" asp-route-id="@account.Id" title="Edit">
+                                        Edit <i class="fas fa-pencil-alt"></i>
+                                    </a>
+                                    <a class="btn btn-outline-danger btn-sm delete" asp-action="Delete" asp-route-id="@account.Id" title="Delete">
+                                        Delete <i class="fas fa-trash-alt danger"></i>
+                                    </a>
+                                </div>
+                                
+                            </td>
+                            
+                        </tr>
+                    }
+                    
+                    
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Email</th>
+                        <th>Full Name</th>
+                        <th>avatar</th>
+                        <th>Phone</th>
+                        <th>Role</th>
+                        <th></th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
 
-                }
-                
-            </tbody>
-            <tfoot>
-                
-                <tr>
-                    <th>...</th>
-                </tr>
-            </tfoot>
-        </table>
     </div>
 </div>
-
 @section Scripts{
-    $('#data-table').DataTable();
 
     <!-- page js -->
     <script src="~/student/assets/vendors/datatables/jquery.dataTables.min.js"></script>

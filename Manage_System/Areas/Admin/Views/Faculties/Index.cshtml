@@ -14,7 +14,7 @@
     New Faculty <i class="bx bx-list-plus"></i>
 </a>
 <div class="card">
-    <div class="card-body">
+    <div class="card-body table-responsive">
         <table id="data-table" class="table">
             <thead>
                 <tr>
@@ -29,16 +29,15 @@
                     <tr>
                         <td>@Faculties.Name</td>
                         <td>@Faculties.Description</td>
-                        <td style="width: 20px">
+                        <td>
                             <a class="btn btn-outline-success btn-sm edit" asp-area="Admin" asp-controller="Faculties" asp-action="Edit" asp-route-id="@Faculties.Id" title="Edit">
                                 Edit <i class="fas fa-pencil-alt"></i>
                             </a>
-                        </td>
-                        <td style="width: 20px">
                             <a class="btn btn-outline-danger btn-sm delete" asp-area="Admin" asp-controller="Faculties" asp-action="Delete" asp-route-id="@Faculties.Id" title="Delete">
                                 Delete <i class="fas fa-trash-alt danger"></i>
                             </a>
                         </td>
+                        
                     </tr>
 
                 }
@@ -58,7 +57,6 @@
 </div>
 
 @section Scripts{
-            $('#data-table').DataTable();
 
     <!-- page js -->
     <script src="~/student/assets/vendors/datatables/jquery.dataTables.min.js"></script>

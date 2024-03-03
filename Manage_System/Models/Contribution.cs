@@ -17,11 +17,13 @@ public partial class Contribution
 
     public DateTime? LastModifiedDate { get; set; }
 
-    public string? Status { get; set; }
+    public bool? Status { get; set; }
 
-    public string? Publics { get; set; }
+    public bool? Publics { get; set; }
 
     public int? MagazineId { get; set; }
+
+    public string? ShortDescription { get; set; }
 
     public virtual ICollection<Comment> Comments { get; } = new List<Comment>();
 

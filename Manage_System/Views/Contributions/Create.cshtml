@@ -1,0 +1,126 @@
+﻿@model Manage_System.ModelViews.ContributionsModelView
+
+<link href="~/css/site.css" rel="stylesheet" />
+<link href="~/css/style_upload.css" rel="stylesheet" />
+<div class="header-sub-title">
+    <nav class="breadcrumb breadcrumb-dash">
+        <a class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+        <a class="breadcrumb-item" asp-area="Admin" asp-controller="Accounts" asp-action="Index">Contributions</a>
+        <span class="breadcrumb-item active">New Contributions</span>
+    </nav>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form id="form-validation" asp-controller="Contributions" asp-action="Create" method="post" enctype="multipart/form-data">
+
+
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label control-label">Title</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" asp-for="Title" placeholder="Title">
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label control-label">Short Description</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" asp-for="ShortDescription" placeholder="Title">
+                    <span asp-validation-for="ShortDescription" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label control-label">Content</label>
+                <div class="col-sm-10">
+                    <textarea type="text" id="editor" class="form-control" asp-for="Content" placeholder="Content"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Magazine</label>
+                <div>
+                    <select asp-for="MagazineId" class="form-control" asp-items="ViewBag.MagazineId">
+                    </select>
+                    <span asp-validation-for="MagazineId" class="text-danger"></span>
+                </div>
+            </div>
+
+@*             <div class="upload">
+                <div class="upload-wrapper">
+                    <div class="upload-img">
+                        <!-- image here -->
+                    </div>
+                    <div class="upload-info">
+                        <p>
+                            <span class="upload-info-value">0</span> file(s) uploaded.
+                        </p>
+                    </div>
+                    <div class="upload-area">
+                        <div class="upload-area-img">
+                            <img src="~/Admin/upload.png" alt="">
+                        </div>
+                        <p class="upload-area-text">Select images or <span>browse</span>.</p>
+                    </div>
+                    <input asp-for="ImgFiles" type="file" class="visually-hidden" id="upload-input" multiple>
+                </div>
+            </div> *@
+
+
+            <div class="container mt-5">
+                <div class="card">
+                    <div class="card-header">
+                        File Upload
+                    </div>
+                    <div class="card-body">
+                        <input type="file" asp-for="ImgFile" id="file-upload" multiple hidden />
+                        <div id="drop-area" class="drop-area border border-primary rounded p-3 mb-2">
+                            <p class="mb-0">Drop files here or <span class="browse btn btn-primary btn-sm">Browse</span></p>
+                        </div>
+                        <div id="file-list" class="mt-3">
+                            <!-- File entries will be listed here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary m-r-5">Submit</button>
+            <a class="btn btn-secondary m-r-5" asp-controller="Accounts" asp-action="Index">Back to List</a>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+
+
+    <script>
+        function chooseFile(fileInput) {
+            if (fileInput.files && fileInput.files[0]) {
+                var render = new FileReader();
+
+                render.onload = function (e) {
+                    $('#image').attr('src', e.target.result);
+                }
+                render.readAsDataURL(fileInput.files[0]);
+            }
+        }
+    </script>
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#editor'), {
+                // toolbar: [ 'heading', '|', 'bold', 'italic', 'link' ]
+            })
+            .then(editor => {
+                window.editor = editor;
+            })
+            .catch(err => {
+                console.error(err.stack);
+            });
+    </script>
+    <script src="~/js/site.js"></script>
+    <script src="~/js/script_upload.js"></script>
+    <partial name="_ValidationScriptsPartial" />
+
+}

@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\Coordinator\Data\" />
     <Folder Include="wwwroot\Uploads\" />
   </ItemGroup>
 

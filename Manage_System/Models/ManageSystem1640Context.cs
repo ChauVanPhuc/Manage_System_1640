@@ -76,6 +76,9 @@ public partial class ManageSystem1640Context : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("publics");
+            entity.Property(e => e.ShortDescription)
+                .HasColumnType("text")
+                .HasColumnName("shortDescription");
             entity.Property(e => e.Status)
                 .HasMaxLength(50)
                 .IsUnicode(false)

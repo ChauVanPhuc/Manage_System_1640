@@ -19,4 +19,61 @@ html {
 
 body {
   margin-bottom: 60px;
+
 }
+
+
+
+
+
+.drop-area {
+    min-height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer;
+}
+
+.file-entry {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.file-name {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.file-size {
+    color: #999;
+}
+
+.delete-file {
+    color: #cc0000;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+
+
+/* CSS Customization */
+.dataTables_wrapper .dataTables_filter {
+    float: right;
+}
+
+.dataTables_wrapper .dataTables_length {
+    float: left;
+}
+
+.dataTables_wrapper .dataTables_info {
+    float: left;
+}
+
+.dataTables_wrapper .dataTables_paginate {
+    float: right;
+}
+
