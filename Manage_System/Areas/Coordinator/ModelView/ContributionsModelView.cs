@@ -1,6 +1,7 @@
 ﻿using Manage_System.models;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Xml.Linq;
 
 namespace Manage_System.Areas.Coordinator.ModelView
 {
@@ -31,20 +32,19 @@ namespace Manage_System.Areas.Coordinator.ModelView
 
         public bool? Status { get; set; }
 
-        public string? Publics { get; set; }
+        public bool? Publics { get; set; }
 
         public int? MagazineId { get; set; }
 
-        public virtual ICollection<Comment> Comments { get; } = new List<Comment>();
-
-        public virtual ICollection<ImgFile> ImgFiles { get; } = new List<ImgFile>();
-
+        public virtual List<Comment> Comments { get; set; }
+        public string? Comment { get; set; }
+        public virtual IEnumerable<ImgFile> ImgFiles { get; set; } 
+            
 
         [NotMapped]
         public IFormFileCollection? ImgFile { get; set; }
 
         public virtual Magazine? Magazine { get; set; }
-
         public virtual User? User { get; set; }
     }
 }

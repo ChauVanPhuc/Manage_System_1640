@@ -42,14 +42,22 @@
         -webkit-box-orient: vertical;">
                                 @contribution.ShortDescription</td>
                             <td>@contribution.SubmissionDate.ToString("yyyy/MM/dd")</td>
-                            <td>@contribution.Status</td>
-                            <td>                            
-                                    <a class="btn btn-outline-success btn-sm edit" asp-action="Edit" asp-route-id="@contribution.Id" title="Edit">
-                                        Edit <i class="fas fa-pencil-alt"></i>
+                            <td>
+                                <a asp-controller="Contribution" asp-action="Allow" asp-route-id="@contribution.Id">
+                                @if (contribution.Status.ToString() == "False")
+                                {
+                                    <i class="anticon anticon-close btn btn-outline-danger btn-sm"></i>
+                                }else{
+
+                                    <i class="anticon anticon-check btn btn-outline-success btn-sm"></i>
+                                }
+                                </a>
+                            </td>
+                            <td>
+                                <a class="btn btn-outline-success btn-sm edit" asp-action="Detail" asp-route-id="@contribution.Id" title="Detail">
+                                    Detail <i class="anticon anticon-eye"></i>
                                     </a>
-                                    <a class="btn btn-outline-danger btn-sm delete" asp-action="Delete" asp-route-id="@contribution.Id" title="Delete">
-                                        Delete <i class="fas fa-trash-alt danger"></i>
-                                    </a>
+                                    
                             </td>
 
                         </tr>
