@@ -35,9 +35,10 @@ namespace Manage_System.ModelViews
 
         public int? MagazineId { get; set; }
 
-        public virtual ICollection<Comment> Comments { get; } = new List<Comment>();
 
-        public virtual ICollection<ImgFile> ImgFiles { get; } = new List<ImgFile>();
+        public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
+
+        public virtual ICollection<ImgFile> ImgFiles { get; set; } = new List<ImgFile>();
 
 
         [NotMapped]

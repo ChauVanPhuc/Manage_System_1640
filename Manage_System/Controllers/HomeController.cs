@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 namespace Manage_System.Controllers
 {
-    [Authorize]
+
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -19,17 +19,16 @@ namespace Manage_System.Controllers
             _db = db;
         }
 
-        
+        [Route("/")]
         public IActionResult Index()
         {
             var account = HttpContext.Session.GetString("AccountId");
-            var tk = _db.Users.AsNoTracking().SingleOrDefault(x => x.Id == Convert.ToInt32(account));
             if (account != null)
             {
                 return View();
             }
             return Redirect("/Login");
-            
+
         }
 
         public IActionResult Privacy()

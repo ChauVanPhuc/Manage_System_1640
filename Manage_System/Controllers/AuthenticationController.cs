@@ -77,9 +77,11 @@ namespace Manage_System.Controllers
                         new Claim(ClaimTypes.Name, account.FullName),
                         new Claim("AccountId", account.Id.ToString())
                     };
-                    ClaimsIdentity claims = new ClaimsIdentity(claim, "login");
+                    ClaimsIdentity claims = new ClaimsIdentity(claim, 
+                        Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationDefaults.AuthenticationScheme
+                        );
                     ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claims);
-
+                    
                     await HttpContext.SignInAsync(claimsPrincipal);
                     _notyf.Success("Login Success");
                     return Redirect("/");
@@ -132,9 +134,6 @@ namespace Manage_System.Controllers
                         roles = r.Id;
                     }
 
-                    
-
-
                     User account = new User
                     {
                         Email = model.Email,
@@ -144,7 +143,6 @@ namespace Manage_System.Controllers
                         Status = true,
                         CreateDay = DateTime.Now,
                         FullName = model.FullName,
-                        
                         Avatar = img
                     };
 
@@ -188,11 +186,13 @@ namespace Manage_System.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("/Logout")]
         public IActionResult Logout()
         {
             HttpContext.SignOutAsync();
-            HttpContext.Session.Remove("AccountId");
-            return Redirect("Home");
+            HttpContext.Session.Clear();
+            return Redirect("/Login");
         }
     }
 }

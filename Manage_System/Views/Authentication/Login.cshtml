@@ -29,7 +29,6 @@
                             <div class="card shadow-lg">
                                 <div class="card-body">
                                     <div class="d-flex align-items-center justify-content-between m-b-30">
-                                        <img class="img-fluid" alt="" src="~/Student/assets/images/logo/logo.png">
                                         <h2 class="m-b-0">Sign In</h2>
                                     </div>
                                     <form asp-controller="Authentication" asp-action="Login" method="post">
@@ -53,9 +52,9 @@
                                         <div class="form-group">
                                             <div class="d-flex align-items-center justify-content-between">
                                                 <span class="font-size-13 text-muted">
-                                                    @*                                                     Don't have an account?
-                                                    <a class="small" asp-controller="Account" asp-action="Register"> Register</a>
-                                                    </span> *@
+                                                                                                        Don't have an account?
+                                                    <a class="small" asp-controller="Authentication" asp-action="Register"> Register</a>
+                                                    </span>
                                                     <button type="submit" class="btn btn-primary">Sign In</button>
                                             </div>
                                         </div>

@@ -22,7 +22,6 @@
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Coordinator\Data\" />
-    <Folder Include="Areas\Maketting\Controllers\" />
     <Folder Include="Areas\Maketting\Data\" />
     <Folder Include="Areas\Maketting\Models\" />
     <Folder Include="wwwroot\Uploads\" />

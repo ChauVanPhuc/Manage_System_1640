@@ -25,11 +25,15 @@ namespace Manage_System.Areas.Coordinator.Controllers
         [Route("Coordinator/Contributions")]
         public IActionResult Index()
         {
+            var account = HttpContext.Session.GetString("AccountId");
+
             var contributions = _db.Contributions
                 .Include(x => x.ImgFiles)
                 .Include(x => x.Comments)
                 .Include(x => x.Magazine)
                 .Include(x => x.User)
+                .ThenInclude(x => x.Faculty)
+                .Where(x => x.UserId == int.Parse(account))
                 .ToList();
 
             return View(contributions);

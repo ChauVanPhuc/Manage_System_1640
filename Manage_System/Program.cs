@@ -10,7 +10,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddSession();
+builder.Services.AddSession((option) =>
+{
+    option.IdleTimeout = new TimeSpan(0,30,0);
+});
+
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ManageSystem1640Context>(options =>
     options.UseSqlServer(connectionString));
@@ -19,8 +23,8 @@ builder.Services.AddDbContext<ManageSystem1640Context>(options =>
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(p =>
     {
-        p.LoginPath = "/login";
-        p.AccessDeniedPath = "/login";
+        p.LoginPath = "/Login";
+        p.LoginPath = "/Logout";
     });
 
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();

@@ -2,6 +2,7 @@
 using Manage_System.models;
 using Manage_System.ModelViews;
 using Manage_System.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -9,6 +10,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Manage_System.Controllers
 {
+    [Authorize]
+    
     public class ContributionsController : Controller
     {
 
@@ -26,11 +29,14 @@ namespace Manage_System.Controllers
         [Route("/Contributions")]
         public IActionResult Index()
         {
+            var account = HttpContext.Session.GetString("AccountId");
+
             var contributions =  _db.Contributions
                 .Include(x => x.ImgFiles)
                 .Include(x => x.Comments)
                 .Include(x => x.Magazine)
                 .Include(x => x.User)
+                .Where(x => x.UserId == int.Parse(account))
                 .ToList();
 
             return View(contributions);
@@ -76,14 +82,14 @@ namespace Manage_System.Controllers
 
         [HttpPost]
         [Route("/Contributions/Create")]
-        public IActionResult Create(ContributionsModelView model)
+        public async Task<IActionResult> Create(ContributionsModelView model)
         {
             try
             {
-                if (ModelState.IsValid)
+/*                if (ModelState.IsValid)
                 {
                     
-
+*/
 
                     var account = HttpContext.Session.GetString("AccountId");
                     Contribution contribution = new Contribution
@@ -103,7 +109,7 @@ namespace Manage_System.Controllers
                     try
                     {
                         _db.Contributions.Add(contribution);
-                        _db.SaveChangesAsync();
+                        _db.SaveChanges();
 
                         string img = null;
                         if (model.ImgFile != null)
@@ -121,13 +127,11 @@ namespace Manage_System.Controllers
                                         Url = _formFile.SaveImage(file),
                                         ContributionId = contribution.Id
                                     };
-                                    model.ImgFiles.Add(imgFile);
-
                                     _db.ImgFiles.Add(imgFile);
+                                    
                                 }
-
-
-                            }
+                            
+                        }
 
                             _db.SaveChanges();
 
@@ -144,9 +148,9 @@ namespace Manage_System.Controllers
                         ViewData["MagazineId"] = new SelectList(_db.Magazines, "Id", "Description").ToList();
                         return View(model);
                     }
-                }
+/*                }
                 ViewData["MagazineId"] = new SelectList(_db.Magazines, "Id", "Description").ToList();
-                return View(model);
+                return View(model);*/
             }
             catch (Exception)
             {
