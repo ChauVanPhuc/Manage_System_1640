@@ -46,8 +46,8 @@ namespace Manage_System.Areas.Admin.Controllers
                     Magazine r = new Magazine
                     {
                         Description = magazine.Description,
-                        StartYear = DateTime.Parse(magazine.StartYear),
-                        CloseYear = DateTime.Parse(magazine.CloseYear)
+                        ClosureDay = DateTime.Parse(magazine.StartYear),
+                        FinalClosureDay = DateTime.Parse(magazine.CloseYear)
                     };
 
                     _db.Magazines.Add(r);
@@ -82,8 +82,8 @@ namespace Manage_System.Areas.Admin.Controllers
             {
                 id = id,
                 Description = magazine.Description,
-                CloseYear = magazine.CloseYear.Value.ToString("yyyy-MM-dd"),
-                StartYear = magazine.StartYear.Value.ToString("yyyy-MM-dd")
+                CloseYear = magazine.ClosureDay.Value.ToString("yyyy-MM-dd"),
+                StartYear = magazine.FinalClosureDay.Value.ToString("yyyy-MM-dd")
 
             };
 
@@ -102,8 +102,8 @@ namespace Manage_System.Areas.Admin.Controllers
                     {
                         Id = magazine.id,
                         Description = magazine.Description,
-                        CloseYear = DateTime.Parse(magazine.CloseYear) ,
-                        StartYear = DateTime.Parse(magazine.StartYear)
+                        ClosureDay = DateTime.Parse(magazine.CloseYear) ,
+                        FinalClosureDay = DateTime.Parse(magazine.StartYear)
                     };
 
                     _db.Magazines.Update(m);

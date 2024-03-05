@@ -31,15 +31,15 @@ public partial class ManageSystem1640Context : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server = DESKTOP-1D6TNBA\\SQLEXPRESS02;Database=Manage_System_1640;uid=sa;pwd=Phuc@2002;TrustServerCertificate=true");
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Comment>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Comments__3213E83FD20A86B9");
+
+            entity.HasIndex(e => e.ContributionId, "IX_Comments_contributionId");
+
+            entity.HasIndex(e => e.UserId, "IX_Comments_userId");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.CommentDate)
@@ -64,6 +64,10 @@ public partial class ManageSystem1640Context : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK__Contribu__3213E83F4A1504BF");
 
+            entity.HasIndex(e => e.MagazineId, "IX_Contributions_magazineId");
+
+            entity.HasIndex(e => e.UserId, "IX_Contributions_userId");
+
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Content)
                 .HasColumnType("text")
@@ -72,17 +76,11 @@ public partial class ManageSystem1640Context : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("lastModifiedDate");
             entity.Property(e => e.MagazineId).HasColumnName("magazineId");
-            entity.Property(e => e.Publics)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("publics");
+            entity.Property(e => e.Publics).HasColumnName("publics");
             entity.Property(e => e.ShortDescription)
                 .HasColumnType("text")
                 .HasColumnName("shortDescription");
-            entity.Property(e => e.Status)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("status");
+            entity.Property(e => e.Status).HasColumnName("status");
             entity.Property(e => e.SubmissionDate)
                 .HasColumnType("datetime")
                 .HasColumnName("submissionDate");
@@ -135,6 +133,8 @@ public partial class ManageSystem1640Context : DbContext
 
             entity.ToTable("imgFile");
 
+            entity.HasIndex(e => e.ContributionId, "IX_imgFile_contributionId");
+
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.ContributionId).HasColumnName("contributionId");
             entity.Property(e => e.Stype)
@@ -158,16 +158,16 @@ public partial class ManageSystem1640Context : DbContext
             entity.ToTable("Magazine");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.CloseYear)
+            entity.Property(e => e.ClosureDay)
                 .HasColumnType("date")
-                .HasColumnName("closeYear");
+                .HasColumnName("closureDay");
             entity.Property(e => e.Description)
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("description");
-            entity.Property(e => e.StartYear)
+            entity.Property(e => e.FinalClosureDay)
                 .HasColumnType("date")
-                .HasColumnName("startYear");
+                .HasColumnName("finalClosureDay");
         });
 
         modelBuilder.Entity<Role>(entity =>
@@ -188,6 +188,10 @@ public partial class ManageSystem1640Context : DbContext
         modelBuilder.Entity<User>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Users__3213E83F56046F46");
+
+            entity.HasIndex(e => e.FacultyId, "IX_Users_facultyId");
+
+            entity.HasIndex(e => e.RoleId, "IX_Users_roleId");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Avatar)

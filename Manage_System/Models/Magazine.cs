@@ -9,9 +9,9 @@ public partial class Magazine
 
     public string? Description { get; set; }
 
-    public DateTime? StartYear { get; set; }
+    public DateTime? ClosureDay { get; set; }
 
-    public DateTime? CloseYear { get; set; }
+    public DateTime? FinalClosureDay { get; set; }
 
     public virtual ICollection<Contribution> Contributions { get; } = new List<Contribution>();
 }
