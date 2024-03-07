@@ -13,13 +13,13 @@ namespace Manage_System.Areas.Admin.ModelView
         public string Description { get; set; }
 
         [MaxLength(50)]
-        [Required(ErrorMessage = "Please, Enter Close Years")]
-        [Display(Name = "Close Years")]
-        public string? StartYear { get; set; }
+        [Required(ErrorMessage = "Please, Enter Close Day")]
+        [Display(Name = "Closure Day")]
+        public string? ClosureDay { get; set; }
 
         [MaxLength(50)]
-        [Required(ErrorMessage = "Please, Enter Close Years")]
-        [Display(Name = "Close Years")]
-        public string? CloseYear { get; set; }
+        [Required(ErrorMessage = "Please, Enter Final Close Day")]
+        [Display(Name = "Final Closure Day")]
+        public string? FinalClosureDay { get; set; }
     }
 }

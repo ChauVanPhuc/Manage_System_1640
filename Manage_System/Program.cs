@@ -5,6 +5,7 @@ using Manage_System.Service;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSession((option) =>
 {
     option.IdleTimeout = new TimeSpan(0,30,0);
+    option.Cookie.HttpOnly = true;
+    option.Cookie.IsEssential = true;
 });
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -24,7 +27,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     .AddCookie(p =>
     {
         p.LoginPath = "/Login";
-        p.LoginPath = "/Logout";
+        p.LogoutPath = "/Logout";
+        p.AccessDeniedPath = "/Login";
     });
 
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
@@ -32,6 +36,7 @@ builder.Services.AddNotyf(config => { config.DurationInSeconds = 10; config.IsDi
 
 
 builder.Services.AddTransient<IFileService, FileService>();
+builder.Services.AddTransient<IEmailService, EmailService>();
 
 
 var app = builder.Build();
@@ -48,6 +53,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
 app.UseSession();
 app.UseAuthentication();
 

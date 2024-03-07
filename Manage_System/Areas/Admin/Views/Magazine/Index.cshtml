@@ -19,8 +19,8 @@
                 <tr>
                     
                     <th>Description</th>
-                    <th>Start Year</th>
-                    <th>Close Year</th>
+                    <th>Closure Day</th>
+                    <th>Final Closure Day</th>
                     <th></th>
                 </tr>
             </thead>
@@ -29,9 +29,9 @@
                 {
                     <tr>
                         <td>@account.Description</td>
-                        
-                        <td>@account.StartYear.ToString("yyyy/MM/dd")</td>
-                        <td>@account.CloseYear.ToString("yyyy/MM/dd")</td>
+
+                        <td>@account.ClosureDay.ToString("yyyy/MM/dd")</td>
+                        <td>@account.FinalClosureDay.ToString("yyyy/MM/dd")</td>
 
                         <td >
                             <a class="btn btn-outline-success btn-sm edit" asp-area="Admin" asp-action="Edit" asp-route-id="@account.Id" title="Edit">
@@ -51,8 +51,9 @@
 
                 <tr>
                     <th>Description</th>
-                    <th>Start Year</th>
-                    <th>Close Year</th>
+                    <th>Closure Day</th>
+                    <th>Final Closure Day</th>
+                    <th></th>
                 </tr>
             </tfoot>
         </table>

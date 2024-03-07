@@ -10,11 +10,11 @@ namespace Manage_System.Extension
 
         private static readonly ManageSystem1640Context _db;
 
-        public static string CheckRoleLogin(int accountId)
+        public static string CheckRoleLogin(User account)
         {
-            string role = "";
+            
 
-            User account = _db.Users.FirstOrDefault(x => x.Id== accountId);
+            string role = "";
 
             if (account == null)
             {
@@ -23,7 +23,7 @@ namespace Manage_System.Extension
 
             if (account.Role.Name.Equals("Guest"))
             {
-                return role = "Guest";
+                return role = "Guest";  
             }
             else if(account.Role.Name.Equals("Student"))
             {

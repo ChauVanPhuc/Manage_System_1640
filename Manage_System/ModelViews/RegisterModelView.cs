@@ -36,6 +36,7 @@ namespace Manage_System.ModelViews
 
         [Display(Name = "Birthday")]
 
+        public int? FacultyId { get; set; }
         public IFormFile? avatar { get; set; }
         public string? img { get; set; }
         public DateTime? createDay { get; set; }

@@ -38,6 +38,15 @@
                 </div>
             </div>
 
+            <div class="form-group">
+                <label>Faculty</label>
+                <div>
+                    <select asp-for="FacultyId" class="form-control" asp-items="ViewBag.facultyId">
+                    </select>
+                    <span asp-validation-for="FacultyId" class="text-danger"></span>
+                </div>
+            </div>
+
 
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label control-label">Password</label>

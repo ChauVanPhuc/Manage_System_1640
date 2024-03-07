@@ -11,22 +11,24 @@ using Microsoft.EntityFrameworkCore;
 namespace Manage_System.Controllers
 {
     [Authorize]
-    
     public class ContributionsController : Controller
     {
 
         private readonly ManageSystem1640Context _db;
         private readonly IFileService _formFile;
         private readonly INotyfService _notyf;
+        private readonly IEmailService _emailService;
 
-        public ContributionsController(ManageSystem1640Context db, IFileService formFile, INotyfService notyf)
+        public ContributionsController(ManageSystem1640Context db,
+            IFileService formFile, INotyfService notyf, IEmailService emailService)
         {
             _db = db;
             _formFile = formFile;
             _notyf = notyf;
+            _emailService = emailService;   
         }
 
-        [Route("/Contributions")]
+        [Route("Student/Contributions")]
         public IActionResult Index()
         {
             var account = HttpContext.Session.GetString("AccountId");
@@ -42,7 +44,7 @@ namespace Manage_System.Controllers
             return View(contributions);
         }
 
-        [Route("/Contributions/Create")]
+        [Route("Student/Contributions/Create")]
         public IActionResult Create()
         {
 
@@ -51,7 +53,7 @@ namespace Manage_System.Controllers
         }
 
 
-        [Route("/Contributions/Detail/{id:}")]
+        [Route("Student/Contributions/Detail/{id:}")]
         public IActionResult Detail(int id)
         {
 
@@ -81,7 +83,7 @@ namespace Manage_System.Controllers
         }
 
         [HttpPost]
-        [Route("/Contributions/Create")]
+        [Route("Student/Contributions/Create")]
         public async Task<IActionResult> Create(ContributionsModelView model)
         {
             try
@@ -137,9 +139,29 @@ namespace Manage_System.Controllers
 
                         }
 
+                    var user = _db.Users.Include(x => x.Role).AsNoTracking().SingleOrDefault(x => x.Id == int.Parse(account));
 
-                        _notyf.Success("Add Contributions Success");
-                        return Redirect("/Contributions");
+                    var sendEmail = await (from users in _db.Users
+                                      join Faculty in _db.Faculties
+                                      on users.FacultyId equals Faculty.Id
+                                      join role in _db.Roles
+                                      on users.RoleId equals role.Id
+                                      where role.Name == "Coordinator"
+                                           select users).ToListAsync();
+
+                    if (sendEmail != null)
+                    {
+                        foreach (var item in sendEmail)
+                        {
+                            await _emailService.SendEmailAsync(item.Email, "Contribution new", user.FullName + " has made a new contribution");
+
+                        }
+
+                    }
+
+
+                    _notyf.Success("Add Contributions Success");
+                        return Redirect("Student/Contributions");
                     }
                     catch
                     {

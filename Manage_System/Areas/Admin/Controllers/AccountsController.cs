@@ -59,7 +59,7 @@ namespace Manage_System.Areas.Admin.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    string img = null;
+                    string img = "";
                     if (model.avatar != null)
                     {
                         img = _formFile.SaveImage(model.avatar);
