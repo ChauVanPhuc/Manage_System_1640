@@ -46,5 +46,6 @@ namespace Manage_System.Areas.Coordinator.ModelView
 
         public virtual Magazine? Magazine { get; set; }
         public virtual User? User { get; set; }
+        public virtual User? Coordinator { get; set; }
     }
 }

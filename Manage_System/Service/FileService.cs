@@ -20,12 +20,12 @@
                 }
                 // Check the allowed extenstions
                 var ext = Path.GetExtension(imgFile.FileName);
-                var allowedExtensions = new string[] { ".jpg", ".png", ".jpeg" };
+                /*var allowedExtensions = new string[] { ".jpg", ".png", ".jpeg" };
                 if (!allowedExtensions.Contains(ext))
                 {
                     string msg = string.Format("Only {0} extensions are allowed", string.Join(",", allowedExtensions));
 
-                }
+                }*/
 
                 string uniqueString = Guid.NewGuid().ToString();
                 var newFileName = uniqueString + ext;

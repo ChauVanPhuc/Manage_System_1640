@@ -6,7 +6,7 @@ namespace Manage_System.ModelViews
 {
     public class ContributionsModelView
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         public int? UserId { get; set; }
 
@@ -31,21 +31,20 @@ namespace Manage_System.ModelViews
 
         public bool? Status { get; set; }
 
-        public string? Publics { get; set; }
+        public bool? Publics { get; set; }
 
         public int? MagazineId { get; set; }
 
-
-        public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
-
-        public virtual ICollection<ImgFile> ImgFiles { get; set; } = new List<ImgFile>();
+        public virtual List<Comment>? Comments { get; set; }
+        public string? Comment { get; set; }
+        public virtual IEnumerable<ImgFile>? ImgFiles { get; set; }
 
 
         [NotMapped]
         public IFormFileCollection? ImgFile { get; set; }
 
         public virtual Magazine? Magazine { get; set; }
-
         public virtual User? User { get; set; }
+        public virtual User? Coordinator { get; set; }
     }
 }

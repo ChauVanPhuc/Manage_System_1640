@@ -1,11 +1,11 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
-using Manage_System.Areas.Coordinator.ModelView;
 using Manage_System.models;
+using Manage_System.ModelViews;
 using Manage_System.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Manage_System.Areas.Coordinator.Controllers
+namespace Manage_System.Controllers
 {
     public class CommentController : Controller
     {
@@ -21,7 +21,7 @@ namespace Manage_System.Areas.Coordinator.Controllers
         }
 
         [HttpPost]
-        [Route("Coordinator/SubmitComment/{id:}")]
+        [Route("Student/SubmitComment/{id:}")]
         public async Task<IActionResult> SubmitComment(int id, ContributionsModelView model)
         {
             var contribution = _db.Contributions.Find(id);
@@ -31,20 +31,20 @@ namespace Manage_System.Areas.Coordinator.Controllers
                 return Redirect("/Coordinator/Contributions/");
             }
 
-            
-                try
-                {
-                    var account = HttpContext.Session.GetString("AccountId");
-                    Comment comment = new Comment 
-                    {
-                       CommentText = model.Comment,
-                       UserId = int.Parse(account),
-                       CommentDate = DateTime.Now,
-                       ContributionId = model.Id
-                    };
 
-                    _db.Comments.Add(comment);
-                    _db.SaveChanges();
+            try
+            {
+                var account = HttpContext.Session.GetString("AccountId");
+                Comment comment = new Comment
+                {
+                    CommentText = model.Comment,
+                    UserId = int.Parse(account),
+                    CommentDate = DateTime.Now,
+                    ContributionId = model.Id
+                };
+
+                _db.Comments.Add(comment);
+                _db.SaveChanges();
 
                 var student = _db.Users.AsNoTracking().SingleOrDefault(x => x.Id == contribution.UserId);
                 var coordinator = _db.Users.AsNoTracking().SingleOrDefault(x => x.Id == comment.UserId);
@@ -54,14 +54,14 @@ namespace Manage_System.Areas.Coordinator.Controllers
 
                 }
                 _notyf.Success("Comment Success");
-                    return Redirect("/Coordinator/Contributions/Detail/" + model.Id + " ");
-                }
-                catch (Exception)
-                {
+                return Redirect("/Coordinator/Contributions/Detail/" + model.Id + " ");
+            }
+            catch (Exception)
+            {
 
-                    _notyf.Success("Comment Fail");
-                    return Redirect("/Coordinator/Contributions/Detail/"+model.Id + " ");
-                }
+                _notyf.Success("Comment Fail");
+                return Redirect("/Coordinator/Contributions/Detail/" + model.Id + " ");
+            }
 
         }
     }
