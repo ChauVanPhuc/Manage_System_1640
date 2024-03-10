@@ -39,6 +39,7 @@ namespace Manage_System.Controllers
                 .Include(x => x.Magazine)
                 .Include(x => x.User)
                 .Where(x => x.UserId == int.Parse(account))
+                .OrderByDescending(x => x.Id)
                 .ToList();
 
             return View(contributions);
@@ -90,7 +91,6 @@ namespace Manage_System.Controllers
                         User = contributions.User,
                         Coordinator = user,
                         Title = contributions.Title,
-                        Content = contributions.Content,
                         SubmissionDate = contributions.SubmissionDate,
                         LastModifiedDate = contributions.LastModifiedDate,
                         Status = contributions.Status,
@@ -125,7 +125,6 @@ namespace Manage_System.Controllers
                         UserId = int.Parse(account),
                         Title = model.Title,
                         ShortDescription = model.ShortDescription,
-                        Content = model.Content,
                         SubmissionDate = DateTime.Now,
                         Status = false,
                         Publics = false,

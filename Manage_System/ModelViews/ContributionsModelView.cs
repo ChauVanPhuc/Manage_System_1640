@@ -20,11 +20,6 @@ namespace Manage_System.ModelViews
         [Display(Name = " Short Description")]
         public string? ShortDescription { get; set; }
 
-        [MaxLength(1500)]
-        [Required(ErrorMessage = "Please, Enter Content")]
-        [Display(Name = "Content")]
-        public string? Content { get; set; }
-
         public DateTime? SubmissionDate { get; set; }
 
         public DateTime? LastModifiedDate { get; set; }

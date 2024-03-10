@@ -42,14 +42,25 @@
             <div class="row">
                 @foreach (var img in Model.ImgFiles)
                 {
-                    <img alt="" style="height:200px;width:150px" src="~/Uploads/@img.Url">
+                    if (img.Stype == "Img")
+                    {
+                        <img alt="" style="height:200px;width:150px" src="~/Uploads/@img.Url">
+
+                    }
                 }
             </div>
 
 
 
             <div class="m-t-30">
-                @Html.Raw(Model.Content)
+                @foreach (var img in Model.ImgFiles)
+                {
+                    if (img.Stype == "File")
+                    {
+                        <span>File</span>
+
+                    }
+                }
             </div>
 
 

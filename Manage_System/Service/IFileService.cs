@@ -4,5 +4,6 @@
     {
         public string SaveImage(IFormFile imgFile);
         public bool Delete(string imgFile);
+
     }
 }

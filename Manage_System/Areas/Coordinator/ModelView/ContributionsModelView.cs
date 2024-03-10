@@ -24,7 +24,6 @@ namespace Manage_System.Areas.Coordinator.ModelView
         [MaxLength(1500)]
         [Required(ErrorMessage = "Please, Enter Content")]
         [Display(Name = "Content")]
-        public string? Content { get; set; }
 
         public DateTime? SubmissionDate { get; set; }
 

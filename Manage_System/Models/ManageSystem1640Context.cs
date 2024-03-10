@@ -19,8 +19,6 @@ public partial class ManageSystem1640Context : DbContext
 
     public virtual DbSet<Contribution> Contributions { get; set; }
 
-    public virtual DbSet<Employee> Employees { get; set; }
-
     public virtual DbSet<Faculty> Faculties { get; set; }
 
     public virtual DbSet<ImgFile> ImgFiles { get; set; }
@@ -30,6 +28,10 @@ public partial class ManageSystem1640Context : DbContext
     public virtual DbSet<Role> Roles { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server = DESKTOP-1D6TNBA\\SQLEXPRESS02;Database=Manage_System_1640;uid=sa;pwd=Phuc@2002;TrustServerCertificate=true");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -69,9 +71,6 @@ public partial class ManageSystem1640Context : DbContext
             entity.HasIndex(e => e.UserId, "IX_Contributions_userId");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Content)
-                .HasColumnType("text")
-                .HasColumnName("content");
             entity.Property(e => e.LastModifiedDate)
                 .HasColumnType("datetime")
                 .HasColumnName("lastModifiedDate");
@@ -97,19 +96,6 @@ public partial class ManageSystem1640Context : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.Contributions)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("FK__Contribut__userI__59063A47");
-        });
-
-        modelBuilder.Entity<Employee>(entity =>
-        {
-            entity.ToTable("Employee");
-
-            entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
-            entity.Property(e => e.Name)
-                .HasMaxLength(50)
-                .IsUnicode(false);
-            entity.Property(e => e.Position)
-                .HasMaxLength(50)
-                .IsUnicode(false);
         });
 
         modelBuilder.Entity<Faculty>(entity =>

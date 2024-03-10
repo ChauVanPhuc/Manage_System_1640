@@ -3,6 +3,7 @@ using Manage_System.models;
 using Manage_System.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.IO.Compression;
 
 namespace Manage_System.Areas.Maketting.Controllers
 {
@@ -12,11 +13,13 @@ namespace Manage_System.Areas.Maketting.Controllers
     {
         private readonly ManageSystem1640Context _db;
         private readonly INotyfService _notyf;
+        IWebHostEnvironment _env;
 
-        public ContributionController(ManageSystem1640Context db, INotyfService notyf)
+        public ContributionController(ManageSystem1640Context db, INotyfService notyf, IWebHostEnvironment env)
         {
             _db = db;
             _notyf = notyf;
+            _env = env;
         }
 
         [Route("Maketting/Contributions")]
@@ -67,6 +70,52 @@ namespace Manage_System.Areas.Maketting.Controllers
 
                 _notyf.Error("Update Faill");
                 return Redirect("/Maketting/Contributions");
+            }
+
+
+        }
+
+        [Route("/Maketting/Contributions/DownloadFile/{id:}")]
+        public IActionResult DownloadFile(int id)
+        {
+            var urlFile = _db.ImgFiles
+                .Include(x => x.Contribution)
+                .ThenInclude(x => x.User)
+                .Where(x => x.ContributionId == id)
+                .ToList();
+
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                string userName = "";
+                
+                using (ZipArchive archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
+                {   
+                    foreach (var file in urlFile)
+                    {
+                        // Đường dẫn đầy đủ của tệp trong tệp Zip
+                        var wwwPath = this._env.WebRootPath;
+                        var entryPath = Path.Combine(wwwPath, "Uploads\\", file.Url);
+
+
+                        var fileInfor = new FileInfo(entryPath);    
+
+                        // Tạo entry cho tệp        
+                        var entry = archive.CreateEntry(file.Url);
+                            
+                        
+                        using (var entryStream = entry.Open())
+                        using (var fileStream = new FileStream(entryPath, FileMode.Open, FileAccess.Read))
+                        {
+                            fileStream.CopyTo(entryStream);
+                        }
+
+                        userName = file.Contribution.User.FullName.Replace(" ", "");
+                    }
+                    
+                }   
+
+                // Trả về tệp Zip dưới dạng phản hồi HTTP
+                return File(memoryStream.ToArray(), "application/zip", ""+userName.ToString()+ ".zip");
             }
 
 

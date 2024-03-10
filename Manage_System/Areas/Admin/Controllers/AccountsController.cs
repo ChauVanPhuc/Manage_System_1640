@@ -32,7 +32,11 @@ namespace Manage_System.Areas.Admin.Controllers
         [Route("/Admin/Accounts")]
         public async Task<IActionResult> Index()
         {
-            var account = await _db.Users.Include(x => x.Role).Include(x => x.Faculty).ToListAsync();
+            var account = await _db.Users
+                .Include(x => x.Role)
+                .Include(x => x.Faculty)
+                .OrderByDescending(x => x.Id)
+                .ToListAsync();
             return View(account);
         }
 
@@ -212,15 +216,18 @@ namespace Manage_System.Areas.Admin.Controllers
                 }
                 else
                 {
-                    _db.Users.Remove(acc);
-
-                    if (acc.Avatar != null)
+                    if (acc.Status == false)
                     {
-                        _formFile.Delete(acc.Avatar);
-                    }                   
-
+                        acc.Status = true;
+                        _notyf.Success("Account Disable Success");
+                    }
+                    else
+                    {
+                        acc.Status = false;
+                        _notyf.Success("Account Active Success");
+                    }                 
+                    _db.Update(acc);
                     _db.SaveChanges();
-                    _notyf.Success("Delete Account Success");
                     return RedirectToAction("Index");
                 }
             }

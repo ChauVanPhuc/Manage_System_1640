@@ -21,6 +21,7 @@
                         <th>Short Description</th>
                         <th>submissionDate</th>
                         <th>publish</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -53,6 +54,10 @@
                                         <i class="anticon anticon-check btn btn-outline-success btn-sm"></i>
                                     }
                                 </a>
+                            </td>
+
+                            <td>
+                                <a asp-area="Maketting" asp-controller="Contribution" asp-action="DownloadFile" asp-route-id="@contribution.Id"><i class="anticon anticon-download"></i></a>
                             </td>
 
                         </tr>

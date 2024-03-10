@@ -79,7 +79,6 @@ namespace Manage_System.Areas.Coordinator.Controllers
                         User = contributions.User,
                         Coordinator = user,
                         Title = contributions.Title,
-                        Content = contributions.Content,
                         SubmissionDate = contributions.SubmissionDate,
                         LastModifiedDate = contributions.LastModifiedDate,
                         Status = contributions.Status,
