@@ -27,6 +27,7 @@ namespace Manage_System.Areas.Maketting.Controllers
                 .Include(x => x.Comments)
                 .Include(x => x.Magazine)
                 .Include(x => x.User)
+                .Where(x => x.Status == true)
                 .ToList();
 
             return View(contributions);
@@ -41,7 +42,7 @@ namespace Manage_System.Areas.Maketting.Controllers
                 if (contri == null)
                 {
                     _notyf.Error("Contributions does not exist");
-                    return Redirect("/Coordinator/Contributions");
+                    return Redirect("/Maketting/Contributions");
                 }
                 else
                 {
@@ -58,14 +59,14 @@ namespace Manage_System.Areas.Maketting.Controllers
                     _db.SaveChanges();
 
                     _notyf.Success("Update Success");
-                    return Redirect("/Coordinator/Contributions");
+                    return Redirect("/Maketting/Contributions");
                 }
             }
             catch
             {
 
                 _notyf.Error("Update Faill");
-                return Redirect("/Coordinator/Contributions");
+                return Redirect("/Maketting/Contributions");
             }
 
 

@@ -42,8 +42,8 @@
                             </td>
                             <td>@contribution.SubmissionDate.ToString("yyyy/MM/dd")</td>
                             <td>
-                                <a asp-controller="Contribution" asp-action="Publish" asp-route-id="@contribution.Id">
-                                    @if (contribution.Publishs.ToString() == "False")
+                                <a asp-area="Maketting" asp-controller="Contribution" asp-action="Publish" asp-route-id="@contribution.Id">
+                                    @if (contribution.Publics.ToString() == "False")
                                     {
                                         <i class="anticon anticon-close btn btn-outline-danger btn-sm"></i>
                                     }

@@ -54,10 +54,10 @@
                 }
                 return false;
             }
-            catch (Exception ex)
+            catch 
             {
-                throw new Exception(ex.Message);
                 return false;
+               
             }
         }
 
