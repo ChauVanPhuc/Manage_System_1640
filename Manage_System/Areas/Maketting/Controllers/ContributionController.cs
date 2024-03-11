@@ -115,7 +115,9 @@ namespace Manage_System.Areas.Maketting.Controllers
                 }
 
                 // Trả về tệp Zip dưới dạng phản hồi HTTP
+                _notyf.Success("Download File Success");
                 return File(memoryStream.ToArray(), "application/zip", "" + userName.ToString() + ".zip");
+                
             }
 
 
@@ -167,7 +169,7 @@ namespace Manage_System.Areas.Maketting.Controllers
             var urlFiles = _db.ImgFiles
                 .Include(x => x.Contribution)
                 .ThenInclude(x => x.User)
-                .Where(x => x.ContributionId == x.Contribution.Id)
+                .Where(x => x.ContributionId == x.Contribution.Id && x.Contribution.Status == true)
                 .ToList();
 
             var zipFiles = new List<byte[]>();
@@ -199,6 +201,7 @@ namespace Manage_System.Areas.Maketting.Controllers
                 }
 
                 responseStream.Seek(0, SeekOrigin.Begin);
+                _notyf.Success("Download All File Success");
                 return File(responseStream.ToArray(), "application/zip", "AllFiles.zip");
             }
         }
