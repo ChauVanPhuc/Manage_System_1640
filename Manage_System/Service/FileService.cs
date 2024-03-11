@@ -1,6 +1,4 @@
-﻿using Manage_System.models;
-
-namespace Manage_System.Service
+﻿namespace Manage_System.Service
 {
     public class FileService : IFileService
     {
@@ -62,6 +60,7 @@ namespace Manage_System.Service
                
             }
         }
+
 
     }
 }

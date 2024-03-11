@@ -87,9 +87,9 @@ namespace Manage_System.Areas.Maketting.Controllers
             using (MemoryStream memoryStream = new MemoryStream())
             {
                 string userName = "";
-                
+
                 using (ZipArchive archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
-                {   
+                {
                     foreach (var file in urlFile)
                     {
                         // Đường dẫn đầy đủ của tệp trong tệp Zip
@@ -97,28 +97,110 @@ namespace Manage_System.Areas.Maketting.Controllers
                         var entryPath = Path.Combine(wwwPath, "Uploads\\", file.Url);
 
 
-                        var fileInfor = new FileInfo(entryPath);    
+                        var fileInfor = new FileInfo(entryPath);
 
                         // Tạo entry cho tệp        
                         var entry = archive.CreateEntry(file.Url);
-                            
-                        
+
+
                         using (var entryStream = entry.Open())
                         using (var fileStream = new FileStream(entryPath, FileMode.Open, FileAccess.Read))
                         {
                             fileStream.CopyTo(entryStream);
                         }
 
-                        userName = file.Contribution.User.FullName.Replace(" ", "");
+                        userName = (file.Contribution.User.FullName + "_" + file.Contribution.Title).Replace(" ", "_");
                     }
-                    
-                }   
+
+                }
 
                 // Trả về tệp Zip dưới dạng phản hồi HTTP
-                return File(memoryStream.ToArray(), "application/zip", ""+userName.ToString()+ ".zip");
+                return File(memoryStream.ToArray(), "application/zip", "" + userName.ToString() + ".zip");
             }
 
 
+        }
+
+        //for All File
+        public async Task<MemoryStream> DownloadFileAsync(int id)
+        {
+            var urlFile = _db.ImgFiles
+                .Include(x => x.Contribution)
+                .ThenInclude(x => x.User)
+                .Where(x => x.ContributionId == id)
+                .ToList();
+
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                string userName = "";
+
+                using (ZipArchive archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
+                {
+                    foreach (var file in urlFile)
+                    {
+                        var wwwPath = this._env.WebRootPath;
+                        var entryPath = Path.Combine(wwwPath, "Uploads\\", file.Url);
+
+                        var fileInfor = new FileInfo(entryPath);
+
+                        var entry = archive.CreateEntry(file.Url);
+
+                        using (var entryStream = entry.Open())
+                        using (var fileStream = new FileStream(entryPath, FileMode.Open, FileAccess.Read))
+                        {
+                            await fileStream.CopyToAsync(entryStream);
+                        }
+
+                        userName = (file.Contribution.User.FullName + "_" + file.Contribution.Title).Replace(" ", "_");
+                    }
+                }
+
+                memoryStream.Seek(0, SeekOrigin.Begin);
+                return memoryStream;
+            }
+        }
+
+
+        [Route("/Maketting/Contributions/DownloadAllFile")]
+        public async Task<IActionResult> DownloadAllFile()
+        {
+            var urlFiles = _db.ImgFiles
+                .Include(x => x.Contribution)
+                .ThenInclude(x => x.User)
+                .Where(x => x.ContributionId == x.Contribution.Id)
+                .ToList();
+
+            var zipFiles = new List<byte[]>();
+
+            var nameFile = new List<string>();
+            foreach (var file in urlFiles)
+            {
+                var fileMemoryStream = await DownloadFileAsync((int)file.ContributionId);
+                zipFiles.Add(fileMemoryStream.ToArray());
+                nameFile.Add((file.Contribution.User.FullName + "_" + file.Contribution.Title).Replace(" ", "_"));
+            }
+
+            using (var responseStream = new MemoryStream())
+            {
+                using (var zipArchive = new ZipArchive(responseStream, ZipArchiveMode.Create, true))
+                {
+                    for (var i = 0; i < zipFiles.Count; i++)
+                    {
+                        var zipFileBytes = zipFiles[i];
+                        var name = nameFile[i];
+                        var entry = zipArchive.CreateEntry(""+name+".zip");
+
+                        using (var entryStream = entry.Open())
+                        using (var fileMemoryStream = new MemoryStream(zipFileBytes))
+                        {
+                            await fileMemoryStream.CopyToAsync(entryStream);
+                        }
+                    }
+                }
+
+                responseStream.Seek(0, SeekOrigin.Begin);
+                return File(responseStream.ToArray(), "application/zip", "AllFiles.zip");
+            }
         }
     }
 }
