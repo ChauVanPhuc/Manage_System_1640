@@ -57,24 +57,38 @@
                 {
                     if (img.Stype == "File")
                     {
-                        <span>File</span>
+                        <div class="m-b-25">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="media align-items-center">
+                                    <div class="font-size-35">
+                                        <i class="anticon anticon-file-word text-primary"></i>
+                                    </div>
+                                    <div class="m-l-15">
+                                        <h6 class="m-b-0">
+                                            <a class="text-dark">@img.Url</a>
+                                        </h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                     }
                 }
             </div>
-
-
-
-
             <hr>
-
-
-
         </div>
     </div>
-
-
 </div>
+
+
+<div class="card">
+    <div class="card-body">
+        <a class="btn btn-hover font-weight-semibold" asp-controller="Contributions" asp-action="Edit" asp-route-id="@Model.Id">
+            <span>Edit Contributions</span>
+        </a>
+    </div>
+</div>
+
 
 <div class="card">
     <div class="card-body">

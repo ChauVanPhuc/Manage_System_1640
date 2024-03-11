@@ -28,7 +28,6 @@
             fileElement.className = 'file-entry';
             fileElement.innerHTML = `
                 <span class="file-name">${file.name}</span>
-                <span class="file-size">${(file.size / 1024 / 1024).toFixed(2)} MB</span>
                 <span class="delete-file" onclick="removeFileEntry(event)">&times;</span>
             `;
             fileList.appendChild(fileElement);
