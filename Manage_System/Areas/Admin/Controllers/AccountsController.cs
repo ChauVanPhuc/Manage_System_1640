@@ -30,6 +30,55 @@ namespace Manage_System.Areas.Admin.Controllers
             _notyf = notyf;
         }
 
+
+        [Route("/Admin/Accounts/ValidatePhone")]
+        [HttpPost]
+        public async Task<IActionResult> ValidatePhone(string phone)
+        {
+            try
+            {
+                var account = _db.Users.AsNoTracking().SingleOrDefault(x => x.Phone.ToLower() == phone.ToLower());
+                if (account == null)
+                {
+                    
+                    return Json(true);
+                }
+                else
+                {   
+                    return Json($"Phone: {phone} already exist");
+                }
+                
+            }
+            catch
+            {
+
+                return Json(true);
+            }
+        }
+
+        [Route("/Admin/Accounts/ValidateEmail")]
+        [AcceptVerbs("Get", "Post")]
+        [AllowAnonymous]
+        public IActionResult ValidateEmail(string email)
+        {
+            try
+            {
+                var account = _db.Users.AsNoTracking().SingleOrDefault(x => x.Email.ToLower() == email.ToLower());
+                if (account != null)
+                {
+                    return Json(data: "Email: " + email + " already exist");
+
+                }
+                return Json(data: true);
+            }
+            catch
+            {
+
+                return Json(data: true);
+            }
+        }
+
+
         [Route("/Admin/Accounts")]
         public async Task<IActionResult> Index()
         {
@@ -56,6 +105,7 @@ namespace Manage_System.Areas.Admin.Controllers
         }
 
 
+
         [HttpPost]
         [Route("/Admin/Accounts/Create")]
         public IActionResult Create(AccountModelView model)
@@ -64,6 +114,8 @@ namespace Manage_System.Areas.Admin.Controllers
             {
                 if (ModelState.IsValid)
                 {
+
+
                     string img = "";
                     if (model.avatar != null)
                     {

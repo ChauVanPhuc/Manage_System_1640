@@ -37,13 +37,13 @@ namespace Manage_System.Controllers
             return View();
         }
 
-        [Route("/Register")]
+/*        [Route("/Register")]
         public IActionResult Register()
         {
             ViewData["facultyId"] = new SelectList(_db.Faculties, "Id", "Name").ToList();
 
             return View();
-        }
+        }*/
 
 
         [HttpPost]
@@ -104,7 +104,7 @@ namespace Manage_System.Controllers
         }
 
 
-        [HttpPost]
+/*        [HttpPost]
         [Route("/Register")]
         public async Task<IActionResult> Register(RegisterModelView model)
         {
@@ -193,7 +193,7 @@ namespace Manage_System.Controllers
                 _notyf.Error("Register Fail");
                 return View(model);
             }
-        }
+        }*/
 
         [HttpPost]
         [Route("/Logout")]
