@@ -1,5 +1,6 @@
 ﻿
-@using System.Globalization;
+@* @using System.Globalization; *@
+@model IEnumerable<Manage_System.models.Contribution>
 
 <!-- page css -->
 <link href="~/student/assets/vendors/datatables/dataTables.bootstrap.min.css" rel="stylesheet">
@@ -41,7 +42,7 @@
         display: -webkit-box;
         -webkit-box-orient: vertical;">
                                 @contribution.ShortDescription</td>
-                            <td>@contribution.SubmissionDate.ToString("yyyy/MM/dd")</td>
+                            <td>@contribution.SubmissionDate</td>
                             <td>
                                 <a asp-controller="Contribution" asp-action="Allow" asp-route-id="@contribution.Id">
                                 @if (contribution.Status.ToString() == "False")

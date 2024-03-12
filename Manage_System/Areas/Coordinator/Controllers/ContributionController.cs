@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Manage_System.Areas.Coordinator.Controllers
 {
     [Area("Coordinator")]
-    [Authorize]
+    [Authorize(Policy = "Coordinator")]
     public class ContributionController : Controller
     {
 
@@ -29,19 +29,22 @@ namespace Manage_System.Areas.Coordinator.Controllers
         {
             var account = HttpContext.Session.GetString("AccountId");
 
-            var contributions = _db.Contributions
+            var contributions = await _db.Contributions
                 .Include(x => x.ImgFiles)
                 .Include(x => x.Comments)
                 .Include(x => x.Magazine)
                 .Include(x => x.User)
                 .ThenInclude(x => x.Faculty)
                 .Where(x => x.User.FacultyId == x.User.Faculty.Id)
-                .ToList();
+                .OrderByDescending(x => x.Id)
+                .ToListAsync();
 
-
+            if (contributions == null)
+            {
+                return NotFound();
+            }
             return View(contributions);
         }
-
 
 
 

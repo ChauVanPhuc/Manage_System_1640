@@ -14,25 +14,40 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSession((option) =>
 {
     option.IdleTimeout = new TimeSpan(0,30,0);
-    option.Cookie.HttpOnly = true;
-    option.Cookie.IsEssential = true;
+/*    option.Cookie.HttpOnly = true;
+    option.Cookie.IsEssential = true;*/
 });
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ManageSystem1640Context>(options =>
     options.UseSqlServer(connectionString));
 
-
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(p =>
+    
+builder.Services.AddAuthentication("AccountId")
+    .AddCookie("AccountId",p =>
     {
         p.LoginPath = "/Login";
         p.LogoutPath = "/Logout";
-        p.AccessDeniedPath = "/Login";
+        p.AccessDeniedPath = "/AccessDenied";
+        p.Cookie.Name = "AccountId";
     });
 
+builder.Services.AddAuthorization(p =>
+{
+    p.AddPolicy("Admin",
+        policy => policy.RequireClaim("Admin", "Admin"));
+    p.AddPolicy("Guest",
+        policy => policy.RequireClaim("Guest", "Guest"));
+    p.AddPolicy("Coordinator",
+        policy => policy.RequireClaim("Coordinator", "Coordinator"));
+    p.AddPolicy("Maketting",
+        policy => policy.RequireClaim("Maketting", "Maketting"));
+    p.AddPolicy("Student",
+        policy => policy.RequireClaim("Student", "Student"));
+});
+
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
-builder.Services.AddNotyf(config => { config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.TopRight; });
+builder.Services.AddNotyf(config => { config.DurationInSeconds = 5; config.IsDismissable = true; config.Position = NotyfPosition.TopRight; });
 
 
 builder.Services.AddTransient<IFileService, FileService>();

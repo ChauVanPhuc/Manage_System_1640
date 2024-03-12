@@ -2,11 +2,13 @@
 using Manage_System.Areas.Coordinator.ModelView;
 using Manage_System.models;
 using Manage_System.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Manage_System.Areas.Coordinator.Controllers
 {
+    [Authorize(Policy = "Coordinator")]
     public class CommentController : Controller
     {
 

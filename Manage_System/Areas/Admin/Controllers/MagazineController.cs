@@ -2,12 +2,14 @@
 using Manage_System.Areas.Admin.ModelView;
 using Manage_System.models;
 using Manage_System.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Immutable;
 
 namespace Manage_System.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Policy = "Admin")]
     public class MagazineController : Controller
     {
 

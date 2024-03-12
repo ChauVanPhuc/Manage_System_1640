@@ -16,6 +16,7 @@ using System.Security.Claims;
 namespace Manage_System.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Policy = "Admin")]
     public class AccountsController : Controller
     {
         private readonly ManageSystem1640Context _db;

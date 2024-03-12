@@ -79,14 +79,15 @@ namespace Manage_System.Controllers
                     var claim = new List<Claim>
                     {
                         new Claim(ClaimTypes.Name, account.FullName),
-                        new Claim("AccountId", account.Id.ToString())
+                        new Claim("AccountId", account.Id.ToString()),
+                        new Claim(account.Role.Name,account.Role.Name),
                     };
-                    ClaimsIdentity claims = new ClaimsIdentity(claim, 
-                        Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationDefaults.AuthenticationScheme
+                    ClaimsIdentity claims = new ClaimsIdentity(claim, "AccountId"
+                        /*Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationDefaults.AuthenticationScheme*/
                         );
                     ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claims);
                     
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme ,claimsPrincipal);
+                    await HttpContext.SignInAsync(/*CookieAuthenticationDefaults.AuthenticationScheme*/ "AccountId", claimsPrincipal);
 
                     _notyf.Success("Login Success");
                     return CheckLogin(account);

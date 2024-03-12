@@ -1,6 +1,7 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using Manage_System.models;
 using Manage_System.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.IO.Compression;
@@ -9,6 +10,7 @@ namespace Manage_System.Areas.Maketting.Controllers
 {
 
     [Area("Maketting")]
+    [Authorize(Policy = "Maketting")]
     public class ContributionController : Controller
     {
         private readonly ManageSystem1640Context _db;

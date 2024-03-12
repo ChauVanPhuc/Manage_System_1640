@@ -2,11 +2,13 @@
 using Manage_System.models;
 using Manage_System.ModelViews;
 using Manage_System.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Manage_System.Controllers
 {
+    [Authorize(Policy = "Student")]
     public class CommentController : Controller
     {
 

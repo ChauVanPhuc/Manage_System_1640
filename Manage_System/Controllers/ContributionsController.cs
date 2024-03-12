@@ -12,7 +12,7 @@ using System.Xml.Linq;
 
 namespace Manage_System.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "Student")]
     public class ContributionsController : Controller
     {
 
