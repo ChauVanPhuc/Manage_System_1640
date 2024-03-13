@@ -19,16 +19,16 @@
                     Directory.CreateDirectory(path);
                 }
                 // Check the allowed extenstions
-                var ext = Path.GetExtension(imgFile.FileName);
+ /*               var ext = Path.GetExtension(imgFile.FileName);
                 var allowedExtensions = new string[] { ".jpg", ".png", ".jpeg" };
                 if (!allowedExtensions.Contains(ext))
                 {
                     string msg = string.Format("Only {0} extensions are allowed", string.Join(",", allowedExtensions));
 
-                }
+                }*/
 
-                string uniqueString = Guid.NewGuid().ToString();
-                var newFileName = uniqueString + ext;
+                string uniqueString = imgFile.FileName.ToString();
+                var newFileName = uniqueString;
                 var fileWithPath = Path.Combine(path, newFileName);
                 var stream = new FileStream(fileWithPath, FileMode.Create);
                 imgFile.CopyTo(stream);
@@ -54,10 +54,10 @@
                 }
                 return false;
             }
-            catch (Exception ex)
+            catch 
             {
-                throw new Exception(ex.Message);
                 return false;
+               
             }
         }
 

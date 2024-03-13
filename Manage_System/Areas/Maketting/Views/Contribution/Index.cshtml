@@ -10,6 +10,9 @@
     </nav>
 </div>
 
+
+<a asp-area="Maketting" asp-controller="Contribution" asp-action="DownloadAllFile"><i class="anticon anticon-download"></i></a>
+
 <div class="card">
     <div class="card-body">
         <div class="m-t-25 table-responsive">
@@ -21,6 +24,7 @@
                         <th>Short Description</th>
                         <th>submissionDate</th>
                         <th>publish</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -42,8 +46,8 @@
                             </td>
                             <td>@contribution.SubmissionDate.ToString("yyyy/MM/dd")</td>
                             <td>
-                                <a asp-controller="Contribution" asp-action="Publish" asp-route-id="@contribution.Id">
-                                    @if (contribution.Publishs.ToString() == "False")
+                                <a asp-area="Maketting" asp-controller="Contribution" asp-action="Publish" asp-route-id="@contribution.Id">
+                                    @if (contribution.Publics.ToString() == "False")
                                     {
                                         <i class="anticon anticon-close btn btn-outline-danger btn-sm"></i>
                                     }
@@ -53,6 +57,10 @@
                                         <i class="anticon anticon-check btn btn-outline-success btn-sm"></i>
                                     }
                                 </a>
+                            </td>
+
+                            <td>
+                                <a asp-area="Maketting" asp-controller="Contribution" asp-action="DownloadFile" asp-route-id="@contribution.Id"><i class="anticon anticon-download"></i></a>
                             </td>
 
                         </tr>
@@ -75,6 +83,7 @@
     </div>
 </div>
 @section Scripts{
+
 
     <!-- page js -->
     <script src="~/student/assets/vendors/datatables/jquery.dataTables.min.js"></script>

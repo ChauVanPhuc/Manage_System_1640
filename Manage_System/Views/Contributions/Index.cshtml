@@ -1,17 +1,27 @@
 ﻿@model IEnumerable<Manage_System.models.Contribution>
 
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
 
 <div class="page-header">
-    <h2 class="header-title">Blog List</h2>
+    <h2 class="header-title">Contribution List</h2>
     <div class="header-sub-title">
         <nav class="breadcrumb breadcrumb-dash">
-            <a href="#" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
-            <a class="breadcrumb-item" href="#">Pages</a>
-            <span class="breadcrumb-item active">Blog List</span>
+            <span href="#" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</span>
+            <a class="breadcrumb-item" href="/Student/Contributions">Contribution</a>
         </nav>
     </div>
 </div>
+
+
+<a class="btn btn-outline-info btn-sm add" asp-controller="Contributions" asp-action="Create" title="Create" style="margin-bottom: 20px">
+    New Contributions <i class="bx bx-list-plus"></i>
+</a>
+<div class="card">
+    <div class="card-body">
 
 
 <div class="container">
@@ -35,8 +45,12 @@
                         <h4 class="m-b-10">@item.Title</h4>
                         <div class="d-flex align-items-center m-t-5 m-b-15">
                             <div class="avatar avatar-image avatar-sm">
+                                @if(item.User.Avatar != null){
+                                    <img src="~/uploads/@item.User.Avatar" alt="">
+                                }else{
+                                    <img src="~/images/NoImage.png" alt="">
+                                }
                                 
-                                <img src="~/uploads/@item.User.Avatar" alt="">
 
                             </div>
                             <div class="m-l-10">
@@ -68,4 +82,7 @@
             <li class="page-item"><a class="page-link" href="#">Next</a></li>
         </ul>
     </nav>
+</div>
+
+    </div>
 </div>

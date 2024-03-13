@@ -1,5 +1,6 @@
 ﻿using Manage_System.models;
 using Manage_System.Models;
+using Manage_System.ModelViews;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +8,7 @@ using System.Diagnostics;
 
 namespace Manage_System.Controllers
 {
-
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -21,6 +22,130 @@ namespace Manage_System.Controllers
 
         [Route("/")]
         public IActionResult Index()
+        {
+            var account = HttpContext.Session.GetString("AccountId");
+            if (account != null)
+            {
+                return View();
+            }
+            return Redirect("/Login");
+
+        }
+
+        [Route("/Guest")]
+        public IActionResult Guest()
+        {
+            var account = HttpContext.Session.GetString("AccountId");
+            if (account != null)
+            {
+                var contributions = _db.Contributions
+                .Include(x => x.ImgFiles)
+                .Include(x => x.Comments)
+                .Include(x => x.Magazine)
+                .Include(x => x.User)
+                .Where(x => x.Publics == true)
+                .ToList();
+
+                return View(contributions);
+            }
+            return Redirect("/Login");
+
+        }
+
+        [Route("Guest/Contributions/Detail/{id:}")]
+        public IActionResult ContriDetail(int id)
+        {
+
+            if (id == null || _db.Contributions == null)
+            {
+                return Redirect("/Coordinator/Contributions");
+            }
+            else
+            {
+
+                var contributions = _db.Contributions
+                    .Include(x => x.ImgFiles)
+                    .Include(x => x.Magazine)
+                    .Include(x => x.Comments)
+                    .Include(x => x.User)
+                    .FirstOrDefault(b => b.Id == id);
+
+                List<Comment> comments = _db.Comments
+                    .Include(x => x.User)
+                    .Where(x => x.ContributionId == id)
+                    .OrderByDescending(x => x.Id)
+                    .ToList();
+
+                var account = HttpContext.Session.GetString("AccountId");
+                var user = _db.Users.AsNoTracking().SingleOrDefault(x => x.Id == int.Parse(account));
+
+
+
+                if (contributions != null)
+                {
+                    ContributionsModelView model = new ContributionsModelView
+                    {
+                        Id = contributions.Id,
+                        User = contributions.User,
+                        Coordinator = user,
+                        Title = contributions.Title,
+                        SubmissionDate = contributions.SubmissionDate,
+                        LastModifiedDate = contributions.LastModifiedDate,
+                        Status = contributions.Status,
+                        Publics = contributions.Publics,
+                        Magazine = contributions.Magazine,
+                        ShortDescription = contributions.ShortDescription,
+                        ImgFiles = contributions.ImgFiles,
+                        Comments = comments
+                    };
+                    return View(model);
+                }
+
+
+                return NotFound();
+
+            }
+        }
+
+
+        [Route("/Admin")]
+        public IActionResult Admin()
+        {
+            var account = HttpContext.Session.GetString("AccountId");
+            if (account != null)
+            {
+                return View();
+            }
+            return Redirect("/Login");
+
+        }
+
+        [Route("/Coordinator")]
+        public IActionResult Coordinator()
+        {
+            var account = HttpContext.Session.GetString("AccountId");
+            if (account != null)
+            {
+                return View();
+            }
+            return Redirect("/Login");
+
+        }
+
+        [Route("/Maketting")]
+        public IActionResult Maketting()
+        {
+            var account = HttpContext.Session.GetString("AccountId");
+            if (account != null)
+            {
+                return View();
+            }
+            return Redirect("/Login");
+
+        }
+
+        [Route("/Student")]
+        public IActionResult Student()
         {
             var account = HttpContext.Session.GetString("AccountId");
             if (account != null)

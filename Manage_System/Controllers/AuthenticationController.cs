@@ -4,7 +4,9 @@ using Manage_System.models;
 using Manage_System.ModelViews;
 using Manage_System.Service;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
@@ -35,11 +37,13 @@ namespace Manage_System.Controllers
             return View();
         }
 
-        [Route("/Register")]
+/*        [Route("/Register")]
         public IActionResult Register()
         {
+            ViewData["facultyId"] = new SelectList(_db.Faculties, "Id", "Name").ToList();
+
             return View();
-        }
+        }*/
 
 
         [HttpPost]
@@ -50,7 +54,7 @@ namespace Manage_System.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var account = _db.Users.AsNoTracking().SingleOrDefault(x => x.Email == model.Email);
+                    var account = _db.Users.Include(x => x.Role).AsNoTracking().SingleOrDefault(x => x.Email == model.Email);
                     if (account == null)
                     {
                         _notyf.Error("Account is not registered ");
@@ -75,16 +79,19 @@ namespace Manage_System.Controllers
                     var claim = new List<Claim>
                     {
                         new Claim(ClaimTypes.Name, account.FullName),
-                        new Claim("AccountId", account.Id.ToString())
+                        new Claim("AccountId", account.Id.ToString()),
+                        new Claim(account.Role.Name,account.Role.Name),
                     };
-                    ClaimsIdentity claims = new ClaimsIdentity(claim, 
-                        Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationDefaults.AuthenticationScheme
+                    ClaimsIdentity claims = new ClaimsIdentity(claim, "AccountId"
+                        /*Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationDefaults.AuthenticationScheme*/
                         );
                     ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claims);
                     
-                    await HttpContext.SignInAsync(claimsPrincipal);
+                    await HttpContext.SignInAsync(/*CookieAuthenticationDefaults.AuthenticationScheme*/ "AccountId", claimsPrincipal);
+
                     _notyf.Success("Login Success");
-                    return Redirect("/");
+                    return CheckLogin(account);
+
                 }
             }
             catch
@@ -97,7 +104,7 @@ namespace Manage_System.Controllers
         }
 
 
-        [HttpPost]
+/*        [HttpPost]
         [Route("/Register")]
         public async Task<IActionResult> Register(RegisterModelView model)
         {
@@ -113,7 +120,7 @@ namespace Manage_System.Controllers
                     }
 
 
-                    var role = _db.Roles.FirstOrDefault(x => x.Name == "Guest");
+                    var role = _db.Roles.FirstOrDefault(x => x.Name == "Student");
                     int roles = 0;
 
                     if (role != null)
@@ -143,7 +150,9 @@ namespace Manage_System.Controllers
                         Status = true,
                         CreateDay = DateTime.Now,
                         FullName = model.FullName,
-                        Avatar = img
+                        Avatar = img,
+                        FacultyId = model.FacultyId,
+                       
                     };
 
                     try
@@ -184,7 +193,7 @@ namespace Manage_System.Controllers
                 _notyf.Error("Register Fail");
                 return View(model);
             }
-        }
+        }*/
 
         [HttpPost]
         [Route("/Logout")]
@@ -193,6 +202,28 @@ namespace Manage_System.Controllers
             HttpContext.SignOutAsync();
             HttpContext.Session.Clear();
             return Redirect("/Login");
+        }
+
+        public IActionResult CheckLogin(User accountId)
+        {
+            string role = CheckRole.CheckRoleLogin(accountId);
+            if (role == "Guest")
+            {
+                return Redirect("/");
+            }else if (role == "Student")
+            {
+                return Redirect("/Student");
+            }else if (role == "Coordinator")
+            {
+                return Redirect("/Coordinator");
+            }else if (role == "Maketting")
+            {
+                return Redirect("/Maketting");
+            }
+            else
+            {
+                return Redirect("/Admin");
+            }
         }
     }
 }

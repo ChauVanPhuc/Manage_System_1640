@@ -2,12 +2,14 @@
 using Manage_System.Areas.Coordinator.ModelView;
 using Manage_System.models;
 using Manage_System.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Manage_System.Areas.Coordinator.Controllers
 {
     [Area("Coordinator")]
+    [Authorize(Policy = "Coordinator")]
     public class ContributionController : Controller
     {
 
@@ -23,22 +25,26 @@ namespace Manage_System.Areas.Coordinator.Controllers
         }
 
         [Route("Coordinator/Contributions")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var account = HttpContext.Session.GetString("AccountId");
 
-            var contributions = _db.Contributions
+            var contributions = await _db.Contributions
                 .Include(x => x.ImgFiles)
                 .Include(x => x.Comments)
                 .Include(x => x.Magazine)
                 .Include(x => x.User)
                 .ThenInclude(x => x.Faculty)
-                .Where(x => x.UserId == int.Parse(account))
-                .ToList();
+                .Where(x => x.User.FacultyId == x.User.Faculty.Id)
+                .OrderByDescending(x => x.Id)
+                .ToListAsync();
 
+            if (contributions == null)
+            {
+                return NotFound();
+            }
             return View(contributions);
         }
-
 
 
 
@@ -61,7 +67,12 @@ namespace Manage_System.Areas.Coordinator.Controllers
                     .Include(x => x.User)
                     .FirstOrDefault(b => b.Id == id);
 
-                List<Comment> comments = _db.Comments.Where(x => x.ContributionId == id).ToList();
+                List<Comment> comments = _db.Comments.Include(x => x.User).Where(x => x.ContributionId == id).ToList();
+
+                var account = HttpContext.Session.GetString("AccountId");
+                var user = _db.Users.AsNoTracking().SingleOrDefault(x => x.Id == int.Parse(account));
+
+                
 
                 if (contributions!=null)
                 {
@@ -69,8 +80,8 @@ namespace Manage_System.Areas.Coordinator.Controllers
                     {
                         Id = contributions.Id,
                         User = contributions.User,
+                        Coordinator = user,
                         Title = contributions.Title,
-                        Content = contributions.Content,
                         SubmissionDate = contributions.SubmissionDate,
                         LastModifiedDate = contributions.LastModifiedDate,
                         Status = contributions.Status,

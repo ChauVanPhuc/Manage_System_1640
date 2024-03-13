@@ -18,7 +18,12 @@
             <h2 class="font-weight-normal m-b-10">@Model.Title</h2>
             <div class="d-flex m-b-30">
                 <div class="avatar avatar-cyan avatar-img">
-                    <img src="~/Uploads/@Model.User.Avatar" alt="">
+                    @if(Model.User.Avatar != null){
+                        <img src="~/Uploads/@Model.User.Avatar" alt="">
+                    }else{
+                        <img src="~/images/NoImage.png" alt="">
+                    }
+                    
                 </div>
                 <div class="m-l-15">
                     <a href="javascript:void(0);" class="text-dark m-b-0 font-weight-semibold">@Model.User.FullName</a>
@@ -26,16 +31,28 @@
                 </div>
             </div>
             <div class="row">
+                
                 @foreach (var img in Model.ImgFiles)
                 {
-                    <img alt="" style="height:200px;width:150px" src="~/Uploads/@img.Url">
+                    if (img.Stype == "Img")
+                    {
+                        <img alt="" style="height:200px;width:150px" src="~/Uploads/@img.Url">
+                    }
+                    
                 }
             </div>
 
 
 
             <div class="m-t-30">
-                @Html.Raw(Model.Content)
+                @foreach (var img in Model.ImgFiles)
+                {
+                    if (img.Stype == "File")
+                    {
+                        <span>File</span> 
+                    }
+
+                }
             </div>
             
 
@@ -59,11 +76,18 @@
         <h3>New Comment</h3>
         <div class="media m-b-15">
             <div class="avatar avatar-image">
-                <img src="@Model.User.Avatar" alt="">
+                    @if (Model.Coordinator.Avatar != null)
+                    {
+                        <img src="~/Uploads/@Model.Coordinator.Avatar" alt="">
+                    }
+                    else
+                    {
+                        <img src="~/images/NoImage.png" alt="">
+                    }
             </div>
             <div class="media-body m-l-20">
                 <h6 class="m-b-0">
-                    <a href="#" class="text-dark">@Model.User.FullName</a>
+                    <a href="#" class="text-dark">@Model.Coordinator.FullName</a>
                 </h6>
             </div>
         </div>
@@ -91,7 +115,14 @@
                         <li class="list-group-item p-h-0">
                             <div class="media m-b-15">
                                 <div class="avatar avatar-image">
-                                    <img src="~/Uploads/@comment.User.Avatar" alt="">
+                                    @if (Model.User.Avatar != null)
+                                    {
+                                        <img src="~/Uploads/@Model.User.Avatar" alt="">
+                                    }
+                                    else
+                                    {
+                                        <img src="~/images/NoImage.png" alt="">
+                                    }
                                 </div>
                                 <div class="media-body m-l-20">
                                     <h6 class="m-b-0">
@@ -129,7 +160,7 @@
 
     </div>
 </div>
-
+@* 
 <div class="m-t-30">
     <nav>
         <ul class="pagination justify-content-end">
@@ -140,4 +171,4 @@
             <li class="page-item"><a class="page-link" href="#">Next</a></li>
         </ul>
     </nav>
-</div>
+</div> *@

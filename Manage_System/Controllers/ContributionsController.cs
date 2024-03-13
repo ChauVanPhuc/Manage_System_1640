@@ -1,4 +1,5 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Manage_System.Areas.Admin.ModelView;
 using Manage_System.models;
 using Manage_System.ModelViews;
 using Manage_System.Service;
@@ -7,26 +8,29 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Xml.Linq;
 
 namespace Manage_System.Controllers
 {
-    [Authorize]
-    
+    [Authorize(Policy = "Student")]
     public class ContributionsController : Controller
     {
 
         private readonly ManageSystem1640Context _db;
         private readonly IFileService _formFile;
         private readonly INotyfService _notyf;
+        private readonly IEmailService _emailService;
 
-        public ContributionsController(ManageSystem1640Context db, IFileService formFile, INotyfService notyf)
+        public ContributionsController(ManageSystem1640Context db,
+            IFileService formFile, INotyfService notyf, IEmailService emailService)
         {
             _db = db;
             _formFile = formFile;
             _notyf = notyf;
+            _emailService = emailService;   
         }
 
-        [Route("/Contributions")]
+        [Route("Student/Contributions")]
         public IActionResult Index()
         {
             var account = HttpContext.Session.GetString("AccountId");
@@ -37,12 +41,13 @@ namespace Manage_System.Controllers
                 .Include(x => x.Magazine)
                 .Include(x => x.User)
                 .Where(x => x.UserId == int.Parse(account))
+                .OrderByDescending(x => x.Id)
                 .ToList();
 
             return View(contributions);
         }
 
-        [Route("/Contributions/Create")]
+        [Route("Student/Contributions/Create")]
         public IActionResult Create()
         {
 
@@ -51,13 +56,13 @@ namespace Manage_System.Controllers
         }
 
 
-        [Route("/Contributions/Detail/{id:}")]
+        [Route("Student/Contributions/Detail/{id:}")]
         public IActionResult Detail(int id)
         {
 
             if (id == null || _db.Contributions == null)
             {
-                return NotFound();
+                return Redirect("/Student/Contributions");
             }
             else
             {
@@ -69,27 +74,51 @@ namespace Manage_System.Controllers
                     .Include(x => x.User)
                     .FirstOrDefault(b => b.Id == id);
 
-                if (contributions == null)
+                List<Comment> comments = _db.Comments
+                    .Include(x => x.User)
+                    .Where(x => x.ContributionId == id)
+                    .OrderByDescending(x => x.Id)
+                    .ToList();
+
+                var account = HttpContext.Session.GetString("AccountId");
+                var user = _db.Users.AsNoTracking().SingleOrDefault(x => x.Id == int.Parse(account));
+
+
+
+                if (contributions != null)
                 {
-                    return NotFound();
+                    ContributionsModelView model = new ContributionsModelView
+                    {
+                        Id = contributions.Id,
+                        User = contributions.User,
+                        Coordinator = user,
+                        Title = contributions.Title,
+                        SubmissionDate = contributions.SubmissionDate,
+                        LastModifiedDate = contributions.LastModifiedDate,
+                        Status = contributions.Status,
+                        Publics = contributions.Publics,
+                        Magazine = contributions.Magazine,
+                        ShortDescription = contributions.ShortDescription,
+                        ImgFiles = contributions.ImgFiles,
+                        Comments = comments
+                    };
+                    return View(model);
                 }
-                else
-                {
-                    return View(contributions);
-                }
+
+
+                return NotFound();
+
             }
         }
 
         [HttpPost]
-        [Route("/Contributions/Create")]
+        [Route("Student/Contributions/Create")]
         public async Task<IActionResult> Create(ContributionsModelView model)
         {
             try
             {
-/*                if (ModelState.IsValid)
+                if (ModelState.IsValid)
                 {
-                    
-*/
 
                     var account = HttpContext.Session.GetString("AccountId");
                     Contribution contribution = new Contribution
@@ -97,28 +126,24 @@ namespace Manage_System.Controllers
                         UserId = int.Parse(account),
                         Title = model.Title,
                         ShortDescription = model.ShortDescription,
-                        Content = model.Content,
                         SubmissionDate = DateTime.Now,
                         Status = false,
                         Publics = false,
                         MagazineId = model.MagazineId,
                     };
 
-                    
-
-                    try
-                    {
+                   
                         _db.Contributions.Add(contribution);
                         _db.SaveChanges();
 
                         string img = null;
                         if (model.ImgFile != null)
                         {
-
                             foreach (var file in model.ImgFile)
                             {
                                 var ext = Path.GetExtension(file.FileName);
                                 var allowedExtensions = new string[] { ".jpg", ".png", ".jpeg" };
+                                var allowedFile = new string[] { ".doc",".docx" };
                                 if (allowedExtensions.Contains(ext))
                                 {
                                     var imgFile = new ImgFile
@@ -129,35 +154,192 @@ namespace Manage_System.Controllers
                                     };
                                     _db.ImgFiles.Add(imgFile);
                                     
+                                }else if (allowedFile.Contains(ext))
+                                {
+                                    var docfile = new ImgFile
+                                    {
+                                        Stype = "File",
+                                        Url = _formFile.SaveImage(file),
+                                        ContributionId = contribution.Id
+                                    };
+                                    _db.ImgFiles.Add(docfile);
+
+                                }else
+                                {
+                                    _notyf.Error("Only accepts Images or files 'doc' and '.docx' ");
                                 }
-                            
+
+
+
                         }
 
                             _db.SaveChanges();
+                        }
+
+                    var user = _db.Users.Include(x => x.Role).AsNoTracking().SingleOrDefault(x => x.Id == int.Parse(account));
+
+                    var sendEmail = (from users in _db.Users
+                                      join Faculty in _db.Faculties
+                                      on users.FacultyId equals Faculty.Id
+                                      join role in _db.Roles
+                                      on users.RoleId equals role.Id
+                                      where role.Name == "Coordinator"
+                                           select users).ToList();
+
+                    if (sendEmail != null)
+                    {
+                        foreach (var item in sendEmail)
+                        {
+                            _emailService.SendEmailAsync(item.Email, "Contribution new", user.FullName + " has made a new contribution");
 
                         }
 
+                    }
+
 
                         _notyf.Success("Add Contributions Success");
-                        return Redirect("/Contributions");
-                    }
-                    catch
-                    {
-                        
-                        _notyf.Error("Register Fail");
-                        ViewData["MagazineId"] = new SelectList(_db.Magazines, "Id", "Description").ToList();
-                        return View(model);
-                    }
-/*                }
+                        return RedirectToAction("Index");
+                    
+                }
                 ViewData["MagazineId"] = new SelectList(_db.Magazines, "Id", "Description").ToList();
-                return View(model);*/
+                _notyf.Error("Add Contributions Faill");
+                return View(model);
             }
             catch (Exception)
             {
                 ViewData["MagazineId"] = new SelectList(_db.Magazines, "Id", "Description").ToList();
+                _notyf.Error("Add Contributions Faill");
                 return View(model);
             }
-            
+
+        }
+
+
+        [Route("/Student/Contributions/Edit/{id:}")]
+        public IActionResult Edit(int id)
+        {
+
+            var contributions = _db.Contributions
+                    .Include(x => x.ImgFiles)
+                    .Include(x => x.Magazine)
+                    .Include(x => x.Comments)
+                    .Include(x => x.User)
+                    .FirstOrDefault(b => b.Id == id);
+
+            if (contributions == null)
+            {
+                _notyf.Error("Contributions not exist");
+                return RedirectToAction("Index");
+            }
+
+            ContributionsModelView model = new ContributionsModelView
+            {
+                Id = contributions.Id,
+                User = contributions.User,
+                Title = contributions.Title,
+                SubmissionDate = contributions.SubmissionDate,
+                LastModifiedDate = contributions.LastModifiedDate,
+                Status = contributions.Status,
+                Publics = contributions.Publics,
+                Magazine = contributions.Magazine,
+                ShortDescription = contributions.ShortDescription,
+                ImgFiles = contributions.ImgFiles,
+            };
+
+            ViewData["MagazineId"] = new SelectList(_db.Magazines, "Id", "Description").ToList();
+            return View(model);
+        }
+
+
+        [HttpPost]
+        [Route("/Student/Contributions/Edit/{id:}")]
+        public IActionResult Edit(ContributionsModelView model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var contributions = _db.Contributions
+                    .Include(x => x.ImgFiles)
+                    .Include(x => x.Magazine)
+                    .Include(x => x.Comments)
+                    .Include(x => x.User)
+                    .FirstOrDefault(b => b.Id == model.Id);
+
+                    contributions.Title = model.Title;  
+                    contributions.LastModifiedDate = DateTime.Now;
+                    contributions.ShortDescription = model.ShortDescription;
+
+                    
+                    string img = null;
+                    if (model.ImgFile != null)
+                    {
+                        foreach (var file in model.ImgFile)
+                        {
+                            var ext = Path.GetExtension(file.FileName);
+                            var allowedExtensions = new string[] { ".jpg", ".png", ".jpeg" };
+                            var allowedFile = new string[] { ".doc", ".docx" };
+                            if (allowedExtensions.Contains(ext))
+                            {
+                                var imgFile = new ImgFile
+                                {
+                                    Stype = "Img",
+                                    Url = _formFile.SaveImage(file),
+                                    ContributionId = model.Id
+                                };
+                                _db.ImgFiles.Add(imgFile);
+
+                            }
+                            else if (allowedFile.Contains(ext))
+                            {
+                                var docfile = new ImgFile
+                                {
+                                    Stype = "File",
+                                    Url = _formFile.SaveImage(file),
+                                    ContributionId = model.Id
+                                };
+                                _db.ImgFiles.Add(docfile);
+
+                            }
+                            else
+                            {
+                                _notyf.Error("Only accepts Images or files 'doc' and '.docx' ");
+                            }
+                        }
+                    }
+
+                    _db.Contributions.Update(contributions);
+                    _db.SaveChanges();
+
+                    _notyf.Success("Update Contributions Success");
+                    return RedirectToAction("Index");
+                }
+                catch
+                {
+                    _notyf.Success("Update Contributions Fail");
+                    return View(model);
+                }
+            }
+            else
+            {
+                _notyf.Success("Update Contributions Fail");
+                return View(model);
+            }
+        }
+
+        [Route("/Student/Contributions/DeleteFile")]
+        public ActionResult DeleteFile(string UrlFile, int contriId, int imgId)
+        {
+            _formFile.Delete(UrlFile);
+
+            var file = _db.ImgFiles.Find(imgId);
+            if (file != null)
+            {
+                _db.ImgFiles.Remove(file);
+                _db.SaveChanges();
+            }
+
+            return Redirect("/Student/Contributions/Edit/"+ contriId + "");
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace Manage_System.Areas.Admin.ModelView
 {
@@ -14,6 +15,7 @@ namespace Manage_System.Areas.Admin.ModelView
         [MaxLength(50)]
         [EmailAddress]
         [Required(ErrorMessage = "Please, Enter Email")]
+        [Remote(action: "ValidateEmail", controller: "Accounts", areaName:"Admin")]
         [Display(Name = "Email")]
         public string Email { get; set; }
 
@@ -33,6 +35,7 @@ namespace Manage_System.Areas.Admin.ModelView
         [Phone]
         [DataType(DataType.PhoneNumber)]
         [Required(ErrorMessage = "Please, Enter Phone")]
+        [Remote(action: "ValidatePhone", controller: "Accounts", areaName: "Admin", HttpMethod = "POST")]
         [Display(Name = "Phone")]
         public string? Phone { get; set; }
 

@@ -19,8 +19,6 @@ public partial class ManageSystem1640Context : DbContext
 
     public virtual DbSet<Contribution> Contributions { get; set; }
 
-    public virtual DbSet<Employee> Employees { get; set; }
-
     public virtual DbSet<Faculty> Faculties { get; set; }
 
     public virtual DbSet<ImgFile> ImgFiles { get; set; }
@@ -40,6 +38,10 @@ public partial class ManageSystem1640Context : DbContext
         modelBuilder.Entity<Comment>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Comments__3213E83FD20A86B9");
+
+            entity.HasIndex(e => e.ContributionId, "IX_Comments_contributionId");
+
+            entity.HasIndex(e => e.UserId, "IX_Comments_userId");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.CommentDate)
@@ -64,25 +66,20 @@ public partial class ManageSystem1640Context : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK__Contribu__3213E83F4A1504BF");
 
+            entity.HasIndex(e => e.MagazineId, "IX_Contributions_magazineId");
+
+            entity.HasIndex(e => e.UserId, "IX_Contributions_userId");
+
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Content)
-                .HasColumnType("text")
-                .HasColumnName("content");
             entity.Property(e => e.LastModifiedDate)
                 .HasColumnType("datetime")
                 .HasColumnName("lastModifiedDate");
             entity.Property(e => e.MagazineId).HasColumnName("magazineId");
-            entity.Property(e => e.Publics)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("publics");
+            entity.Property(e => e.Publics).HasColumnName("publics");
             entity.Property(e => e.ShortDescription)
                 .HasColumnType("text")
                 .HasColumnName("shortDescription");
-            entity.Property(e => e.Status)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("status");
+            entity.Property(e => e.Status).HasColumnName("status");
             entity.Property(e => e.SubmissionDate)
                 .HasColumnType("datetime")
                 .HasColumnName("submissionDate");
@@ -99,19 +96,6 @@ public partial class ManageSystem1640Context : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.Contributions)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("FK__Contribut__userI__59063A47");
-        });
-
-        modelBuilder.Entity<Employee>(entity =>
-        {
-            entity.ToTable("Employee");
-
-            entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
-            entity.Property(e => e.Name)
-                .HasMaxLength(50)
-                .IsUnicode(false);
-            entity.Property(e => e.Position)
-                .HasMaxLength(50)
-                .IsUnicode(false);
         });
 
         modelBuilder.Entity<Faculty>(entity =>
@@ -134,6 +118,8 @@ public partial class ManageSystem1640Context : DbContext
             entity.HasKey(e => e.Id).HasName("PK__imgFile__3213E83F67F825DA");
 
             entity.ToTable("imgFile");
+
+            entity.HasIndex(e => e.ContributionId, "IX_imgFile_contributionId");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.ContributionId).HasColumnName("contributionId");
@@ -158,16 +144,16 @@ public partial class ManageSystem1640Context : DbContext
             entity.ToTable("Magazine");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.CloseYear)
+            entity.Property(e => e.ClosureDay)
                 .HasColumnType("date")
-                .HasColumnName("closeYear");
+                .HasColumnName("closureDay");
             entity.Property(e => e.Description)
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("description");
-            entity.Property(e => e.StartYear)
+            entity.Property(e => e.FinalClosureDay)
                 .HasColumnType("date")
-                .HasColumnName("startYear");
+                .HasColumnName("finalClosureDay");
         });
 
         modelBuilder.Entity<Role>(entity =>
@@ -188,6 +174,10 @@ public partial class ManageSystem1640Context : DbContext
         modelBuilder.Entity<User>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Users__3213E83F56046F46");
+
+            entity.HasIndex(e => e.FacultyId, "IX_Users_facultyId");
+
+            entity.HasIndex(e => e.RoleId, "IX_Users_roleId");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Avatar)

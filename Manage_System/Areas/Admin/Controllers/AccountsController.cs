@@ -16,6 +16,7 @@ using System.Security.Claims;
 namespace Manage_System.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Policy = "Admin")]
     public class AccountsController : Controller
     {
         private readonly ManageSystem1640Context _db;
@@ -29,10 +30,63 @@ namespace Manage_System.Areas.Admin.Controllers
             _notyf = notyf;
         }
 
+
+        [Route("/Admin/Accounts/ValidatePhone")]
+        [HttpPost]
+        public async Task<IActionResult> ValidatePhone(string phone)
+        {
+            try
+            {
+                var account = _db.Users.AsNoTracking().SingleOrDefault(x => x.Phone.ToLower() == phone.ToLower());
+                if (account == null)
+                {
+                    
+                    return Json(true);
+                }
+                else
+                {   
+                    return Json($"Phone: {phone} already exist");
+                }
+                
+            }
+            catch
+            {
+
+                return Json(true);
+            }
+        }
+
+        [Route("/Admin/Accounts/ValidateEmail")]
+        [AcceptVerbs("Get", "Post")]
+        [AllowAnonymous]
+        public IActionResult ValidateEmail(string email)
+        {
+            try
+            {
+                var account = _db.Users.AsNoTracking().SingleOrDefault(x => x.Email.ToLower() == email.ToLower());
+                if (account != null)
+                {
+                    return Json(data: "Email: " + email + " already exist");
+
+                }
+                return Json(data: true);
+            }
+            catch
+            {
+
+                return Json(data: true);
+            }
+        }
+
+
         [Route("/Admin/Accounts")]
         public async Task<IActionResult> Index()
         {
-            var account = await _db.Users.Include(x => x.Role).Include(x => x.Faculty).ToListAsync();
+            var account = await _db.Users
+                .Include(x => x.Role)
+                .Include(x => x.Faculty)
+                .OrderByDescending(x => x.Id)
+                .ToListAsync();
             return View(account);
         }
 
@@ -51,6 +105,7 @@ namespace Manage_System.Areas.Admin.Controllers
         }
 
 
+
         [HttpPost]
         [Route("/Admin/Accounts/Create")]
         public IActionResult Create(AccountModelView model)
@@ -59,7 +114,9 @@ namespace Manage_System.Areas.Admin.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    string img = null;
+
+
+                    string img = "";
                     if (model.avatar != null)
                     {
                         img = _formFile.SaveImage(model.avatar);
@@ -212,15 +269,18 @@ namespace Manage_System.Areas.Admin.Controllers
                 }
                 else
                 {
-                    _db.Users.Remove(acc);
-
-                    if (acc.Avatar != null)
+                    if (acc.Status == false)
                     {
-                        _formFile.Delete(acc.Avatar);
-                    }                   
-
+                        acc.Status = true;
+                        _notyf.Success("Account Disable Success");
+                    }
+                    else
+                    {
+                        acc.Status = false;
+                        _notyf.Success("Account Active Success");
+                    }                 
+                    _db.Update(acc);
                     _db.SaveChanges();
-                    _notyf.Success("Delete Account Success");
                     return RedirectToAction("Index");
                 }
             }

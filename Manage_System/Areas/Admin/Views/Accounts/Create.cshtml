@@ -11,7 +11,7 @@
 
 <div class="card">
     <div class="card-body">
-        <form id="form-validation" asp-controller="Accounts" asp-action="Create" method="post" enctype="multipart/form-data">
+        <form id="form-validation" asp-area="Admin" asp-controller="Accounts" asp-action="Create" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label>Avatar</label>
                 <img class="avatar" src="~/images/NoImage.png" style="height:250px;width:250px; margin-top:10px" id="image" />
@@ -40,7 +40,7 @@
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label control-label">Phone</label>
                 <div class="col-sm-10">
-                    <input type="tel" class="form-control" asp-for="Phone" placeholder="Phone">
+                    <input type="text" class="form-control" asp-for="Phone" placeholder="Phone">
                     <span asp-validation-for="Phone" class="text-danger"></span>
                 </div>
             </div>
@@ -58,14 +58,10 @@
                 <label>Faculty</label>
                 <div>                   
                     <select asp-for="facultyId" class="form-control" asp-items="ViewBag.facultyId">
-                        <option value="">Choose Faculty</option>
                     </select>
                     <span asp-validation-for="facultyId" class="text-danger"></span>
                 </div>
             </div>
-
-
-                
 
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label control-label">Password</label>
@@ -74,6 +70,7 @@
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
             </div>
+
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label control-label">Confirm Password</label>
                 <div class="col-sm-10">

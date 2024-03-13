@@ -2,12 +2,14 @@
 using Manage_System.Areas.Admin.ModelView;
 using Manage_System.models;
 using Manage_System.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Manage_System.Areas.Admin.Controllers
 {
 
     [Area("Admin")]
+    [Authorize(Policy = "Admin")]
     public class RoleController : Controller
     {
 

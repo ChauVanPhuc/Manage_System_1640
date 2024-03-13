@@ -11,8 +11,6 @@ public partial class Contribution
 
     public string? Title { get; set; }
 
-    public string? Content { get; set; }
-
     public DateTime? SubmissionDate { get; set; }
 
     public DateTime? LastModifiedDate { get; set; }
@@ -25,9 +23,9 @@ public partial class Contribution
 
     public string? ShortDescription { get; set; }
 
-    public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
+    public virtual ICollection<Comment> Comments { get; } = new List<Comment>();
 
-    public virtual ICollection<ImgFile> ImgFiles { get; set; } = new List<ImgFile>();
+    public virtual ICollection<ImgFile> ImgFiles { get; } = new List<ImgFile>();
 
     public virtual Magazine? Magazine { get; set; }
 

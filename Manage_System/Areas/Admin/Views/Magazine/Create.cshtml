@@ -8,6 +8,7 @@
 
 <!-- Bootstrap Datepicker CSS -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet">
+<link href="~/student/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css" rel="stylesheet">
 
 
 <div class="header-sub-title">
@@ -31,15 +32,24 @@
             </div>
 
 
-            <div class="form-group">
-                <label>Range Years</label>
-                <div class="input-group input-daterange col-6">
-                    <input type="datetime" asp-for="StartYear" class="form-control" >
-                    <div class="input-group-addon">to</div>
-                    <input type="datetime" asp-for="CloseYear" class="form-control">
+            <div class="row">
+            <div class="form-group col-6">
+                <label>Final Closure Day</label>
+                <div class="input-affix m-b-10 input-daterange">
+                    <i class="prefix-icon anticon anticon-calendar"></i>
+                    <input type="datetime" asp-for="FinalClosureDay" class="form-control datepicker-input" placeholder="Final Closure Day">
                 </div>
             </div>
 
+
+            <div class="form-group col-6">
+                <label>Closure Day</label>
+                <div class="input-affix m-b-10 input-daterange">
+                    <i class="prefix-icon anticon anticon-calendar"></i>
+                    <input type="datetime" asp-for="ClosureDay" class="form-control datepicker-input" placeholder=" Closure Day">
+                </div>
+            </div>
+            </div>
             <button type="submit" class="btn btn-primary m-r-5">Submit</button>
             <a class="btn btn-secondary m-r-5" asp-controller="Magazine" asp-action="Index">Back to List</a>
         </form>

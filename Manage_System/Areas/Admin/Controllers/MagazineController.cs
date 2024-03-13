@@ -2,12 +2,14 @@
 using Manage_System.Areas.Admin.ModelView;
 using Manage_System.models;
 using Manage_System.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Immutable;
 
 namespace Manage_System.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Policy = "Admin")]
     public class MagazineController : Controller
     {
 
@@ -46,8 +48,8 @@ namespace Manage_System.Areas.Admin.Controllers
                     Magazine r = new Magazine
                     {
                         Description = magazine.Description,
-                        StartYear = DateTime.Parse(magazine.StartYear),
-                        CloseYear = DateTime.Parse(magazine.CloseYear)
+                        ClosureDay = DateTime.Parse(magazine.ClosureDay),
+                        FinalClosureDay = DateTime.Parse(magazine.FinalClosureDay)
                     };
 
                     _db.Magazines.Add(r);
@@ -82,8 +84,8 @@ namespace Manage_System.Areas.Admin.Controllers
             {
                 id = id,
                 Description = magazine.Description,
-                CloseYear = magazine.CloseYear.Value.ToString("yyyy-MM-dd"),
-                StartYear = magazine.StartYear.Value.ToString("yyyy-MM-dd")
+                ClosureDay = magazine.ClosureDay.Value.ToString("yyyy-MM-dd"),
+                FinalClosureDay = magazine.FinalClosureDay.Value.ToString("yyyy-MM-dd")
 
             };
 
@@ -102,8 +104,8 @@ namespace Manage_System.Areas.Admin.Controllers
                     {
                         Id = magazine.id,
                         Description = magazine.Description,
-                        CloseYear = DateTime.Parse(magazine.CloseYear) ,
-                        StartYear = DateTime.Parse(magazine.StartYear)
+                        ClosureDay = DateTime.Parse(magazine.ClosureDay) ,
+                        FinalClosureDay = DateTime.Parse(magazine.FinalClosureDay)
                     };
 
                     _db.Magazines.Update(m);

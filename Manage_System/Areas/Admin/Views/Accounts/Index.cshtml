@@ -24,6 +24,7 @@
                         <th>avatar</th>
                         <th>Phone</th>
                         <th>Role</th> 
+                        <th>Status</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -50,13 +51,24 @@
                             <td>@account.Phone</td>
                             <td>@account.Role.Name</td>
                             <td>
+                                <a asp-area="Admin" asp-controller="Accounts" asp-action="Delete" asp-route-id="@account.Id">
+                                @if (@account.Status.ToString() == "False")
+                                {
+                                    <i class="anticon anticon-close btn btn-outline-danger btn-sm"></i>
+                                }
+                                else
+                                {
+
+                                    <i class="anticon anticon-check btn btn-outline-success btn-sm"></i>
+                                }
+                                </a>
+                            </td>
+                            <td>
                                 <div>
                                     <a class="btn btn-outline-success btn-sm edit" asp-action="Edit" asp-route-id="@account.Id" title="Edit">
                                         Edit <i class="fas fa-pencil-alt"></i>
                                     </a>
-                                    <a class="btn btn-outline-danger btn-sm delete" asp-action="Delete" asp-route-id="@account.Id" title="Delete">
-                                        Delete <i class="fas fa-trash-alt danger"></i>
-                                    </a>
+                                    
                                 </div>
                                 
                             </td>
@@ -73,6 +85,7 @@
                         <th>avatar</th>
                         <th>Phone</th>
                         <th>Role</th>
+                        <th>Status</th>
                         <th></th>
                     </tr>
                 </tfoot>
