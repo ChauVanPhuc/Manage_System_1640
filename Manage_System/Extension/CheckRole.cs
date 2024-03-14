@@ -8,19 +8,19 @@ namespace Manage_System.Extension
     public static class CheckRole
     {
 
-        private static readonly ManageSystem1640Context _db;
-
         public static string CheckRoleLogin(User account)
         {
             
 
-            string role = "";
-
             if (account == null)
             {
-                return "False";
+                return "";
             }
-
+            else
+            {
+                return account.Role.Name.ToString();
+            }
+            /*string role = "";
             if (account.Role.Name.Equals("Guest"))
             {
                 return role = "Guest";  
@@ -40,7 +40,7 @@ namespace Manage_System.Extension
             else
             {
                 return role = "Admmin";
-            }
+            }*/
         }
     }
 }

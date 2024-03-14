@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Manage_System.Areas.Coordinator.Controllers
 {
     [Authorize(Policy = "Coordinator")]
+    [Area("Coordinator")]
     public class CommentController : Controller
     {
 

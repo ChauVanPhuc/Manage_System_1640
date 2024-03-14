@@ -168,10 +168,10 @@ namespace Manage_System.Areas.Maketting.Controllers
         [Route("/Maketting/Contributions/DownloadAllFile")]
         public async Task<IActionResult> DownloadAllFile()
         {
-            var urlFiles = _db.ImgFiles
-                .Include(x => x.Contribution)
-                .ThenInclude(x => x.User)
-                .Where(x => x.ContributionId == x.Contribution.Id && x.Contribution.Status == true)
+            var urlFiles = _db.Contributions
+                .Include(x => x.User)
+                .Include(x => x.ImgFiles)
+                .Where(x => x.Status == true)
                 .ToList();
 
             var zipFiles = new List<byte[]>();
@@ -179,9 +179,9 @@ namespace Manage_System.Areas.Maketting.Controllers
             var nameFile = new List<string>();
             foreach (var file in urlFiles)
             {
-                var fileMemoryStream = await DownloadFileAsync((int)file.ContributionId);
+                var fileMemoryStream = await DownloadFileAsync((int)file.Id);
                 zipFiles.Add(fileMemoryStream.ToArray());
-                nameFile.Add((file.Contribution.User.FullName + "_" + file.Contribution.Title).Replace(" ", "_"));
+                nameFile.Add((file.User.FullName + "_" + file.Title).Replace(" ", "_"));
             }
 
             using (var responseStream = new MemoryStream())

@@ -30,7 +30,7 @@ namespace Manage_System.Controllers
             if (contribution == null)
             {
                 _notyf.Error("contribution does not exist");
-                return Redirect("/Coordinator/Contributions/");
+                return Redirect("/Student/Contributions/");
             }
 
 
@@ -56,13 +56,13 @@ namespace Manage_System.Controllers
 
                 }
                 _notyf.Success("Comment Success");
-                return Redirect("/Coordinator/Contributions/Detail/" + model.Id + " ");
+                return Redirect("/Student/Contributions/Detail/" + model.Id + " ");
             }
             catch (Exception)
             {
 
                 _notyf.Success("Comment Fail");
-                return Redirect("/Coordinator/Contributions/Detail/" + model.Id + " ");
+                return Redirect("/Student/Contributions/Detail/" + model.Id + " ");
             }
 
         }
