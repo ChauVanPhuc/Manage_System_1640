@@ -40,11 +40,15 @@
                 </div>
             </div>
             <div class="row">
+                @Model.ShortDescription
+            </div>
+
+            <div class="row">
                 @foreach (var img in Model.ImgFiles)
                 {
                     if (img.Stype == "Img")
                     {
-                        <img alt="" style="height:200px;width:150px" src="~/Uploads/@img.Url">
+                        <img alt="" style="height:200px;width:150px; margin:10px" src="~/Uploads/@img.Url">
 
                     }
                 }

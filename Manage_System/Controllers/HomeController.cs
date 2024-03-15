@@ -26,7 +26,9 @@ namespace Manage_System.Controllers
             var account = HttpContext.Session.GetString("AccountId");
             if (account != null)
             {
-                return View();
+                var role = _db.Users.Include(x => x.Role).AsNoTracking().SingleOrDefault(x => x.Id == int.Parse( account));
+
+                return Redirect("/"+role.Role.Name+"");
             }
             return Redirect("/Login");
 

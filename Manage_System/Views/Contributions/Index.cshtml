@@ -34,9 +34,10 @@
                     <div class="col-md-4">
                         @foreach (var img in item.ImgFiles.Select((value, index) => new { value, index }))
                         {
-                            if (img.index == 0)
+                            if (img.value.Stype == "Img")
                             {
                                 <img class="img-fluid" src="~/Uploads/@img.value.Url" alt="">
+                                break;
                             }
                         }
                         
@@ -72,7 +73,7 @@
     }
 
 </div>
-<div class="m-t-30">
+@* <div class="m-t-30">
     <nav>
         <ul class="pagination justify-content-center">
             <li class="page-item"><a class="page-link" href="#">Previous</a></li>
@@ -82,7 +83,7 @@
             <li class="page-item"><a class="page-link" href="#">Next</a></li>
         </ul>
     </nav>
-</div>
+</div> *@
 
     </div>
 </div>

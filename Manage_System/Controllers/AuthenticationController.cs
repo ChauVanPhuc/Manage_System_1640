@@ -65,7 +65,7 @@ namespace Manage_System.Controllers
                     if (account.Password != password)
                     {
                         _notyf.Error("Invalid information");
-                        return View(model);
+                        return Redirect("/Login");
                     }
 
                     ////check account disable ?

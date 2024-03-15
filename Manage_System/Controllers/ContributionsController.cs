@@ -202,7 +202,6 @@ namespace Manage_System.Controllers
                     
                 }
                 ViewData["MagazineId"] = new SelectList(_db.Magazines, "Id", "Description").ToList();
-                _notyf.Error("Add Contributions Faill");
                 return View(model);
             }
             catch (Exception)

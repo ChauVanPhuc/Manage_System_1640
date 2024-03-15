@@ -70,16 +70,22 @@
                     <div class="card-header">
                         File Upload
                     </div>
+                    <span asp-validation-for="ImgFile" class="text-danger"></span>
                     <div class="card-body">
                         <input type="file" asp-for="ImgFile" id="file-upload" multiple hidden />
                         <div id="drop-area" class="drop-area border border-primary rounded p-3 mb-2">
                             <p class="mb-0">Drop files here or <span class="browse btn btn-primary btn-sm">Browse</span></p>
+                            
                         </div>
+                        
                         <div id="file-list" class="mt-3">
                             <!-- File entries will be listed here -->
                         </div>
                     </div>
+
+                    
                 </div>
+                 
             </div>
 
             <button type="submit" class="btn btn-primary m-r-5">Submit</button>
@@ -91,19 +97,6 @@
 
 @section Scripts {
 
-
-    <script>
-        function chooseFile(fileInput) {
-            if (fileInput.files && fileInput.files[0]) {
-                var render = new FileReader();
-
-                render.onload = function (e) {
-                    $('#image').attr('src', e.target.result);
-                }
-                render.readAsDataURL(fileInput.files[0]);
-            }
-        }
-    </script>
     <script>
         ClassicEditor
             .create(document.querySelector('#editor'), {

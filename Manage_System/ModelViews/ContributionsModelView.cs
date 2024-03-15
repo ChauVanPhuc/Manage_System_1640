@@ -10,12 +10,12 @@ namespace Manage_System.ModelViews
 
         public int? UserId { get; set; }
 
-        [MaxLength(50)]
+        [MaxLength(150)]
         [Required(ErrorMessage = "Please, Enter Title")]
         [Display(Name = " Title")]
         public string? Title { get; set; }
 
-        [MaxLength(50)]
+        [MaxLength(500)]
         [Required(ErrorMessage = "Please, Enter ShortDescription")]
         [Display(Name = " Short Description")]
         public string? ShortDescription { get; set; }
@@ -35,6 +35,8 @@ namespace Manage_System.ModelViews
         public virtual IEnumerable<ImgFile>? ImgFiles { get; set; }
 
 
+        [DataType(DataType.Upload)]
+        [Required(ErrorMessage = "Please, Choose File")] 
         [NotMapped]
         public IFormFileCollection? ImgFile { get; set; }
 

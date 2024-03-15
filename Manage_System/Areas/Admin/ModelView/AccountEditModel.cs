@@ -3,9 +3,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Manage_System.Areas.Admin.ModelView
 {
-    public class AccountModelView
+    public class AccountEditModel
     {
-        public int id {  get; set; }
+
+        public int id { get; set; }
 
         [MaxLength(50)]
         [Required(ErrorMessage = "Please, Enter Full Name")]
@@ -15,7 +16,6 @@ namespace Manage_System.Areas.Admin.ModelView
         [MaxLength(50)]
         [EmailAddress]
         [Required(ErrorMessage = "Please, Enter Email")]
-        [Remote(action: "ValidateEmail", controller: "Accounts", areaName:"Admin")]
         [Display(Name = "Email")]
         public string Email { get; set; }
 
@@ -35,18 +35,17 @@ namespace Manage_System.Areas.Admin.ModelView
         [Phone]
         [DataType(DataType.PhoneNumber)]
         [Required(ErrorMessage = "Please, Enter Phone")]
-        [Remote(action: "ValidatePhone", controller: "Accounts", areaName: "Admin", HttpMethod = "POST")]
         [MaxLength(10)]
         [MinLength(10)]
         [Display(Name = "Phone")]
         public string? Phone { get; set; }
 
         [Display(Name = "Birthday")]
-       
+
         public int? roleId { get; set; }
         public int? facultyId { get; set; }
 
-        public IFormFile? avatar {  get; set; }
+        public IFormFile? avatar { get; set; }
         public string? img { get; set; }
         public DateTime? createDay { get; set; }
         public bool? status { get; set; }

@@ -179,7 +179,7 @@ namespace Manage_System.Areas.Admin.Controllers
                     return RedirectToAction("Index");
                 }
 
-                AccountModelView model = new AccountModelView
+                AccountEditModel model = new AccountEditModel
                 {
                     id = id,
                     Email = account.Email,
@@ -208,7 +208,7 @@ namespace Manage_System.Areas.Admin.Controllers
 
         [HttpPost]
         [Route("/Admin/Accounts/Edit/{id:}")]
-        public IActionResult Edit(AccountModelView model, string img)
+        public IActionResult Edit(AccountEditModel model, string img)
         {
             try
             {
