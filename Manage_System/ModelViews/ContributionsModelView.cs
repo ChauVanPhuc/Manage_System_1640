@@ -36,7 +36,7 @@ namespace Manage_System.ModelViews
 
 
         [DataType(DataType.Upload)]
-        [Required(ErrorMessage = "Please, Choose File")] 
+        [Required(ErrorMessage = "Please, Choose File")]
         [NotMapped]
         public IFormFileCollection? ImgFile { get; set; }
 

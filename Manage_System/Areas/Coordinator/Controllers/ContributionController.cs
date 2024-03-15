@@ -16,18 +16,22 @@ namespace Manage_System.Areas.Coordinator.Controllers
         private readonly ManageSystem1640Context _db;
         private readonly IFileService _formFile;
         private readonly INotyfService _notyf;
+        private readonly IEmailService _email;
 
-        public ContributionController(ManageSystem1640Context db, IFileService formFile, INotyfService notyf)
+        public ContributionController(ManageSystem1640Context db, IFileService formFile, INotyfService notyf, IEmailService email)
         {
             _db = db;
             _formFile = formFile;
             _notyf = notyf;
+            _email = email;
         }
 
         [Route("Coordinator/Contributions")]
         public async Task<IActionResult> Index()
         {
             var account = HttpContext.Session.GetString("AccountId");
+            var user = _db.Users.AsNoTracking().SingleOrDefault(x => x.Id == int.Parse(account));
+            var facultyId = _db.Faculties.AsNoTracking().SingleOrDefault(x => x.Id == user.FacultyId);
 
             var contributions = await _db.Contributions
                 .Include(x => x.ImgFiles)
@@ -35,7 +39,7 @@ namespace Manage_System.Areas.Coordinator.Controllers
                 .Include(x => x.Magazine)
                 .Include(x => x.User)
                 .ThenInclude(x => x.Faculty)
-                .Where(x => x.User.FacultyId == x.User.Faculty.Id)
+                .Where(x => x.User.FacultyId == x.User.Faculty.Id && x.User.Faculty.Id == facultyId.Id)
                 .OrderByDescending(x => x.Id)
                 .ToListAsync();
 
@@ -65,9 +69,10 @@ namespace Manage_System.Areas.Coordinator.Controllers
                     .Include(x => x.Magazine)
                     .Include(x => x.Comments)
                     .Include(x => x.User)
+                    .OrderByDescending(x => x.Id)
                     .FirstOrDefault(b => b.Id == id);
 
-                List<Comment> comments = _db.Comments.Include(x => x.User).Where(x => x.ContributionId == id).ToList();
+                List<Comment> comments = _db.Comments.Include(x => x.User).Where(x => x.ContributionId == id).OrderByDescending(x => x.Id).ToList();
 
                 var account = HttpContext.Session.GetString("AccountId");
                 var user = _db.Users.AsNoTracking().SingleOrDefault(x => x.Id == int.Parse(account));
@@ -116,6 +121,14 @@ namespace Manage_System.Areas.Coordinator.Controllers
                     if (contri.Status == false)
                     {
                         contri.Status = true;
+
+                        var contributions = _db.Contributions.AsNoTracking().SingleOrDefault(x => x.Id == id);
+                        var account = HttpContext.Session.GetString("AccountId");
+                        var user = _db.Users.AsNoTracking().SingleOrDefault(x => x.Id == int.Parse(account));
+                        var student = _db.Users.AsNoTracking().SingleOrDefault(x => x.Id == contributions.UserId);
+
+                        _email.SendEmailAsync(student.Email, "Contribution has been approved", " Your post "+ contributions.Title+ " has been approved");
+
                     }
                     else
                     {

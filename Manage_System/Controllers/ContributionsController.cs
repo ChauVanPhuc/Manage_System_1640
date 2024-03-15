@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Xml.Linq;
 
 namespace Manage_System.Controllers
@@ -119,6 +120,27 @@ namespace Manage_System.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    if (model.ImgFile != null)
+                    {
+                        foreach (var file in model.ImgFile)
+                        {
+                            var ext = Path.GetExtension(file.FileName);
+                            var allowedExtensions = new string[] { ".jpg", ".png", ".jpeg" };
+                            var allowedFile = new string[] { ".doc", ".docx" };
+                            if (!allowedExtensions.Contains(ext))
+                            {
+
+                                _notyf.Error("Only accepts Images or files '.jpg' '.png' and '.jpeg' ");
+                                return View(model);
+                            }
+                            if (!allowedFile.Contains(ext))
+                            {
+                                _notyf.Error("Only accepts Images or files 'doc' and '.docx' ");
+                                return View(model);
+                            }
+                        }
+                    }
+
 
                     var account = HttpContext.Session.GetString("AccountId");
                     Contribution contribution = new Contribution
