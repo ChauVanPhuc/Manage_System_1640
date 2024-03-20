@@ -30,5 +30,75 @@
     <Folder Include="wwwroot\Uploads\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\Student\assets\assets\fonts\anticon.svg" />
+    <None Include="wwwroot\Student\assets\assets\fonts\fa-brands-400.svg" />
+    <None Include="wwwroot\Student\assets\assets\fonts\fa-brands-400.woff2" />
+    <None Include="wwwroot\Student\assets\assets\fonts\fa-regular-400.svg" />
+    <None Include="wwwroot\Student\assets\assets\fonts\fa-regular-400.woff2" />
+    <None Include="wwwroot\Student\assets\assets\fonts\fa-solid-900.57.delayed" />
+    <None Include="wwwroot\Student\assets\assets\fonts\fa-solid-900.svg" />
+    <None Include="wwwroot\Student\assets\assets\js\app.min.js" />
+    <None Include="wwwroot\Student\assets\assets\js\pages\chartist.js" />
+    <None Include="wwwroot\Student\assets\assets\js\pages\chartjs.js" />
+    <None Include="wwwroot\Student\assets\assets\js\pages\chat.js" />
+    <None Include="wwwroot\Student\assets\assets\js\pages\dashboard-crm.js" />
+    <None Include="wwwroot\Student\assets\assets\js\pages\dashboard-default.js" />
+    <None Include="wwwroot\Student\assets\assets\js\pages\dashboard-e-commerce.js" />
+    <None Include="wwwroot\Student\assets\assets\js\pages\dashboard-project.js" />
+    <None Include="wwwroot\Student\assets\assets\js\pages\datatables.js" />
+    <None Include="wwwroot\Student\assets\assets\js\pages\e-commerce-order-list.js" />
+    <None Include="wwwroot\Student\assets\assets\js\pages\e-commerce-product-edit.js" />
+    <None Include="wwwroot\Student\assets\assets\js\pages\file-manager.js" />
+    <None Include="wwwroot\Student\assets\assets\js\pages\form-elements.js" />
+    <None Include="wwwroot\Student\assets\assets\js\pages\form-validation.js" />
+    <None Include="wwwroot\Student\assets\assets\js\pages\icon.js" />
+    <None Include="wwwroot\Student\assets\assets\js\pages\mail.js" />
+    <None Include="wwwroot\Student\assets\assets\js\pages\pricing.js" />
+    <None Include="wwwroot\Student\assets\assets\js\pages\profile.js" />
+    <None Include="wwwroot\Student\assets\assets\js\pages\project-list.js" />
+    <None Include="wwwroot\Student\assets\assets\js\pages\slider.js" />
+    <None Include="wwwroot\Student\assets\assets\js\vendors.min.js" />
+    <None Include="wwwroot\Student\assets\assets\vendors\bootstrap-datepicker\bootstrap-datepicker.min.js" />
+    <None Include="wwwroot\Student\assets\assets\vendors\chartist\chartist.min.js" />
+    <None Include="wwwroot\Student\assets\assets\vendors\chartjs\Chart.min.js" />
+    <None Include="wwwroot\Student\assets\assets\vendors\datatables\dataTables.bootstrap.min.js" />
+    <None Include="wwwroot\Student\assets\assets\vendors\datatables\jquery.dataTables.min.js" />
+    <None Include="wwwroot\Student\assets\assets\vendors\jquery-validation\jquery.validate.min.js" />
+    <None Include="wwwroot\Student\assets\assets\vendors\nouislider\nouislider.min.js" />
+    <None Include="wwwroot\Student\assets\assets\vendors\quill\quill.min.js" />
+    <None Include="wwwroot\Student\assets\assets\vendors\select2\select2.min.js" />
+    <None Include="wwwroot\Student\assets\js\app.min.js" />
+    <None Include="wwwroot\Student\assets\js\pages\chartist.js" />
+    <None Include="wwwroot\Student\assets\js\pages\chartjs.js" />
+    <None Include="wwwroot\Student\assets\js\pages\chat.js" />
+    <None Include="wwwroot\Student\assets\js\pages\dashboard-crm.js" />
+    <None Include="wwwroot\Student\assets\js\pages\dashboard-default.js" />
+    <None Include="wwwroot\Student\assets\js\pages\dashboard-e-commerce.js" />
+    <None Include="wwwroot\Student\assets\js\pages\dashboard-project.js" />
+    <None Include="wwwroot\Student\assets\js\pages\datatables.js" />
+    <None Include="wwwroot\Student\assets\js\pages\e-commerce-order-list.js" />
+    <None Include="wwwroot\Student\assets\js\pages\e-commerce-product-edit.js" />
+    <None Include="wwwroot\Student\assets\js\pages\file-manager.js" />
+    <None Include="wwwroot\Student\assets\js\pages\form-elements.js" />
+    <None Include="wwwroot\Student\assets\js\pages\form-validation.js" />
+    <None Include="wwwroot\Student\assets\js\pages\icon.js" />
+    <None Include="wwwroot\Student\assets\js\pages\mail.js" />
+    <None Include="wwwroot\Student\assets\js\pages\pricing.js" />
+    <None Include="wwwroot\Student\assets\js\pages\profile.js" />
+    <None Include="wwwroot\Student\assets\js\pages\project-list.js" />
+    <None Include="wwwroot\Student\assets\js\pages\slider.js" />
+    <None Include="wwwroot\Student\assets\js\vendors.min.js" />
+    <None Include="wwwroot\Student\assets\vendors\bootstrap-datepicker\bootstrap-datepicker.min.js" />
+    <None Include="wwwroot\Student\assets\vendors\chartist\chartist.min.js" />
+    <None Include="wwwroot\Student\assets\vendors\chartjs\Chart.min.js" />
+    <None Include="wwwroot\Student\assets\vendors\datatables\dataTables.bootstrap.min.js" />
+    <None Include="wwwroot\Student\assets\vendors\datatables\jquery.dataTables.min.js" />
+    <None Include="wwwroot\Student\assets\vendors\jquery-validation\jquery.validate.min.js" />
+    <None Include="wwwroot\Student\assets\vendors\nouislider\nouislider.min.js" />
+    <None Include="wwwroot\Student\assets\vendors\quill\quill.min.js" />
+    <None Include="wwwroot\Student\assets\vendors\select2\select2.min.js" />
+  </ItemGroup>
+
 
 </Project>
