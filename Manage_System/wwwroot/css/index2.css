@@ -169,13 +169,7 @@ body {
         font-weight: 600;
     }
 
-.chat-wrapper {
-    display: none;
-}
 
-    .chat-wrapper.shown {
-        display: block;
-    }
 .chat {
     height: calc(100vh - 50px);
     overflow-y: scroll;

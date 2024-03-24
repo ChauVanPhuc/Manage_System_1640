@@ -4,3 +4,41 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 <H5>Admin</H5>
+    
+<canvas class="chart chartjs-render-monitor" id="donut-chart"></canvas>
+        
+
+@section Scripts{
+    <script src="~/student/assets/vendors/chartjs/Chart.min.js"></script>
+
+    <script>
+        
+
+        chart() {
+            //Donut Chart
+            const donutChart = document.getElementById("donut-chart");
+            const donutCtx = donutChart.getContext('2d');
+            donutChart.height = 292;
+            const donutData = {
+                labels: ["Download Sales", "In-Store Sales", "Mail-Order Sales"],
+                datasets: [
+                    {
+                        fill: true,
+                        backgroundColor: [themeColors.blue, themeColors.gold, themeColors.cyan],
+                        pointBackgroundColor: [themeColors.blue, themeColors.gold, themeColors.cyan],
+                        data: [350, 450, 100]
+                    }
+                ]
+            };
+            const donutConfig = new Chart(donutCtx, {
+                type: 'doughnut',
+                data: donutData,
+                options: {
+                    maintainAspectRatio: false,
+                    hover: { mode: null },
+                    cutoutPercentage: 45
+                }
+            });
+        }
+    </script>
+}

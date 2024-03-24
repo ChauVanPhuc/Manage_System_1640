@@ -6,33 +6,16 @@
 }
 
 
-<link href="~/css/index.css" rel="stylesheet" />
+<link href="~/css/index2.css" rel="stylesheet" />
 
 <link rel="stylesheet" href="~/css/normalize.css" />
 
 
 <div class="wrapper">
-    @* <div class="left">
-
-        <ul class="people">
-           
-            @foreach (var c in Model)
-            {
-                <li class="person" onclick="loadChat('@c.revId')">
-                    <img src="~/images/avatar.png" alt="" />
-                    <span class="name">@c.RecipientName</span>
-                    <span class="time">@c.LastMessage?.SentAt</span>
-                    <span class="preview">@c.LastMessage?.Content</span>
-                </li>
-            }
-            
-        </ul>
-    </div> *@
-
+   
     <div class="right" onclick="scrollToBottom()">
-        @* <div id="select-chat-div">
-            <p>Select a recepient...</p>
-        </div> *@
+       
+
         @foreach (var c in Model)
         {
             <div class="chat-wrapper shown" data-recipient="@c.revId">
@@ -50,15 +33,16 @@
                             if (c.MyMessages.Contains(m))
                             {
                                 <div class="bubble me">
+                                    
                                     <span class="message-text">@m.Content</span>
-                                    <span class="message-time">@m.SentAt</span>
+                                    <span class="message-time">@m.SentAt.Value.ToShortDateString()</span>
                                 </div>
                             }
                             else
                             {
                                 <div class="bubble other">
                                     <span class="message-text">@m.Content</span>
-                                    <span class="message-time">@m.SentAt</span>
+                                    <span class="message-time">@m.SentAt.Value.ToShortDateString()</span>
                                 </div>
                             }
                         }
@@ -78,9 +62,12 @@
                 </div>
             </div>
         }
+
+
     </div>
 </div>
 @section Scripts{
+
     <script src="~/js/index.js"></script>
     <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
     <script src="~/js/chat.js"></script>

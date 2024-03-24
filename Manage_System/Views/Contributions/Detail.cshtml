@@ -81,27 +81,7 @@
             </div>
             <hr>
 
-            <!-- Button trigger modal -->
-            <button data-toggle="modal" data-target="#side-modal-right" class="btn btn-primary">Send Mess</button>
-
-            <!-- Modal -->
-            <div class="modal modal-right fade " id="side-modal-right">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="side-modal-wrapper">
-                            <div class="vertical-align">
-                                <div class="">
-                                    <div class="modal-body">
-
-
-                                        <partial name="_SendMessPartial" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <a asp-controller="Home" asp-action="Chat" asp-route-id="@Model.coordinatorId" class="btn btn-primary m-r-5">Chat</a>
 
 
         </div>

@@ -1,0 +1,43 @@
+﻿@model List<Manage_System.ModelViews.ChatViewModel>
+
+<link href="~/css/index2.css" rel="stylesheet" />
+
+<link rel="stylesheet" href="~/css/normalize.css" />
+<link href="~/student/assets/assets/css/app.min.css" rel="stylesheet" />
+<div class="main-content">
+    <div class="row">
+        <div class="col-lg-11 mx-auto">
+            <!-- Card View -->
+            <div class="row" id="card-view">
+            @foreach (var user in Model)
+            {
+                <div class="col-md-3">
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="m-t-20 text-center">
+                                <div class="avatar avatar-image" style="height: 100px; width: 100px;">
+                                    <img src="~/images/avatar.png" alt="">
+                                </div>
+                                <h4 class="m-t-30">@user.RecipientName</h4>
+                                @* <p>erin.gon@gmail.com</p> *@
+                            </div>
+                            
+                            <div class="text-center m-t-30">
+                                <a asp-controller="Home" asp-action="Chat" asp-route-id="@user.revId" class="btn btn-primary btn-tone">
+                                    <i class="anticon anticon-mail"></i>
+                                    <span class="m-l-5">Contact</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+
+<script src="~/student/assets/js/pages/profile.js"></script>
+}

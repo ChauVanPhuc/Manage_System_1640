@@ -40,7 +40,7 @@ namespace Manage_System.Controllers
                 await db.AddAsync(message);
                 await db.SaveChangesAsync();
 
-                string connectionId = ChatHub.UsernameConnectionId[recipient.Id.ToString()];
+                string connectionId = ChatHub.UsernameConnectionId[to];
 
                 await _hubContext.Clients.Clients(connectionId).SendAsync("RecieveMessage", message.Content, message.SentAt);
 
