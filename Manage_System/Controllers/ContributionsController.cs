@@ -153,9 +153,6 @@ namespace Manage_System.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    
-
-
                     var account = HttpContext.Session.GetString("AccountId");
                     Contribution contribution = new Contribution
                     {
@@ -237,12 +234,16 @@ namespace Manage_System.Controllers
                         return RedirectToAction("Index");
                     
                 }
-                ViewData["MagazineId"] = new SelectList(_db.Magazines, "Id", "Description").ToList();
+                var currentYear = DateTime.Now.Year;
+                ViewData["MagazineId"] = new SelectList(_db.Magazines.Where(m => m.ClosureDay.Value.Year == currentYear), "Id", "Description").ToList();
+                _notyf.Error("Add Contributions Faill");
                 return View(model);
             }
             catch (Exception)
             {
-                ViewData["MagazineId"] = new SelectList(_db.Magazines, "Id", "Description").ToList();
+                var currentYear = DateTime.Now.Year;
+                ViewData["MagazineId"] = new SelectList(_db.Magazines.Where(m => m.ClosureDay.Value.Year == currentYear), "Id", "Description").ToList();
+
                 _notyf.Error("Add Contributions Faill");
                 return View(model);
             }

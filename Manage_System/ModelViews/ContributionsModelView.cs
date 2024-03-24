@@ -45,6 +45,6 @@ namespace Manage_System.ModelViews
         public virtual User? Coordinator { get; set; }
 
 
-        public virtual List<ChatViewModel> chatViewModels { get; set; }
+        public virtual List<ChatViewModel>? chatViewModels { get; set; }
     }
 }
