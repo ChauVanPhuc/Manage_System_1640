@@ -1,0 +1,105 @@
+﻿
+
+
+
+<form asp-controller="Chat" asp-action="SendMessage" asp-route-id="@Model.Id" method="post">
+
+<div class="chat chat-app row" style="margin-top:70px">
+    <div class="chat-content open" style="width:100%">
+        <div class="conversation" style="height: 110%;">
+            <div class="conversation-wrapper">
+                <div class="conversation-header justify-content-between">
+                    <div class="media align-items-center">
+
+                        <div class="avatar avatar-image">
+                            @if(Model.User.Avatar == null){
+                                <img src="~/images/NoImage.png" alt="">
+                            }else{
+                                <img src="~/uploads/@Model.User.Avatar" alt="">
+                            }
+                           
+                        </div>
+                        <div class="p-l-15">
+                            <h6 class="m-b-0">@Model.User.FullName</h6>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="conversation-body">
+                    @* <div class="msg justify-content-center">
+                        <div class="font-weight-semibold font-size-12"> 7:57PM </div>
+                    </div> *@
+                    @* <div class="msg msg-recipient">
+                        <div class="m-r-10">
+                            <div class="avatar avatar-image">
+                                <img src="assets/images/avatars/thumb-1.jpg" alt="">
+                            </div>
+                        </div>
+                        <div class="bubble">
+                            <div class="bubble-wrapper">
+                                <span>Hey, let me show you something nice!</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="msg msg-sent">
+                        <div class="bubble">
+                            <div class="bubble-wrapper">
+                                <span>Oh! What is it?</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="msg msg-recipient">
+                        <div class="m-r-10">
+                            <div class="avatar avatar-image">
+                                <img src="assets/images/avatars/thumb-1.jpg" alt="">
+                            </div>
+                        </div>
+                        <div class="bubble">
+                            <div class="bubble-wrapper p-5">
+                                <img src="../../../s3.envato.com/files/249796117/preview.__large_preview.png" alt="https://s3.envato.com/files/249796117/preview.__large_preview.png">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="msg msg-recipient">
+                        <div class="bubble m-l-50">
+                            <div class="bubble-wrapper">
+                                <span>Applicator - Bootstrap 4 Admin Template</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="msg msg-recipient">
+                        <div class="bubble m-l-50">
+                            <div class="bubble-wrapper">
+                                <span>A creative, responsive and highly customizable admin template</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="msg msg-sent">
+                        <div class="bubble">
+                            <div class="bubble-wrapper">
+                                <span>Wow, that was cool!</span>
+                            </div>
+                        </div>
+                    </div> *@
+                </div>
+
+                <div class="conversation-footer">
+                    <input class="chat-input"  type="text" placeholder="Type a message...">
+                    <ul class="list-inline d-flex align-items-center m-b-0">
+
+                       
+                            <button class="d-none d-md-block btn btn-primary">
+                                <span class="m-r-10">Send</span>
+                                <i class="far fa-paper-plane"></i>
+                            </button>
+                            
+                       
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</form>

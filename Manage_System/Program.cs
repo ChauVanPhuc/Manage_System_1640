@@ -1,4 +1,5 @@
 using AspNetCoreHero.ToastNotification;
+using Manage_System.Hubs;
 using Manage_System.models;
 using Manage_System.Models;
 using Manage_System.Service;
@@ -46,13 +47,16 @@ builder.Services.AddAuthorization(p =>
         policy => policy.RequireClaim("Student", "Student"));
 });
 
+
+builder.Services.AddSignalR();
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 builder.Services.AddNotyf(config => { config.DurationInSeconds = 5; config.IsDismissable = true; config.Position = NotyfPosition.TopRight; });
 
 
+
 builder.Services.AddTransient<IFileService, FileService>();
 builder.Services.AddTransient<IEmailService, EmailService>();
-
+builder.Services.AddTransient<IChatService, ChatService>();
 
 var app = builder.Build();
 
@@ -85,5 +89,9 @@ app.UseEndpoints(endpoints =>
       pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
     );
 });
+
+app.MapHub<ChatHub>("/chatHub");
+
+
 
 app.Run();

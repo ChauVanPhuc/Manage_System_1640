@@ -51,14 +51,14 @@ namespace Manage_System.Controllers
         [Route("Student/Contributions/Create")]
         public IActionResult Create()
         {
-
-            ViewData["MagazineId"] = new SelectList(_db.Magazines, "Id", "Description").ToList();
+            var currentYear = DateTime.Now.Year;
+            ViewData["MagazineId"] = new SelectList(_db.Magazines.Where(m =>m.ClosureDay.Value.Year == currentYear), "Id", "Description").ToList();
             return View();
         }
 
 
         [Route("Student/Contributions/Detail/{id:}")]
-        public IActionResult Detail(int id)
+        public async Task<IActionResult> Detail(int id)
         {
 
             if (id == null || _db.Contributions == null)
@@ -82,7 +82,39 @@ namespace Manage_System.Controllers
                     .ToList();
 
                 var account = HttpContext.Session.GetString("AccountId");
-                var user = _db.Users.AsNoTracking().SingleOrDefault(x => x.Id == int.Parse(account));
+                var user = _db.Users.Find( int.Parse(account));
+
+                var allMessages = await _db.Messages.Where(x =>
+                    x.Sender == user.Id ||
+                    x.Receiver == user.Id)
+                    .ToListAsync();
+
+                var chats = new List<ChatViewModel>();
+
+                var rev = _db.Users.Where(x => x.Id == 5 || x.Id == 6).ToList();
+                foreach (var i in rev)
+                {
+                    if (i != user)
+                    {
+
+                        var chat = new ChatViewModel()
+                        {
+                            MyMessages = allMessages.Where(x => x.Sender == user.Id && x.Receiver == i.Id).ToList(),
+                            OtherMessages = allMessages.Where(x => x.Sender == i.Id && x.Receiver == user.Id).ToList(),
+                            RecipientName = i.FullName,
+                            revId = i.Id,
+                        };
+
+                        var chatMessages = new List<Message>();
+                        chatMessages.AddRange(chat.MyMessages);
+                        chatMessages.AddRange(chat.OtherMessages);
+
+                        chat.LastMessage = chatMessages.OrderByDescending(x => x.SentAt).FirstOrDefault();
+
+                        chats.Add(chat);
+                    }
+                }
+
 
 
 
@@ -101,7 +133,8 @@ namespace Manage_System.Controllers
                         Magazine = contributions.Magazine,
                         ShortDescription = contributions.ShortDescription,
                         ImgFiles = contributions.ImgFiles,
-                        Comments = comments
+                        Comments = comments,
+                        chatViewModels = chats
                     };
                     return View(model);
                 }
@@ -257,72 +290,64 @@ namespace Manage_System.Controllers
         [Route("/Student/Contributions/Edit/{id:}")]
         public IActionResult Edit(ContributionsModelView model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                try
+                var contributions = _db.Contributions
+                .Include(x => x.ImgFiles)
+                .Include(x => x.Magazine)
+                .Include(x => x.Comments)
+                .Include(x => x.User)
+                .FirstOrDefault(b => b.Id == model.Id);
+
+                contributions.Title = model.Title;
+                contributions.LastModifiedDate = DateTime.Now;
+                contributions.ShortDescription = model.ShortDescription;
+
+
+                string img = null;
+                if (model.ImgFile != null)
                 {
-                    var contributions = _db.Contributions
-                    .Include(x => x.ImgFiles)
-                    .Include(x => x.Magazine)
-                    .Include(x => x.Comments)
-                    .Include(x => x.User)
-                    .FirstOrDefault(b => b.Id == model.Id);
-
-                    contributions.Title = model.Title;  
-                    contributions.LastModifiedDate = DateTime.Now;
-                    contributions.ShortDescription = model.ShortDescription;
-
-                    
-                    string img = null;
-                    if (model.ImgFile != null)
+                    foreach (var file in model.ImgFile)
                     {
-                        foreach (var file in model.ImgFile)
+                        var ext = Path.GetExtension(file.FileName);
+                        var allowedExtensions = new string[] { ".jpg", ".png", ".jpeg" };
+                        var allowedFile = new string[] { ".doc", ".docx" };
+                        if (allowedExtensions.Contains(ext))
                         {
-                            var ext = Path.GetExtension(file.FileName);
-                            var allowedExtensions = new string[] { ".jpg", ".png", ".jpeg" };
-                            var allowedFile = new string[] { ".doc", ".docx" };
-                            if (allowedExtensions.Contains(ext))
+                            var imgFile = new ImgFile
                             {
-                                var imgFile = new ImgFile
-                                {
-                                    Stype = "Img",
-                                    Url = _formFile.SaveImage(file),
-                                    ContributionId = model.Id
-                                };
-                                _db.ImgFiles.Add(imgFile);
+                                Stype = "Img",
+                                Url = _formFile.SaveImage(file),
+                                ContributionId = model.Id
+                            };
+                            _db.ImgFiles.Add(imgFile);
 
-                            }
-                            else if (allowedFile.Contains(ext))
+                        }
+                        else if (allowedFile.Contains(ext))
+                        {
+                            var docfile = new ImgFile
                             {
-                                var docfile = new ImgFile
-                                {
-                                    Stype = "File",
-                                    Url = _formFile.SaveImage(file),
-                                    ContributionId = model.Id
-                                };
-                                _db.ImgFiles.Add(docfile);
+                                Stype = "File",
+                                Url = _formFile.SaveImage(file),
+                                ContributionId = model.Id
+                            };
+                            _db.ImgFiles.Add(docfile);
 
-                            }
-                            else
-                            {
-                                _notyf.Error("Only accepts Images or files 'doc' and '.docx' ");
-                            }
+                        }
+                        else
+                        {
+                            _notyf.Error("Only accepts Images or files 'doc' and '.docx' ");
                         }
                     }
-
-                    _db.Contributions.Update(contributions);
-                    _db.SaveChanges();
-
-                    _notyf.Success("Update Contributions Success");
-                    return RedirectToAction("Index");
                 }
-                catch
-                {
-                    _notyf.Success("Update Contributions Fail");
-                    return View(model);
-                }
+
+                _db.Contributions.Update(contributions);
+                _db.SaveChanges();
+
+                _notyf.Success("Update Contributions Success");
+                return RedirectToAction("Index");
             }
-            else
+            catch
             {
                 _notyf.Success("Update Contributions Fail");
                 return View(model);

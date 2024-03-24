@@ -39,9 +39,12 @@ namespace Manage_System.ModelViews
         [Required(ErrorMessage = "Please, Choose File")]
         [NotMapped]
         public IFormFileCollection? ImgFile { get; set; }
-
+        public string? Mess { get; set; }
         public virtual Magazine? Magazine { get; set; }
         public virtual User? User { get; set; }
         public virtual User? Coordinator { get; set; }
+
+
+        public virtual List<ChatViewModel> chatViewModels { get; set; }
     }
 }

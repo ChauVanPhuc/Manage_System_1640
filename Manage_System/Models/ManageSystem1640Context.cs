@@ -23,13 +23,16 @@ public partial class ManageSystem1640Context : DbContext
 
     public virtual DbSet<ImgFile> ImgFiles { get; set; }
 
+    public virtual DbSet<LastLogin> LastLogins { get; set; }
+
     public virtual DbSet<Magazine> Magazines { get; set; }
+
+    public virtual DbSet<Message> Messages { get; set; }
 
     public virtual DbSet<Role> Roles { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
 
-  
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Comment>(entity =>
@@ -134,6 +137,21 @@ public partial class ManageSystem1640Context : DbContext
                 .HasConstraintName("FK__imgFile__contrib__59FA5E80");
         });
 
+        modelBuilder.Entity<LastLogin>(entity =>
+        {
+            entity.ToTable("LastLogin");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.History)
+                .HasColumnType("datetime")
+                .HasColumnName("history");
+            entity.Property(e => e.UserId).HasColumnName("userId");
+
+            entity.HasOne(d => d.User).WithMany(p => p.LastLogins)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("FK_LastLogin_Users");
+        });
+
         modelBuilder.Entity<Magazine>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Magazine__3213E83FD5FB45EE");
@@ -151,6 +169,27 @@ public partial class ManageSystem1640Context : DbContext
             entity.Property(e => e.FinalClosureDay)
                 .HasColumnType("date")
                 .HasColumnName("finalClosureDay");
+        });
+
+        modelBuilder.Entity<Message>(entity =>
+        {
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Content)
+                .HasColumnType("text")
+                .HasColumnName("content");
+            entity.Property(e => e.Receiver).HasColumnName("receiver");
+            entity.Property(e => e.Sender).HasColumnName("sender");
+            entity.Property(e => e.SentAt)
+                .HasColumnType("datetime")
+                .HasColumnName("sentAt");
+
+            entity.HasOne(d => d.ReceiverNavigation).WithMany(p => p.MessageReceiverNavigations)
+                .HasForeignKey(d => d.Receiver)
+                .HasConstraintName("FK_Messages_Users");
+
+            entity.HasOne(d => d.SenderNavigation).WithMany(p => p.MessageSenderNavigations)
+                .HasForeignKey(d => d.Sender)
+                .HasConstraintName("FK_Messages_Users1");
         });
 
         modelBuilder.Entity<Role>(entity =>

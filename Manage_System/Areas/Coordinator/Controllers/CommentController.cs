@@ -56,7 +56,7 @@ namespace Manage_System.Areas.Coordinator.Controllers
                     await _emailService.SendEmailAsync(student.Email, "Contribution Comment", coordinator.FullName + " has made a new Comment");
 
                 }
-                _notyf.Success("Comment Success");
+                    _notyf.Success("Comment Success");
                     return Redirect("/Coordinator/Contributions/Detail/" + model.Id + " ");
                 }
                 catch (Exception)

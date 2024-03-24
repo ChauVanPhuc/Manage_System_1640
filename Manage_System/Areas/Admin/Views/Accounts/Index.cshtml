@@ -23,7 +23,8 @@
                         <th>Full Name</th>
                         <th>avatar</th>
                         <th>Phone</th>
-                        <th>Role</th> 
+                        <th>Role</th>
+                        <th>Faculty</th>
                         <th>Status</th>
                         <th></th>
                     </tr>
@@ -51,6 +52,13 @@
                             <td>@account.Phone</td>
                             <td>@account.Role.Name</td>
                             <td>
+                                @if (account.Faculty != null)
+                                {
+                                    @account.Faculty.Name
+                                }
+
+                            </td>
+                            <td>
                                 <a asp-area="Admin" asp-controller="Accounts" asp-action="Delete" asp-route-id="@account.Id">
                                 @if (@account.Status.ToString() == "False")
                                 {
@@ -63,6 +71,7 @@
                                 }
                                 </a>
                             </td>
+                            
                             <td>
                                 <div>
                                     <a class="btn btn-outline-success btn-sm edit" asp-action="Edit" asp-route-id="@account.Id" title="Edit">
@@ -85,6 +94,7 @@
                         <th>avatar</th>
                         <th>Phone</th>
                         <th>Role</th>
+                        <th>Faculty</th>
                         <th>Status</th>
                         <th></th>
                     </tr>

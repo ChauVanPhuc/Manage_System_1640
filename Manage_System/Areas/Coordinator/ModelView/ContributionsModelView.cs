@@ -37,6 +37,7 @@ namespace Manage_System.Areas.Coordinator.ModelView
 
         public virtual List<Comment> Comments { get; set; }
         public string? Comment { get; set; }
+        public string? Mess { get; set; }
         public virtual IEnumerable<ImgFile> ImgFiles { get; set; } 
             
 

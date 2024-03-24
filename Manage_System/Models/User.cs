@@ -31,5 +31,11 @@ public partial class User
 
     public virtual Faculty? Faculty { get; set; }
 
+    public virtual ICollection<LastLogin> LastLogins { get; } = new List<LastLogin>();
+
+    public virtual ICollection<Message> MessageReceiverNavigations { get; } = new List<Message>();
+
+    public virtual ICollection<Message> MessageSenderNavigations { get; } = new List<Message>();
+
     public virtual Role? Role { get; set; }
 }

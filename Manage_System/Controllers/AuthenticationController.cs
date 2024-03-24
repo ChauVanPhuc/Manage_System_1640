@@ -54,7 +54,8 @@ namespace Manage_System.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var account = _db.Users.Include(x => x.Role).AsNoTracking().SingleOrDefault(x => x.Email == model.Email);
+                    
+                    var account = await _db.Users.Include(x => x.Role).AsNoTracking().SingleOrDefaultAsync(x => x.Email == model.Email);
                     if (account == null)
                     {
                         _notyf.Error("Account is not registered ");
@@ -69,7 +70,12 @@ namespace Manage_System.Controllers
                     }
 
                     ////check account disable ?
-                    //if (account.Status == false) return RedirectToAction("Mess", "Account");
+                    if (account.Status == false)
+                    {
+                        _notyf.Error("Account Block");
+                        return Redirect("/Login");
+                    }
+
 
                     //Save Session 
                     HttpContext.Session.SetString("AccountId", account.Id.ToString());
@@ -89,7 +95,39 @@ namespace Manage_System.Controllers
                     
                     await HttpContext.SignInAsync(/*CookieAuthenticationDefaults.AuthenticationScheme*/ "AccountId", claimsPrincipal);
 
-                    _notyf.Success("Login Success");
+                    
+
+                    var lastlogin = await _db.LastLogins.AsNoTracking().FirstOrDefaultAsync(x => x.UserId == account.Id);
+
+                    
+                    
+                    if (lastlogin == null)
+                    {
+                        _notyf.Success("Login Success");
+
+                        LastLogin lastLogin = new LastLogin
+                        {
+                            UserId = account.Id,
+                            History = DateTime.Now
+                        };
+                        _db.LastLogins.Add(lastLogin);
+                        _db.SaveChanges();
+
+                        TempData["TextLogin"] = "Wellcom";
+                    }
+                    else
+                    {
+                        _notyf.Success("Login Success");
+                        lastlogin.History = DateTime.Now;
+                        
+                        _db.Update(lastlogin);
+                        _db.SaveChanges();
+
+                        TempData["TextLogin"] = "Wellcom Back";
+                    }
+
+
+                    TempData["ShowLoginSuccessModal"] = "true";
                     return CheckLogin(account);
 
                 }
