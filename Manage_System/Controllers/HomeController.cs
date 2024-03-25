@@ -311,10 +311,24 @@ namespace Manage_System.Controllers
                     .OrderByDescending(x => x.Id)
                     .ToList();
 
+                
+
                 return View(contributions);
             }
             return Redirect("/Login");
 
+        }
+
+
+        public List<object> GetContri()
+        {
+            var account = HttpContext.Session.GetString("AccountId");
+            List<object> data = new List<object>();
+            var allBlog = _db.Contributions.Where(x => x.UserId == int.Parse(account)).ToList();
+
+            data.Add(allBlog);
+
+            return data;
         }
 
 

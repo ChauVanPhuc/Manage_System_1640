@@ -249,7 +249,7 @@ namespace Manage_System.Controllers
                 return RedirectToAction("Index");
             }
 
-            ContributionsModelView model = new ContributionsModelView
+            ContributionsModelEdit model = new ContributionsModelEdit
             {
                 Id = contributions.Id,
                 User = contributions.User,
@@ -270,7 +270,7 @@ namespace Manage_System.Controllers
 
         [HttpPost]
         [Route("/Student/Contributions/Edit/{id:}")]
-        public IActionResult Edit(ContributionsModelView model)
+        public IActionResult Edit(ContributionsModelEdit model)
         {
             if (ModelState.IsValid)
             {

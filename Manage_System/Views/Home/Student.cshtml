@@ -28,6 +28,11 @@
 <h5>Student</h5>
 
 
+<div>
+    <canvas id="myChart"></canvas>
+</div>
+
+
 @foreach (var blog in Model)
 {
     <div class="card">
@@ -78,12 +83,35 @@
 }
 
 @section Scripts{
-<script type="text/javascript">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="text/javascript">
     $(document).ready(function () {
         var showLoginSuccess = '@TempData["ShowLoginSuccessModal"]';
         if (showLoginSuccess === 'true') {
             $('#loginSuccessModal').modal('show');
         }
     });
-</script>
+    </script>
+    <script>
+        const ctx = document.getElementById('myChart');
+
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                datasets: [{
+                    label: '# of Votes',
+                    data: [12, 19, 3, 5, 2, 3],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
 }

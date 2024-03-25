@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Manage_System.ModelViews
 {
-    public class ContributionsModelView
+    public class ContributionsModelEdit
     {
         public int? Id { get; set; }
 
@@ -34,10 +34,6 @@ namespace Manage_System.ModelViews
         public string? Comment { get; set; }
         public virtual IEnumerable<ImgFile>? ImgFiles { get; set; }
 
-
-        [DataType(DataType.Upload)]
-        [Required(ErrorMessage = "Please, Choose File")]
-        [NotMapped]
         public IFormFileCollection? ImgFile { get; set; }
         public string? Mess { get; set; }
         public virtual Magazine? Magazine { get; set; }
