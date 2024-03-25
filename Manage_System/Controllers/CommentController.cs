@@ -36,6 +36,12 @@ namespace Manage_System.Controllers
 
             try
             {
+                if (model.Comment == null)
+                {
+                    _notyf.Error("Please, Enter Body comment");
+                    return Redirect("/Student/Contributions/Detail/" + model.Id + " ");
+                }
+
                 var account = HttpContext.Session.GetString("AccountId");
                 Comment comment = new Comment
                 {
