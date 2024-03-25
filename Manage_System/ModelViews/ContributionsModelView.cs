@@ -10,7 +10,7 @@ namespace Manage_System.ModelViews
 
         public int? UserId { get; set; }
 
-        [MaxLength(150)]
+        [MaxLength(50)]
         [Required(ErrorMessage = "Please, Enter Title")]
         [Display(Name = " Title")]
         public string? Title { get; set; }

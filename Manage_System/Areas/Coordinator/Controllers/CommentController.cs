@@ -33,11 +33,16 @@ namespace Manage_System.Areas.Coordinator.Controllers
                 _notyf.Error("contribution does not exist");
                 return Redirect("/Coordinator/Contributions/");
             }
-
-            
+         
                 try
                 {
-                    var account = HttpContext.Session.GetString("AccountId");
+
+                if (model.Comment == null)
+                {
+                    _notyf.Error("Please, Enter Body comment");
+                    return Redirect("/Coordinator/Contributions/Detail/" + model.Id + " ");
+                }
+                var account = HttpContext.Session.GetString("AccountId");
                     Comment comment = new Comment 
                     {
                        CommentText = model.Comment,

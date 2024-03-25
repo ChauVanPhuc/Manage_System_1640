@@ -36,7 +36,7 @@
                 {
                     if (img.Stype == "Img")
                     {
-                        <img alt="" style="height:200px;width:150px" src="~/Uploads/@img.Url">
+                        <img alt="" style="height:200px;width:150px; margin:10px" src="~/Uploads/@img.Url">
                     }
                     
                 }
@@ -49,7 +49,20 @@
                 {
                     if (img.Stype == "File")
                     {
-                        <span>File</span> 
+                        <div class="m-b-25">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="media align-items-center">
+                                    <div class="font-size-35">
+                                        <i class="anticon anticon-file-word text-primary"></i>
+                                    </div>
+                                    <div class="m-l-15">
+                                        <h6 class="m-b-0">
+                                            <a class="text-dark">@img.Url</a>
+                                        </h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     }
 
                 }
