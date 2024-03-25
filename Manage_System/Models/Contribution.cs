@@ -15,7 +15,7 @@ public partial class Contribution
 
     public DateTime? LastModifiedDate { get; set; }
 
-    public bool? Status { get; set; }
+    public string? Status { get; set; }
 
     public bool? Publics { get; set; }
 

@@ -33,6 +33,10 @@ public partial class ManageSystem1640Context : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server = DESKTOP-1D6TNBA\\SQLEXPRESS02;Database=Manage_System_1640;uid=sa;pwd=Phuc@2002;TrustServerCertificate=true");
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Comment>(entity =>
@@ -55,7 +59,7 @@ public partial class ManageSystem1640Context : DbContext
 
             entity.HasOne(d => d.Contribution).WithMany(p => p.Comments)
                 .HasForeignKey(d => d.ContributionId)
-                .HasConstraintName("FK__Comments__contri__5629CD9C");
+                .HasConstraintName("FK_Comments_Contributions");
 
             entity.HasOne(d => d.User).WithMany(p => p.Comments)
                 .HasForeignKey(d => d.UserId)
@@ -64,12 +68,6 @@ public partial class ManageSystem1640Context : DbContext
 
         modelBuilder.Entity<Contribution>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Contribu__3213E83F4A1504BF");
-
-            entity.HasIndex(e => e.MagazineId, "IX_Contributions_magazineId");
-
-            entity.HasIndex(e => e.UserId, "IX_Contributions_userId");
-
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.LastModifiedDate)
                 .HasColumnType("datetime")
@@ -79,23 +77,26 @@ public partial class ManageSystem1640Context : DbContext
             entity.Property(e => e.ShortDescription)
                 .HasColumnType("text")
                 .HasColumnName("shortDescription");
-            entity.Property(e => e.Status).HasColumnName("status");
+            entity.Property(e => e.Status)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("status");
             entity.Property(e => e.SubmissionDate)
                 .HasColumnType("datetime")
                 .HasColumnName("submissionDate");
             entity.Property(e => e.Title)
-                .HasMaxLength(255)
+                .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("title");
             entity.Property(e => e.UserId).HasColumnName("userId");
 
             entity.HasOne(d => d.Magazine).WithMany(p => p.Contributions)
                 .HasForeignKey(d => d.MagazineId)
-                .HasConstraintName("FK__Contribut__magaz__5812160E");
+                .HasConstraintName("FK_Contributions_Magazine");
 
             entity.HasOne(d => d.User).WithMany(p => p.Contributions)
                 .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK__Contribut__userI__59063A47");
+                .HasConstraintName("FK_Contributions_Users");
         });
 
         modelBuilder.Entity<Faculty>(entity =>
@@ -134,7 +135,7 @@ public partial class ManageSystem1640Context : DbContext
 
             entity.HasOne(d => d.Contribution).WithMany(p => p.ImgFiles)
                 .HasForeignKey(d => d.ContributionId)
-                .HasConstraintName("FK__imgFile__contrib__59FA5E80");
+                .HasConstraintName("FK_imgFile_Contributions");
         });
 
         modelBuilder.Entity<LastLogin>(entity =>

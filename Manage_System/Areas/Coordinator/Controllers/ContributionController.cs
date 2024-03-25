@@ -119,23 +119,61 @@ namespace Manage_System.Areas.Coordinator.Controllers
                 }
                 else
                 {
-                    if (contri.Status == false)
+                    if (contri.Status == "Processing" || contri.Status == "Reject")
                     {
-                        contri.Status = true;
+                        contri.Status = "Approved";
 
                         var contributions = _db.Contributions.AsNoTracking().SingleOrDefault(x => x.Id == id);
                         var account = HttpContext.Session.GetString("AccountId");
                         var user = _db.Users.AsNoTracking().SingleOrDefault(x => x.Id == int.Parse(account));
                         var student = _db.Users.AsNoTracking().SingleOrDefault(x => x.Id == contributions.UserId);
 
-                        _email.SendEmailAsync(student.Email, "Contribution has been approved", " Your post "+ contributions.Title+ " has been approved");
+                        _email.SendEmailAsync(student.Email, "Contribution has been Approved", " Your post "+ contributions.Title+ " has been approved");
 
                     }
-                    else
+
+                    _db.Contributions.Update(contri);
+                    _db.SaveChanges();
+
+                    _notyf.Success("Update Success");
+                    return Redirect("/Coordinator/Contributions");
+                }
+            }
+            catch
+            {
+
+                _notyf.Error("Update Faill");
+                return Redirect("/Coordinator/Contributions");
+            }
+
+
+        }
+
+        [Route("/Coordinator/Contributions/Reject/{id:}")]
+        public IActionResult Reject(int id)
+        {
+            try
+            {
+                var contri = _db.Contributions.Find(id);
+                if (contri == null)
+                {
+                    _notyf.Error("Contributions does not exist");
+                    return Redirect("/Coordinator/Contributions");
+                }
+                else
+                {
+                    if (contri.Status == "Processing" || contri.Status == "Approved")
                     {
-                        contri.Status = false;
+                        contri.Status = "Reject";
+
+                        var contributions = _db.Contributions.AsNoTracking().SingleOrDefault(x => x.Id == id);
+                        var account = HttpContext.Session.GetString("AccountId");
+                        var user = _db.Users.AsNoTracking().SingleOrDefault(x => x.Id == int.Parse(account));
+                        var student = _db.Users.AsNoTracking().SingleOrDefault(x => x.Id == contributions.UserId);
+
+                        _email.SendEmailAsync(student.Email, "Contribution has been Reject", " Your post " + contributions.Title + " has been Reject");
+
                     }
-                    
                     _db.Contributions.Update(contri);
                     _db.SaveChanges();
 

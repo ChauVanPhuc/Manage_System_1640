@@ -32,7 +32,7 @@ namespace Manage_System.Areas.Maketting.Controllers
                 .Include(x => x.Comments)
                 .Include(x => x.Magazine)
                 .Include(x => x.User)
-                .Where(x => x.Status == true)
+                .Where(x => x.Status == "Approved")
                 .ToList();
 
             return View(contributions);
@@ -171,7 +171,7 @@ namespace Manage_System.Areas.Maketting.Controllers
             var urlFiles = _db.Contributions
                 .Include(x => x.User)
                 .Include(x => x.ImgFiles)
-                .Where(x => x.Status == true)
+                .Where(x => x.Status == "Approved")
                 .ToList();
 
             var zipFiles = new List<byte[]>();

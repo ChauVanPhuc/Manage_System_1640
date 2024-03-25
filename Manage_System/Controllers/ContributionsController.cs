@@ -141,7 +141,7 @@ namespace Manage_System.Controllers
                         Title = model.Title,
                         ShortDescription = model.ShortDescription,
                         SubmissionDate = DateTime.Now,
-                        Status = false,
+                        Status = "Processing",
                         Publics = false,
                         MagazineId = model.MagazineId,
                     };

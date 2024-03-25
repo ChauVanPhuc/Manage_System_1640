@@ -24,6 +24,7 @@
                         <th>submissionDate</th>
                         <th>status</th>
                         <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,15 +44,13 @@
         -webkit-box-orient: vertical;">
                                 @contribution.ShortDescription</td>
                             <td>@contribution.SubmissionDate</td>
+                            <td>@contribution.Status</td>
                             <td>
                                 <a asp-controller="Contribution" asp-action="Allow" asp-route-id="@contribution.Id">
-                                @if (contribution.Status.ToString() == "False")
-                                {
-                                    <i class="anticon anticon-close btn btn-outline-danger btn-sm"></i>
-                                }else{
-
                                     <i class="anticon anticon-check btn btn-outline-success btn-sm"></i>
-                                }
+                                </a>
+                                <a asp-controller="Contribution" asp-action="Reject" asp-route-id="@contribution.Id">
+                                    <i class="anticon anticon-close btn btn-outline-danger btn-sm"></i>
                                 </a>
                             </td>
                             <td>
@@ -73,6 +72,7 @@
                         <th>Short Description</th>
                         <th>submissionDate</th>
                         <th>status</th>
+                        <th></th>
                         <th></th>
                     </tr>
                 </tfoot>

@@ -69,7 +69,7 @@ namespace Manage_System.Controllers
             return View(chats);
         }*/
 
-
+        [Route("/Student/Person")]
         public async Task<IActionResult> Person()
         {
             var account = HttpContext.Session.GetString("AccountId");
@@ -113,6 +113,7 @@ namespace Manage_System.Controllers
             return View(chats);
         }
 
+        [Route("/Student/Chat/{id:}")]
         public async Task<IActionResult> Chat(int id)
         {
             var account = HttpContext.Session.GetString("AccountId");
@@ -254,8 +255,16 @@ namespace Manage_System.Controllers
             var account = HttpContext.Session.GetString("AccountId");
             if (account != null)
             {
+                
+                List<User> user = _db.Users.Include(x => x.Role).ToList();
 
+                //Total account Stu
+                int stu = user.Where(x => x.Role.Name == "Student").Count();
+                ViewData["stu"] = stu;
 
+                //Total account Coordinator
+                int coor = user.Where(x => x.Role.Name == "Coordinator").Count();
+                ViewData["coor"] = coor;
 
                 return View();
             }
@@ -301,11 +310,13 @@ namespace Manage_System.Controllers
                     .Where(x => x.UserId == int.Parse(account) && x.Publics == true)
                     .OrderByDescending(x => x.Id)
                     .ToList();
+
                 return View(contributions);
             }
             return Redirect("/Login");
 
         }
+
 
         public IActionResult Privacy()
         {

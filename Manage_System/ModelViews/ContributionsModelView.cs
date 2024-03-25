@@ -24,7 +24,7 @@ namespace Manage_System.ModelViews
 
         public DateTime? LastModifiedDate { get; set; }
 
-        public bool? Status { get; set; }
+        public string? Status { get; set; }
 
         public bool? Publics { get; set; }
 
