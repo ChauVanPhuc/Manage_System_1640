@@ -1,6 +1,7 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using Manage_System.Areas.Coordinator.ModelView;
 using Manage_System.models;
+
 using Manage_System.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -150,6 +151,97 @@ namespace Manage_System.Areas.Coordinator.Controllers
             }
 
 
+        }
+
+        [Route("/Coordinator/Contributions/Person")]
+        public async Task<IActionResult> Person()
+        {
+            var account = HttpContext.Session.GetString("AccountId");
+            if (account == null)
+            {
+                return Redirect("/Login");
+            }
+
+            var user = _db.Users.Find(int.Parse(account));
+
+            var allMessages = await _db.Messages.Where(x =>
+                x.Sender == user.Id ||
+                x.Receiver == user.Id)
+                .ToListAsync();
+
+            var chats = new List<ChatViewModel>();
+            foreach (var i in await _db.Users.ToListAsync())
+            {
+                if (i != user)
+                {
+
+                    var chat = new ChatViewModel()
+                    {
+                        MyMessages = allMessages.Where(x => x.Sender == user.Id && x.Receiver == i.Id).ToList(),
+                        OtherMessages = allMessages.Where(x => x.Sender == i.Id && x.Receiver == user.Id).ToList(),
+                        RecipientName = i.FullName,
+                        revId = i.Id,
+                        sendvId = user.Id
+                    };
+
+                    var chatMessages = new List<Message>();
+                    chatMessages.AddRange(chat.MyMessages);
+                    chatMessages.AddRange(chat.OtherMessages);
+
+                    chat.LastMessage = chatMessages.OrderByDescending(x => x.SentAt).FirstOrDefault();
+
+                    chats.Add(chat);
+                }
+            }
+
+            return View(chats);
+        }
+
+        [Route("/Coordinator/Contributions/Chat/{id:}")]
+        public async Task<IActionResult> Chat(int id)
+        {
+            var account = HttpContext.Session.GetString("AccountId");
+            if (account == null)
+            {
+                return Redirect("/Login");
+            }
+
+            var user = _db.Users.Find(int.Parse(account));
+
+            var allMessages = await _db.Messages.Where(x =>
+                x.Sender == user.Id ||
+                x.Receiver == user.Id)
+                .ToListAsync();
+
+            var chats = new List<ChatViewModel>();
+
+            var rev = _db.Users.Where(x => x.Id == user.Id || x.Id == id).ToList();
+
+            foreach (var i in rev)
+            {
+                if (i != user)
+                {
+
+                    var chat = new ChatViewModel()
+                    {
+                        MyMessages = allMessages.Where(x => x.Sender == user.Id && x.Receiver == i.Id).ToList(),
+                        OtherMessages = allMessages.Where(x => x.Sender == i.Id && x.Receiver == user.Id).ToList(),
+                        RecipientName = i.FullName,
+                        revId = i.Id,
+                        sendvId = user.Id
+                    };
+
+                    var chatMessages = new List<Message>();
+                    chatMessages.AddRange(chat.MyMessages);
+                    chatMessages.AddRange(chat.OtherMessages);
+
+                    chat.LastMessage = chatMessages.OrderByDescending(x => x.SentAt).FirstOrDefault();
+
+                    chats.Add(chat);
+                }
+            }
+
+            return View(chats);
         }
     }
 }

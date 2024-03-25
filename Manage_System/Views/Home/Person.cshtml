@@ -1,5 +1,11 @@
 ﻿@model List<Manage_System.ModelViews.ChatViewModel>
 
+
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
 <link href="~/css/index2.css" rel="stylesheet" />
 
 <link rel="stylesheet" href="~/css/normalize.css" />
@@ -20,7 +26,18 @@
                                     <img src="~/images/avatar.png" alt="">
                                 </div>
                                 <h4 class="m-t-30">@user.RecipientName</h4>
-                                @* <p>erin.gon@gmail.com</p> *@
+                                @if(user.LastMessage != null){
+                                   <p style="
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 20px;
+    -webkit-line-clamp: 1;
+    height: 20px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;">@user.LastMessage?.SentAt.Value.ToShortTimeString(): @user.LastMessage?.Content</p>
+                                }else{
+                                   <p>No Message</p>
+                                }
                             </div>
                             
                             <div class="text-center m-t-30">

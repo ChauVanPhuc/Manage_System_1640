@@ -1,8 +1,8 @@
 ﻿@using Manage_System.models;
-@model List<Manage_System.ModelViews.ChatViewModel>
+@model List<Manage_System.Areas.Coordinator.ModelView.ChatViewModel>
 @{
 
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Areas/Coordinator/Views/Shared/_Layout.cshtml";
 }
 
 
@@ -12,9 +12,9 @@
 
 
 <div class="wrapper">
-   
+
     <div class="right" onclick="scrollToBottom()">
-       
+
 
         @foreach (var c in Model)
         {
@@ -33,7 +33,7 @@
                             if (c.MyMessages.Contains(m))
                             {
                                 <div class="bubble me">
-                                    
+
                                     <span class="message-text">@m.Content</span>
                                     <span class="message-time">@m.SentAt.Value.ToShortDateString()</span>
                                 </div>
