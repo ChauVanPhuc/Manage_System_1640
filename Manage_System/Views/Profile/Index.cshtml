@@ -1,0 +1,84 @@
+﻿@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+
+    <div class="card-body">
+        <div class="media align-items-center">
+            <div class="avatar avatar-image  m-h-10 m-r-15" style="height: 80px; width: 80px">
+                <img src="assets/images/avatars/thumb-3.jpg" alt="">
+            </div>
+            <div class="m-l-20 m-r-20">
+                <h5 class="m-b-5 font-size-18">Change Avatar</h5>
+                <p class="opacity-07 font-size-13 m-b-0">
+                    Recommended Dimensions: <br>
+                    120x120 Max fil size: 5MB
+                </p>
+            </div>
+            <div>
+                <button class="btn btn-tone btn-primary">Upload</button>
+            </div>
+        </div>
+        <hr class="m-v-25">
+        <form>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label class="font-weight-semibold" for="userName">User Name:</label>
+                    <input type="text" class="form-control" id="userName" placeholder="User Name" value="Marshall Nichols">
+                </div>
+                <div class="form-group col-md-6">
+                    <label class="font-weight-semibold" for="email">Email:</label>
+                    <input type="password" class="form-control" id="email" placeholder="email">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label class="font-weight-semibold" for="phoneNumber">Phone Number:</label>
+                    <input type="text" class="form-control" id="phoneNumber" placeholder="Phone Number">
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="font-weight-semibold" for="dob">Date of Birth:</label>
+                    <input type="text" class="form-control" id="dob" placeholder="Date of Birth">
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="font-weight-semibold" for="language">Language</label>
+                    <select id="language" class="form-control">
+                        <option>English</option>
+                        <option>France</option>
+                        <option>German</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Change Password</h4>
+    </div>
+    <div class="card-body">
+        <form>
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <label class="font-weight-semibold" for="oldPassword">Old Password:</label>
+                    <input type="password" class="form-control" id="oldPassword" placeholder="Old Password">
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="font-weight-semibold" for="newPassword">New Password:</label>
+                    <input type="password" class="form-control" id="newPassword" placeholder="New Password">
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="font-weight-semibold" for="confirmPassword">Confirm Password:</label>
+                    <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password">
+                </div>
+                <div class="form-group col-md-3">
+                    <button class="btn btn-primary m-t-30">Change</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
