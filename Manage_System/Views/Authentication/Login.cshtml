@@ -4,59 +4,75 @@
 <html lang="en">
 
 
-<!-- Mirrored from www.themenate.net/enlink-bs/dist/login-3.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 13 Nov 2023 07:24:28 GMT -->
+<!-- Mirrored from www.themenate.net/enlink-bs/dist/login-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 13 Nov 2023 07:24:20 GMT -->
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-
+    <title>Login</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="~/Student/assets/images/logo/Greenwich-Viet-Nam.png">
     <!-- page css -->
     <!-- Core css -->
     <link href="~/Student/assets/css/app.min.css" rel="stylesheet">
-    
+
 </head>
 
 <body>
     <div class="app">
-        <div class="container-fluid p-h-0 p-v-20 bg full-height d-flex" style="background-image: url('~/Student/assets/images/others/login-3.png')">
-            <div class="d-flex flex-column justify-content-between w-100">
-                <div class="container d-flex h-100">
-                    <div class="row align-items-center w-100">
-                        <div class="col-md-7 col-lg-5 m-h-auto">
-                            <div class="card shadow-lg">
-                                <div class="card-body">
-                                    <div class="d-flex align-items-center justify-content-between m-b-30">
-                                        <h2 class="m-b-0">Sign In</h2>
+        <div class="container-fluid p-0 h-100">
+            <div class="row no-gutters h-100 full-height">
+                <div class="col-lg-4 d-none d-lg-flex bg"
+                     style="background-image:url('/Student/assets/images/logo/School.png')"
+                     >
+                    <div class="d-flex h-100 p-h-40 p-v-15 flex-column justify-content-between">
+                        <div>
+                            <img src="/Student/assets/images/logo/Greenwich-Viet-Nam.png" alt="" width="50px" height="50px">
+                        </div>
+                        <div>
+                            <span style="text-shadow: 2px 2px 4px #000000">
+                            <h1 class="text-black m-b-20 font-weight-normal">Exploring New Thing</h1>
+                            <p class=" font-size-16 lh-2 w-80" style="color:black">
+                                University magazine: a vibrant mosaic of student voices, ideas, and creativity, capturing the essence of campus life and exploration..
+                            </p>
+                            </span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span class="text-black">Magazine</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8 bg-white" >
+                    <div class="container h-100" >
+                        <div class="row no-gutters h-100 align-items-center">
+                            <div class="col-md-8 col-lg-7 col-xl-6 mx-auto">
+                                <h2>Sign In</h2>
+                                <p class="m-b-30">Welcome to Annual University Managazine of Greenwich</p>
+                                <form asp-controller="Authentication" asp-action="Login" method="post">
+                                    <div class="form-group">
+                                        <label class="font-weight-semibold" for="userName">Username:</label>
+                                        <div class="input-affix">
+                                            <i class="prefix-icon anticon anticon-user"></i>
+                                            <input type="text" class="form-control" asp-for="Email" placeholder="Email">
+                                            <span asp-validation-for="Email" class="text-danger"></span>
+                                        </div>
                                     </div>
-                                    <form asp-controller="Authentication" asp-action="Login" method="post">
-                                        <div class="form-group">
-                                            <label class="font-weight-semibold" for="userName">Email:</label>
-                                            <div class="input-affix">
-                                                <i class="prefix-icon anticon anticon-user"></i>
-                                                <input type="text" class="form-control" asp-for="Email" placeholder="Email">
-                                                <span asp-validation-for="Email" class="text-danger"></span>
-                                            </div>
+                                    <div class="form-group">
+                                        <label class="font-weight-semibold" for="password">Password:</label>
+                                        <div class="input-affix m-b-10">
+
+                                            <i class="prefix-icon anticon anticon-lock"></i>
+                                            <input type="password" class="form-control" asp-for="Password" placeholder="Password">
+                                            <span asp-validation-for="Password" class="text-danger"></span>
                                         </div>
-                                        <div class="form-group">
-                                            @* <label class="font-weight-semibold" for="password">Password:</label>
-                                            <a class="float-right font-size-13 text-muted" href="#">Forget Password?</a> *@
-                                            <div class="input-affix m-b-10">
-                                                <i class="prefix-icon anticon anticon-lock"></i>
-                                                <input type="password" class="form-control" asp-for="Password" placeholder="Password">
-                                                <span asp-validation-for="Password" class="text-danger"></span>
-                                            </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="d-flex align-items-center justify-content-between">
+
+                                            <button type="submit" class="btn btn-primary">Sign In</button>
                                         </div>
-                                        <div class="form-group">
-                                            <div class="d-flex align-items-center justify-content-between">
-                                                @* <span class="font-size-13 text-muted">
-                                                                                                        Don't have an account?
-                                                    <a class="small" asp-controller="Authentication" asp-action="Register"> Register</a>
-                                                    </span> *@
-                                                    <button type="submit" class="btn btn-primary">Sign In</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -64,8 +80,7 @@
             </div>
         </div>
     </div>
-
-
+    
     <!-- Core Vendors JS -->
     <script src="~/Student/assets/js/vendors.min.js"></script>
 
@@ -76,9 +91,10 @@
 </body>
 
 
+<!-- Mirrored from www.themenate.net/enlink-bs/dist/login-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 13 Nov 2023 07:24:24 GMT -->
 
-<!-- Mirrored from www.themenate.net/enlink-bs/dist/login-3.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 13 Nov 2023 07:24:39 GMT -->
 </html>
+
 
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
