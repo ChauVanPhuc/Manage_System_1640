@@ -40,7 +40,9 @@ namespace Manage_System.Controllers
                 .ToListAsync();
 
             var chats = new List<ChatViewModel>();
-            foreach (var i in await _db.Users.ToListAsync())
+            var users = await _db.Users.Include(x => x.Role).Where(x=> x.Role.Name == "Student" || x.Role.Name == "Coordinator").ToListAsync();
+
+            foreach (var i in users)
             {
                 if (i != user)
                 {
@@ -51,8 +53,11 @@ namespace Manage_System.Controllers
                         OtherMessages = allMessages.Where(x => x.Sender == i.Id && x.Receiver == user.Id).ToList(),
                         RecipientName = i.FullName,
                         revId = i.Id,
-                        sendvId = user.Id
+                        sendvId = user.Id,
+                        roleName = i.Role.Name
                     };
+
+                    
 
                     var chatMessages = new List<Message>();
                     chatMessages.AddRange(chat.MyMessages);

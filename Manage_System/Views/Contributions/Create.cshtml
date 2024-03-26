@@ -88,7 +88,14 @@
                  
             </div>
 
-            <button type="submit" class="btn btn-primary m-r-5">Submit</button>
+            <div class="checkbox">
+                <input  type="checkbox" value="" id="check" checked>
+                <label for="check">
+                    You agree to all the <a asp-controller="rule" asp-action="Index" target="_blank">rules and security</a>
+                </label>
+            </div>
+
+            <button id="submitButton" type="submit" class="btn btn-primary m-r-5">Submit</button>
             <a class="btn btn-secondary m-r-5" asp-controller="Contributions" asp-action="Index">Back to List</a>
         </form>
     </div>
@@ -96,6 +103,23 @@
 
 
 @section Scripts {
+
+    <script>
+        // Get the checkbox and submit button elements
+        const agreeCheckbox = document.getElementById('check');
+        const submitButton = document.getElementById('submitButton');
+
+        // Add event listener to the checkbox
+        agreeCheckbox.addEventListener('change', function () {
+            // If checkbox is checked, enable the submit button
+            if (this.checked) {
+                submitButton.removeAttribute('disabled');
+            } else {
+                // If checkbox is unchecked, disable the submit button
+                submitButton.setAttribute('disabled', 'disabled');
+            }
+        });
+    </script>
 
     <script>
         ClassicEditor

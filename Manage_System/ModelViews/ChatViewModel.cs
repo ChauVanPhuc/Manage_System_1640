@@ -7,6 +7,7 @@ namespace Manage_System.ModelViews
         public string RecipientName { get; set; }
         public int revId { get; set; }
         public int sendvId { get; set; }
+        public string roleName { get; set; }
         public List<Message> MyMessages { get; set; }
         public List<Message> OtherMessages { get; set; }
         public Message LastMessage { get; set; }

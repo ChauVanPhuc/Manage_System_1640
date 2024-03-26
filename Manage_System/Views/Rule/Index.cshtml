@@ -1,0 +1,62 @@
+﻿@model Manage_System.ModelViews.RulesModelView
+
+
+@{
+
+    Layout = "~/Views/Shared/_LayoutRule.cshtml";
+}
+
+<link href="~/student/assets/assets/css/app.min.css" rel="stylesheet" />
+
+
+    <div class="card  m-50">
+    <div class="row">
+        <div class="col-lg-6">
+            <h2 style="text-align:center">Rules</h2>
+            <div class="accordion " id="accordion-default">
+                @foreach (var rules in Model.Rules)
+                {
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">
+                                <a data-toggle="collapse" href="#@rules.Name.Replace(" ", "-")" aria-expanded="false" collapsed class="collapsed">
+                                    <span>@rules.Name</span>
+                                </a>
+                            </h5>
+                        </div>
+                        <div id="@rules.Name.Replace(" ", "-")" class="collapse" data-parent="#accordion-default">
+                            <div class="card-body">
+                                @rules.Rules
+                            </div>
+                        </div>
+                    </div>
+                }
+
+
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <h2 style="text-align:center">Security</h2>
+            <div class="accordion" id="accordion-default">
+                @foreach (var rules in Model.Security)
+                {
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">
+                                <a data-toggle="collapse" href="#@rules.Name.Replace(" ", "-")" aria-expanded="false" collapsed class="collapsed">
+                                    <span>@rules.Name</span>
+                                </a>
+                            </h5>
+                        </div>
+                        <div id="@rules.Name.Replace(" ", "-")" class="collapse" data-parent="#accordion-default">
+                            <div class="card-body">
+                                @rules.Security1
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+    </div>
+</div>
