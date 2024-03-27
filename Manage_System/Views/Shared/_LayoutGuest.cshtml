@@ -21,35 +21,78 @@
     <div class="app">
         <div class="layout">
             <!-- Header START -->
-            <div class="header">
+            <div style="background-color:#CADCFC" class="header">
                 
-                <nav class="nav nav-wrap">
-                    <ul class="nav-left">                        
-                        LOGO
+                    
+                        <div class="logo logo-dark">
+                            <a href="~/Guest">
+                                <img src="~/Student/assets/images/logo/Greenwich-Viet-Nam.png" alt="Logo" height="50px" width="50px">
+                                <img class="logo-fold" src="~/Student/assets/images/logo/Greenwich-Viet-Nam.png" alt="Logo" height="50px" width="50px">
+                            </a>
+                        </div>
+                        <div class="logo logo-white">
+                            <a href="~/Guest">
+                                <img src="~/Student/assets/images/logo/Greenwich-Viet-Nam.png" alt="Logo" height="50px" width="50px">
+                                <img class="logo-fold" src="~/Student/assets/images/logo/Greenwich-Viet-Nam.png" alt="Logo" height="50px" width="50px">
+                            </a>
+                        </div>
+                    
+                <div class="nav-wrap" >
+                    <ul class="nav-left">
+                        <li class="desktop-toggle">
+                            <a href="javascript:void(0);">
+                                <i class="anticon"></i>
+                            </a>
+                        </li>
+                        <li class="mobile-toggle">
+                            <a href="javascript:void(0);">
+                                <i class="anticon"></i>
+                            </a>
+                        </li>
+
                     </ul>
-                    <ul class="nav-right">
-                        
-                        <a asp-controller="Home" asp-action="Student">Home</a>
-                    </ul>
-                   
                     <ul class="nav-right">
 
-                        Contact
+                        <!--Login or Logout-->
+                        <partial name="_profilePartial" />
+
                     </ul>
-                    
-                    <ul class="nav-right">
-                        
-                        
-                        
-                        
-                            <!--Login or Logout-->
-                            <partial name="_profilePartial" />
-                       
-                        
-                    </ul>
-                </nav>
+                </div>
+                
+                
             </div>
             <!-- Header END -->
+            <!-- Side Nav START -->
+            <div class="side-nav">
+                <div class="side-nav-inner">
+                    <ul class="side-nav-menu scrollable">
+
+                        <li class="nav-item">
+                            <a href="~/Guest">
+                                <span class="icon-holder">
+                                    <i class="anticon anticon-appstore"></i>
+                                </span>
+                                <span class="title">Home</span>
+
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="~/Guest">
+                                <span class="icon-holder">
+                                    <i class="anticon anticon-appstore"></i>
+                                </span>
+                                <span class="title">Contact</span>
+                            </a>
+                            
+                        </li>
+
+                        
+
+                    </ul>
+                </div>
+            </div>
+            <!-- Side Nav END -->
           <!-- Page Container START -->
             <div class="page-container">
 
@@ -62,10 +105,10 @@
                 <!-- Footer START -->
                 <footer class="footer">
                     <div class="footer-content">
-                        <p class="m-b-0">Copyright © 2019 Theme_Nate. All rights reserved.</p>
+                        
                         <span>
                             <a href="#" class="text-gray m-r-15">Term &amp; Conditions</a>
-                            <a href="#" class="text-gray">Privacy &amp; Policy</a>
+                            
                         </span>
                     </div>
                 </footer>
