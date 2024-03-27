@@ -1,4 +1,5 @@
-﻿using Manage_System.models;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Manage_System.models;
 using Manage_System.Models;
 using Manage_System.ModelViews;
 using Microsoft.AspNetCore.Authorization;
@@ -16,11 +17,13 @@ namespace Manage_System.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ManageSystem1640Context _db;
+        private readonly INotyfService _notyf;
 
-        public HomeController(ILogger<HomeController> logger, ManageSystem1640Context db)
+        public HomeController(ILogger<HomeController> logger, ManageSystem1640Context db, INotyfService notyf)
         {
             _logger = logger;
             _db = db;
+            _notyf = notyf;
         }
 
         [Route("/Student/Person")]
