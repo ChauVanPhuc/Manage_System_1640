@@ -113,7 +113,7 @@ namespace Manage_System.Controllers
                         _db.LastLogins.Add(lastLogin);
                         _db.SaveChanges();
 
-                        TempData["TextLogin"] = "Wellcom";
+                        TempData["TextLogin"] = "Welcome";
                     }
                     else
                     {
