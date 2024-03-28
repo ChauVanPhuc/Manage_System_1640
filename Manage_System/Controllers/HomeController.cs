@@ -1,4 +1,5 @@
-﻿using Manage_System.models;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Manage_System.models;
 using Manage_System.Models;
 using Manage_System.ModelViews;
 using Microsoft.AspNetCore.Authorization;
@@ -16,11 +17,13 @@ namespace Manage_System.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ManageSystem1640Context _db;
+        private readonly INotyfService _notyf;
 
-        public HomeController(ILogger<HomeController> logger, ManageSystem1640Context db)
+        public HomeController(ILogger<HomeController> logger, ManageSystem1640Context db, INotyfService notyf)
         {
             _logger = logger;
             _db = db;
+            _notyf = notyf;
         }
 
         [Route("/Student/Person")]
@@ -40,7 +43,9 @@ namespace Manage_System.Controllers
                 .ToListAsync();
 
             var chats = new List<ChatViewModel>();
-            foreach (var i in await _db.Users.ToListAsync())
+            var users = await _db.Users.Include(x => x.Role).Where(x=> x.Role.Name == "Student" || x.Role.Name == "Coordinator").ToListAsync();
+
+            foreach (var i in users)
             {
                 if (i != user)
                 {
@@ -51,8 +56,11 @@ namespace Manage_System.Controllers
                         OtherMessages = allMessages.Where(x => x.Sender == i.Id && x.Receiver == user.Id).ToList(),
                         RecipientName = i.FullName,
                         revId = i.Id,
-                        sendvId = user.Id
+                        sendvId = user.Id,
+                        roleName = i.Role.Name
                     };
+
+                    
 
                     var chatMessages = new List<Message>();
                     chatMessages.AddRange(chat.MyMessages);

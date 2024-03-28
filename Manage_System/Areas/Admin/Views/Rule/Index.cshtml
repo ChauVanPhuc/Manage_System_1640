@@ -1,0 +1,72 @@
+﻿@model IEnumerable<Manage_System.models.Rule>
+
+<!-- page css -->
+<link href="~/student/assets/vendors/datatables/dataTables.bootstrap.min.css" rel="stylesheet">
+
+<div class="header-sub-title">
+    <nav class="breadcrumb breadcrumb-dash">
+        <a class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+        <span class="breadcrumb-item active">Rule</span>
+    </nav>
+</div>
+
+<a class="btn btn-outline-info btn-sm add" asp-controller="Rule" asp-action="Create" title="Create" style="margin-bottom: 20px">
+    New Rule <i class="bx bx-list-plus"></i>
+</a>
+<div class="card">
+    <div class="card-body">
+        <table id="data-table" class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Rule</th>
+                    
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var account in Model)
+                {
+                    <tr>
+                        <td>@account.Name</td>
+
+                        <td style="width:400px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 30px;
+    -webkit-line-clamp: 1;
+    height: 10px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;">
+                            @account.Rules
+                        </td>
+                        <td>
+                            <a class="btn btn-outline-success btn-sm edit" asp-area="Admin" asp-controller="Rule" asp-action="Edit" asp-route-id="@account.Id" title="Edit">
+                                Edit <i class="fas fa-pencil-alt"></i>
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                }
+
+            </tbody>
+            <tfoot>
+
+                <tr>
+                    <th>Name</th>
+                    <th>Rule</th>
+                    
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+@section Scripts{
+
+    <!-- page js -->
+    <script src="~/student/assets/vendors/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/student/assets/vendors/datatables/dataTables.bootstrap.min.js"></script>
+}

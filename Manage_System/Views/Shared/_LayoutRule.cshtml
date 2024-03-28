@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+
+<!-- Mirrored from www.themenate.net/enlink-bs/dist/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 13 Nov 2023 07:19:13 GMT -->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>GW Magazine</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="~/Student/assets/images/logo/Greenwich-Viet-Nam.png">
+
+    <!-- page css -->
+    <!-- Core css -->
+    <link href="~/student/assets/css/app.min.css" rel="stylesheet" />
+</head>
+
+<body>
+    
+    @RenderBody()
+
+    <!-- Core Vendors JS -->
+    <script src="~/Student/assets/js/vendors.min.js"></script>
+
+    <!-- page js -->
+    <script src="~/Student/assets/vendors/chartjs/Chart.min.js"></script>
+    <script src="~/Student/assets/js/pages/dashboard-default.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script>
+
+
+    <!-- Core JS -->
+    <script src="~/Student/assets/js/app.min.js"></script>
+
+
+    @await Component.InvokeAsync("Notyf");
+    @await RenderSectionAsync("Scripts", required: false)
+
+
+</body>
+
+
+<!-- Mirrored from www.themenate.net/enlink-bs/dist/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 13 Nov 2023 07:20:55 GMT -->
+</html>

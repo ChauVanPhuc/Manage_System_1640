@@ -1,55 +1,99 @@
-﻿@{
+﻿@model Manage_System.ModelViews.ProfileModelDisplay
+
+@{
 
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<style>
+    .image-upload-container {
+        position: relative;
+        width: 200px; /* Adjust as needed */
+        height: 200px; /* Adjust as needed */
+        background-color: #f0f0f0; /* Placeholder background */
+        border-radius: 50%;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #aaa; /* Placeholder text color */
+        font-family: Arial, sans-serif;
+    }
+
+        .image-upload-container input[type='file'] {
+            display: none; /* Hide the input */
+        }
+
+    .camera-icon {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        background-color: white;
+        padding: 5px;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+
+        .camera-icon:hover {
+            background-color: #e0e0e0;
+        }
+</style>
+
 <div class="card">
 
     <div class="card-body">
-        <div class="media align-items-center">
-            <div class="avatar avatar-image  m-h-10 m-r-15" style="height: 80px; width: 80px">
-                <img src="assets/images/avatars/thumb-3.jpg" alt="">
-            </div>
-            <div class="m-l-20 m-r-20">
-                <h5 class="m-b-5 font-size-18">Change Avatar</h5>
-                <p class="opacity-07 font-size-13 m-b-0">
-                    Recommended Dimensions: <br>
-                    120x120 Max fil size: 5MB
-                </p>
-            </div>
-            <div>
-                <button class="btn btn-tone btn-primary">Upload</button>
+        <form asp-controller="Profile" asp-action="ChangeInfor" asp-route-img="@Model.Infor.img" enctype="multipart/form-data" class="needs-validation">
+            <div class="media align-items-center">
+            <div class="image-upload-container">
+                @if(Model.Infor.img != null){
+                    <img class="avatar avatar-icon avatar-lg" src="~/Uploads/@Model.Infor.img" style="width:200px; height:200px;" id="image" />
+                }else{
+                   <img class="avatar avatar-icon avatar-lg" src="~/images/NoImage.png" style="width:200px; height:200px;" id="image" />
+                }
+                <label for="image-upload" class="camera-icon" style="
+    margin-right: 30px;
+    width: 50px;
+    height: 50px;
+">
+                    <i class="anticon anticon-camera" style="
+    /* width: 50px; */
+    font-size: 30px;
+    margin-left: 4px;
+vertical-align: -0.625em;
+"></i>
+                </label>
+                <input id="image-upload" asp-for="@Model.Infor.avatar" type="file" accept="image/gif, image/jpeg, image/png" onchange="chooseFile(this)">
             </div>
         </div>
         <hr class="m-v-25">
-        <form>
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label class="font-weight-semibold" for="userName">User Name:</label>
-                    <input type="text" class="form-control" id="userName" placeholder="User Name" value="Marshall Nichols">
-                </div>
-                <div class="form-group col-md-6">
-                    <label class="font-weight-semibold" for="email">Email:</label>
-                    <input type="password" class="form-control" id="email" placeholder="email">
+                    <label class="font-weight-semibold">Email:</label>
+                    <input type="text" class="form-control " asp-for="@Model.Infor.Email" placeholder="email" disabled>
+                    <span class="text-danger" asp-validation-for="@Model.Infor.Email"></span>
                 </div>
             </div>
             <div class="form-row">
-                <div class="form-group col-md-4">
-                    <label class="font-weight-semibold" for="phoneNumber">Phone Number:</label>
-                    <input type="text" class="form-control" id="phoneNumber" placeholder="Phone Number">
+                <div class="form-group col-md-6">
+                    <label class="font-weight-semibold" >User Name:</label>
+                    <input type="text" class="form-control" asp-for="@Model.Infor.FullName" placeholder="User Name" required>
+                    <span class="text-danger" asp-validation-for="@Model.Infor.FullName"></span>
                 </div>
-                <div class="form-group col-md-4">
-                    <label class="font-weight-semibold" for="dob">Date of Birth:</label>
-                    <input type="text" class="form-control" id="dob" placeholder="Date of Birth">
+                <div class="form-group col-md-6">
+                    <label class="font-weight-semibold" >Phone Number:</label>
+                    <input type="tel" class="form-control" asp-for="@Model.Infor.Phone" placeholder="Phone Number" required>
+                    <span class="text-danger" asp-validation-for="@Model.Infor.Phone"></span>
                 </div>
-                <div class="form-group col-md-4">
-                    <label class="font-weight-semibold" for="language">Language</label>
-                    <select id="language" class="form-control">
-                        <option>English</option>
-                        <option>France</option>
-                        <option>German</option>
-                    </select>
+ 
+            </div>
+
+            
+            <div class="form-row" style="justify-content:center">
+                
+                <div class="form-group col-md-3">
+                    <button class="btn btn-primary submit m-t-30">Update</button>
                 </div>
+                
             </div>
         </form>
     </div>
@@ -61,19 +105,20 @@
         <h4 class="card-title">Change Password</h4>
     </div>
     <div class="card-body">
-        <form>
+        <form asp-controller="Profile" asp-action="ChangePassword" id="changePasword">
             <div class="form-row">
                 <div class="form-group col-md-3">
-                    <label class="font-weight-semibold" for="oldPassword">Old Password:</label>
-                    <input type="password" class="form-control" id="oldPassword" placeholder="Old Password">
+                    <label class="font-weight-semibold">Old Password:</label>
+                    <input type="password" class="form-control"asp-for="@Model.Password.OldPassword" placeholder="Old Password" required>
                 </div>
                 <div class="form-group col-md-3">
-                    <label class="font-weight-semibold" for="newPassword">New Password:</label>
-                    <input type="password" class="form-control" id="newPassword" placeholder="New Password">
+                    <label class="font-weight-semibold" >New Password:</label>
+                    <input type="password" class="form-control" minlength="5" id="password" asp-for="@Model.Password.NewPassword" placeholder="New Password" required>
                 </div>
                 <div class="form-group col-md-3">
-                    <label class="font-weight-semibold" for="confirmPassword">Confirm Password:</label>
-                    <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password">
+                    <label class="font-weight-semibold" >Confirm Password:</label>
+                    <input type="password" class="form-control" id="confirm_password" asp-for="@Model.Password.ConfirmPassword" placeholder="Confirm Password" required >
+                    <span id="spanconfirmpassword" class="text-danger font-weight-bold"></span>
                 </div>
                 <div class="form-group col-md-3">
                     <button class="btn btn-primary m-t-30">Change</button>
@@ -82,3 +127,50 @@
         </form>
     </div>
 </div>
+
+
+@section Scripts {
+<script>
+    function chooseFile(fileInput) {
+        if (fileInput.files && fileInput.files[0]) {
+            var render = new FileReader();
+
+            render.onload = function (e) {
+                $('#image').attr('src', e.target.result);
+            }
+            render.readAsDataURL(fileInput.files[0]);
+        }
+    }
+</script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.input-daterange').datepicker({
+                format: "yyyy-mm-dd",
+                autoclose: true,
+                todayHighlight: true
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#changePasword').submit(function (e) {
+                var password = $('#password').val();
+                var confirmPassword = $('#confirm_password').val();
+
+                if (password != confirmPassword) {
+                    document.getElementById("spanconfirmpassword").innerHTML = "No password matched";
+                    e.preventDefault(); // Ngăn chặn form được gửi đi
+                }
+            });
+        });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <!-- Bootstrap Datepicker JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script type=’text/javascript’ src=”https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.min.js”></script>
+
+}

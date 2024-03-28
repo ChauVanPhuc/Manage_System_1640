@@ -36,7 +36,7 @@
         var ctx = document.getElementById('AccountChart').getContext('2d');
         var myChart = new Chart(ctx, {
             
-            type: 'doughnut',
+            type: 'pie',
             data: {
                 labels: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.roleName)),
                 datasets: [{

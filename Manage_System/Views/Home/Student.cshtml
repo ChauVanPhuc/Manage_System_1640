@@ -148,17 +148,9 @@
 
 @section Scripts{
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script type="text/javascript">
-    $(document).ready(function () {
-        var showLoginSuccess = '@TempData["ShowLoginSuccessModal"]';
-        if (showLoginSuccess === 'true') {
-            $('#loginSuccessModal').modal('show');
-        }
-    });
-    </script>
-
+   
     <script>
-        var ctx = document.getElementById('myChart').getContext('2d');
+        var ctx = document.getElementById('myChart');
         var myChart = new Chart(ctx, {
 
             type: 'doughnut',
@@ -241,4 +233,15 @@
         });
 
     </script>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var showLoginSuccess = '@TempData["ShowLoginSuccessModal"]';
+            if (showLoginSuccess === 'true') {
+                $('#loginSuccessModal').modal('show');
+            }
+        });
+    </script>
+
 }

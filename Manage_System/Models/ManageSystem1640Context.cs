@@ -31,6 +31,10 @@ public partial class ManageSystem1640Context : DbContext
 
     public virtual DbSet<Role> Roles { get; set; }
 
+    public virtual DbSet<Rule> Rules { get; set; }
+
+    public virtual DbSet<Security> Securities { get; set; }
+
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -202,6 +206,34 @@ public partial class ManageSystem1640Context : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("name");
+        });
+
+        modelBuilder.Entity<Rule>(entity =>
+        {
+            entity.ToTable("Rule");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Name)
+                .HasMaxLength(200)
+                .IsUnicode(false)
+                .HasColumnName("name");
+            entity.Property(e => e.Rules)
+                .IsUnicode(false)
+                .HasColumnName("rules");
+        });
+
+        modelBuilder.Entity<Security>(entity =>
+        {
+            entity.ToTable("Security");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Name)
+                .HasMaxLength(200)
+                .IsUnicode(false)
+                .HasColumnName("name");
+            entity.Property(e => e.Security1)
+                .IsUnicode(false)
+                .HasColumnName("security");
         });
 
         modelBuilder.Entity<User>(entity =>
