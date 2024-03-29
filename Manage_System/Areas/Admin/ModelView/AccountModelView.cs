@@ -32,12 +32,11 @@ namespace Manage_System.Areas.Admin.ModelView
         public string ConfirmPassword { get; set; }
 
 
-        [Phone]
-        [DataType(DataType.PhoneNumber)]
+        
         [Required(ErrorMessage = "Please, Enter Phone")]
         [Remote(action: "ValidatePhone", controller: "Accounts", areaName: "Admin", HttpMethod = "POST")]
-        [MaxLength(10)]
-        [MinLength(10)]
+        [MaxLength(10, ErrorMessage = "The field Phone must be number type with length of '10'")]
+        [MinLength(10,ErrorMessage = "The field Phone must be number type with length of '10'")]
         [Display(Name = "Phone")]
         public string? Phone { get; set; }
 

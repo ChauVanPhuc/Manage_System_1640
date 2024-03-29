@@ -21,10 +21,11 @@
                     <tr>
                         <th>Email</th>
                         <th>Full Name</th>
-                        <th>avatar</th>
+                        <th>Avatar</th>
                         <th>Phone</th>
                         <th>Role</th>
                         <th>Faculty</th>
+                        <th>Last Login</th>
                         <th>Status</th>
                         <th></th>
                     </tr>
@@ -57,6 +58,11 @@
                                     @account.Faculty.Name
                                 }
 
+                            </td>
+                            <td>@foreach(var last in account.LastLogins)
+                                {
+                                    @last.History
+                                }
                             </td>
                             <td>
                                 <a asp-area="Admin" asp-controller="Accounts" asp-action="Delete" asp-route-id="@account.Id">
@@ -95,6 +101,7 @@
                         <th>Phone</th>
                         <th>Role</th>
                         <th>Faculty</th>
+                        <th>Last Login</th>
                         <th>Status</th>
                         <th></th>
                     </tr>

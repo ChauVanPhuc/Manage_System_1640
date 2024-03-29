@@ -85,6 +85,7 @@ namespace Manage_System.Areas.Admin.Controllers
             var account = await _db.Users
                 .Include(x => x.Role)
                 .Include(x => x.Faculty)
+                .Include(x => x.LastLogins)
                 .OrderByDescending(x => x.Id)
                 .ToListAsync();
             return View(account);
