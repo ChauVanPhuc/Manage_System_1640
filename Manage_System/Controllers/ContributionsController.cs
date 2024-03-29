@@ -135,6 +135,8 @@ namespace Manage_System.Controllers
                 if (ModelState.IsValid)
                 {
                     var account = HttpContext.Session.GetString("AccountId");
+
+                    
                     Contribution contribution = new Contribution
                     {
                         UserId = int.Parse(account),
@@ -148,7 +150,7 @@ namespace Manage_System.Controllers
 
                    
                         _db.Contributions.Add(contribution);
-                        _db.SaveChanges();
+                        
 
                         string img = null;
                         if (model.ImgFile != null)
@@ -180,8 +182,12 @@ namespace Manage_System.Controllers
 
                                 }else
                                 {
-                                    _notyf.Error("Only accepts Images or files 'doc' and '.docx' ");
-                                }
+                                    var currentYear1 = DateTime.Now.Year;
+                                    ViewData["MagazineId"] = new SelectList(_db.Magazines.Where(m => m.ClosureDay.Value.Year == currentYear1), "Id", "Description").ToList();
+                                    _notyf.Success("Only accepts Images or files 'doc' and '.docx' ");
+                                ViewData["Error"] = "Only accepts Images or files 'doc' and '.docx' ";
+                                    return View(model);
+                            }
 
 
 

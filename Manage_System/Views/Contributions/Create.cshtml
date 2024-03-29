@@ -14,6 +14,12 @@
     </nav>
 </div>
 
+@if(ViewBag.Error != null){
+    <div>
+        @ViewBag.Error
+    </div>
+}
+
 <div class="card">
     <div class="card-body">
         <form id="form-validation" asp-controller="Contributions" asp-action="Create" method="post" enctype="multipart/form-data">

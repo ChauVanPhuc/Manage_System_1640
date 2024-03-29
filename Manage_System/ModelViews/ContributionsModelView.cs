@@ -32,10 +32,12 @@ namespace Manage_System.ModelViews
 
         public virtual List<Comment>? Comments { get; set; }
         public string? Comment { get; set; }
+
         public virtual IEnumerable<ImgFile>? ImgFiles { get; set; }
 
 
         [DataType(DataType.Upload)]
+        //[FileExtensions(Extensions = ".doc,.docx,.jpg,.jpeg,.png", ErrorMessage = "Please upload a valid file format")]
         [Required(ErrorMessage = "Please, Choose File")]
         [NotMapped]
         public IFormFileCollection? ImgFile { get; set; }

@@ -111,7 +111,16 @@
         <div>
             <textarea asp-for="Comment" class="w-100" style="height:150px" placeholder="Enter Comment .........."></textarea>
         </div>
-        <button type="submit" class="btn btn-primary m-r-5 ">Submit</button>
+
+            @if (Model.Magazine.ClosureDay.Value.AddDays(14) > DateTime.Now)
+            {
+                <button type="submit" class="btn btn-primary m-r-5 " disabled>Submit</button>
+            }
+            else
+            {
+                <button type="submit" class="btn btn-primary m-r-5 ">Submit</button>
+            }
+            
         </form>
     </div>
     
