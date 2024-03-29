@@ -40,6 +40,11 @@
                 </div>
             </div>
             <div class="row">
+                <a asp-controller="Contributions" asp-action="DownloadFile" asp-route-id="@Model.Id">Download File<i class="anticon anticon-download"></i></a>
+
+            </div>
+
+            <div class="row">
                 @Model.ShortDescription
             </div>
 

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.IO.Compression;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -21,14 +22,16 @@ namespace Manage_System.Controllers
         private readonly IFileService _formFile;
         private readonly INotyfService _notyf;
         private readonly IEmailService _emailService;
+        private readonly IWebHostEnvironment _env;
 
         public ContributionsController(ManageSystem1640Context db,
-            IFileService formFile, INotyfService notyf, IEmailService emailService)
+            IFileService formFile, INotyfService notyf, IEmailService emailService, IWebHostEnvironment env)
         {
             _db = db;
             _formFile = formFile;
             _notyf = notyf;
-            _emailService = emailService;   
+            _emailService = emailService; 
+            _env = env;
         }
 
         [Route("Student/Contributions")]
@@ -364,5 +367,55 @@ namespace Manage_System.Controllers
 
             return Redirect("/Student/Contributions/Edit/"+ contriId + "");
         }
+
+
+        [Route("/Student/Contributions/DownloadFile/{id:}")]
+        public IActionResult DownloadFile(int id)
+        {
+            var urlFile = _db.ImgFiles
+                .Include(x => x.Contribution)
+                .ThenInclude(x => x.User)
+                .Where(x => x.ContributionId == id)
+                .ToList();
+
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                string userName = "";
+
+                using (ZipArchive archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
+                {
+                    foreach (var file in urlFile)
+                    {
+                        // Đường dẫn đầy đủ của tệp trong tệp Zip
+                        var wwwPath = this._env.WebRootPath;
+                        var entryPath = Path.Combine(wwwPath, "Uploads\\", file.Url);
+
+
+                        var fileInfor = new FileInfo(entryPath);
+
+                        // Tạo entry cho tệp        
+                        var entry = archive.CreateEntry(file.Url);
+
+
+                        using (var entryStream = entry.Open())
+                        using (var fileStream = new FileStream(entryPath, FileMode.Open, FileAccess.Read))
+                        {
+                            fileStream.CopyTo(entryStream);
+                        }
+
+                        userName = (file.Contribution.User.FullName + "_" + file.Contribution.Title).Replace(" ", "_");
+                    }
+
+                }
+
+                // Trả về tệp Zip dưới dạng phản hồi HTTP
+                _notyf.Success("Download File Success");
+                return File(memoryStream.ToArray(), "application/zip", "" + userName.ToString() + ".zip");
+
+            }
+
+
+        }
+
     }
 }

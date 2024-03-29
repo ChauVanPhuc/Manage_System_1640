@@ -11,6 +11,7 @@ using Microsoft.Extensions.FileSystemGlobbing.Internal;
 using System.Data;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 
 namespace Manage_System.Controllers
 {
@@ -20,12 +21,14 @@ namespace Manage_System.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly ManageSystem1640Context _db;
         private readonly INotyfService _notyf;
+        IWebHostEnvironment _env;
 
-        public HomeController(ILogger<HomeController> logger, ManageSystem1640Context db, INotyfService notyf)
+        public HomeController(ILogger<HomeController> logger, ManageSystem1640Context db, INotyfService notyf, IWebHostEnvironment env)
         {
             _logger = logger;
             _db = db;
             _notyf = notyf;
+            _env = env;
         }
 
         [Route("/Student/Person")]
@@ -335,7 +338,53 @@ namespace Manage_System.Controllers
 
         }
 
+        [Route("/Guest/Contributions/DownloadFile/{id:}")]
+        public IActionResult DownloadFile(int id)
+        {
+            var urlFile = _db.ImgFiles
+                .Include(x => x.Contribution)
+                .ThenInclude(x => x.User)
+                .Where(x => x.ContributionId == id)
+                .ToList();
 
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                string userName = "";
+
+                using (ZipArchive archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
+                {
+                    foreach (var file in urlFile)
+                    {
+                        // Đường dẫn đầy đủ của tệp trong tệp Zip
+                        var wwwPath = this._env.WebRootPath;
+                        var entryPath = Path.Combine(wwwPath, "Uploads\\", file.Url);
+
+
+                        var fileInfor = new FileInfo(entryPath);
+
+                        // Tạo entry cho tệp        
+                        var entry = archive.CreateEntry(file.Url);
+
+
+                        using (var entryStream = entry.Open())
+                        using (var fileStream = new FileStream(entryPath, FileMode.Open, FileAccess.Read))
+                        {
+                            fileStream.CopyTo(entryStream);
+                        }
+
+                        userName = (file.Contribution.User.FullName + "_" + file.Contribution.Title).Replace(" ", "_");
+                    }
+
+                }
+
+                // Trả về tệp Zip dưới dạng phản hồi HTTP
+                _notyf.Success("Download File Success");
+                return File(memoryStream.ToArray(), "application/zip", "" + userName.ToString() + ".zip");
+
+            }
+
+
+        }
         public IActionResult Privacy()
         {
             return View();
