@@ -30,6 +30,12 @@
                     <p class="m-b-0 text-muted font-size-13">@Model.SubmissionDate  </p>
                 </div>
             </div>
+
+            <div class="row">
+                <a asp-area="Coordinator" asp-controller="Contribution" asp-action="DownloadFile" asp-route-id="@Model.Id">Download File<i class="anticon anticon-download"></i></a>
+
+            </div>
+
             <div class="row">
                 
                 @foreach (var img in Model.ImgFiles)
