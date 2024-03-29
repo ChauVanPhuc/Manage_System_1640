@@ -45,8 +45,7 @@ namespace Manage_System.Controllers
                 .ToListAsync();
 
             var chats = new List<ChatViewModel>();
-            var users = await _db.Users.Include(x => x.Role).Where(x=> x.Role.Name == "Student" || x.Role.Name == "Coordinator").ToListAsync();
-
+            var users = await _db.Users.Include(x => x.Role).Include(x => x.Faculty).Where(x => x.RoleId == x.Role.Id && x.FacultyId == user.FacultyId && x.Role.Name == "Student" || x.Role.Name == "Coordinator" && x.FacultyId == user.FacultyId).ToListAsync();
             foreach (var i in users)
             {
                 if (i != user)
