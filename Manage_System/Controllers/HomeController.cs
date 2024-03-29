@@ -5,10 +5,12 @@ using Manage_System.ModelViews;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileSystemGlobbing.Internal;
 using System.Data;
 using System.Diagnostics;
+using System.IO;
 
 namespace Manage_System.Controllers
 {
@@ -136,12 +138,30 @@ namespace Manage_System.Controllers
         }
 
         [Route("/Guest")]
-        public IActionResult Guest()
+        public IActionResult Guest(int magazineId = 0)
         {
             var account = HttpContext.Session.GetString("AccountId");
+
             if (account != null)
             {
-                var contributions = _db.Contributions
+               
+                IEnumerable<Contribution> contributions = GetContributions(magazineId);
+                IEnumerable<Magazine> magazines =  _db.Magazines.ToList() ;
+                GuesModelDisplay guesModelDisplay = new GuesModelDisplay
+                {
+                    Contributions = contributions,
+                    Magazines = magazines
+                };
+
+                return View(guesModelDisplay);
+            }
+            return Redirect("/Login");
+
+        }
+
+        private IEnumerable<Contribution> GetContributions(int magazineId)
+        {
+            IEnumerable<Contribution> contribution = _db.Contributions
                 .Include(x => x.ImgFiles)
                 .Include(x => x.Comments)
                 .Include(x => x.Magazine)
@@ -149,10 +169,18 @@ namespace Manage_System.Controllers
                 .Where(x => x.Publics == true)
                 .ToList();
 
-                return View(contributions);
+            if (magazineId != 0)
+            {
+                contribution = _db.Contributions
+                .Include(x => x.ImgFiles)
+                .Include(x => x.Comments)
+                .Include(x => x.Magazine)
+                .Include(x => x.User)
+                .Where(x => x.Publics == true && x.MagazineId == magazineId)
+                .ToList();
             }
-            return Redirect("/Login");
 
+            return contribution;
         }
 
         [Route("Guest/Contributions/Detail/{id:}")]

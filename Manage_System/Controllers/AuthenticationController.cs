@@ -86,8 +86,12 @@ namespace Manage_System.Controllers
                     {
                         new Claim(ClaimTypes.Name, account.FullName),
                         new Claim("AccountId", account.Id.ToString()),
+                        new Claim(ClaimTypes.NameIdentifier, account.Id.ToString()),
                         new Claim(account.Role.Name,account.Role.Name),
                     };
+
+                   
+
                     ClaimsIdentity claims = new ClaimsIdentity(claim, "AccountId"
                         /*Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationDefaults.AuthenticationScheme*/
                         );

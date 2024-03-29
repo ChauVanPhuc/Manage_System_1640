@@ -5,6 +5,7 @@ using Manage_System.Models;
 using Manage_System.Service;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
@@ -52,6 +53,7 @@ builder.Services.AddSignalR();
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 builder.Services.AddNotyf(config => { config.DurationInSeconds = 5; config.IsDismissable = true; config.Position = NotyfPosition.TopRight; });
 
+builder.Services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
 
 
 builder.Services.AddTransient<IFileService, FileService>();

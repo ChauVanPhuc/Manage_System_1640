@@ -2,7 +2,7 @@
 
 @{
 
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutGuest.cshtml";
 }
 
 
@@ -40,14 +40,17 @@
                 </div>
             </div>
             <div class="row">
+                @Model.ShortDescription
+            </div>
+
+            <div class="row">
                 @foreach (var img in Model.ImgFiles)
                 {
                     if (img.Stype == "Img")
                     {
-                        <img alt="" style="height:200px;width:150px" src="~/Uploads/@img.Url">
+                        <img alt="" style="height:200px;width:150px; margin:10px" src="~/Uploads/@img.Url">
 
                     }
-                    
                 }
             </div>
 
@@ -58,36 +61,28 @@
                 {
                     if (img.Stype == "File")
                     {
-                        <span>File</span>
+                        <div class="m-b-25">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="media align-items-center">
+                                    <div class="font-size-35">
+                                        <i class="anticon anticon-file-word text-primary"></i>
+                                    </div>
+                                    <div class="m-l-15">
+                                        <h6 class="m-b-0">
+                                            <a class="text-dark">@img.Url</a>
+                                        </h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                     }
                 }
             </div>
-
-
-
-
             <hr>
-
-
 
         </div>
     </div>
-
-
 </div>
 
 
-
-@*
-<div class="m-t-30">
-    <nav>
-        <ul class="pagination justify-content-end">
-            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-        </ul>
-    </nav>
-</div> *@
