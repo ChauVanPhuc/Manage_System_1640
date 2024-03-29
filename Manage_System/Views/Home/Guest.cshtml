@@ -25,6 +25,7 @@
             <div>
                
                 <select class="form-control"  id="magazineId" name="magazineId">
+                    <option>Choose Magazines</option>
                         @foreach (var genre in Model.Magazines)
                         {                            
                             <option selected="@(genre.Id == Model.magazineId)" value="@genre.Id">@genre.Description @genre.ClosureDay.Value.ToString("yyyy")</option>
@@ -36,7 +37,7 @@
         </div>
 
          <div class="col-2">
-            <a type="submit" asp-controller="Home" asp-action="Guest"class="btn btn-outline-success btn-sm"><i class="anticon anticon-search"></i></a>
+            <button type="submit" asp-controller="Home" asp-action="Guest" class="btn btn-primary"><i class="anticon anticon-search"></i></button>
         </div>
         </div>
         </form>

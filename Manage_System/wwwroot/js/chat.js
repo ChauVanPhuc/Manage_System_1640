@@ -27,6 +27,12 @@ var sendMessage = function (recipient) {
 
     var $text = $("#message-text").val();
 
+    if ($text.trim() === "") {
+        
+        alert("Please, Enter text");
+        return; // Ngăn chặn việc thực hiện yêu cầu AJAX
+    }
+
     $.ajax({
         type: 'POST',
         url: '/Chat/SendMessage',

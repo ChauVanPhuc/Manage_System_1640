@@ -53,7 +53,7 @@
                     <div class="write">
                         <i class="fas fa-paperclip"></i>
                         <input type="hidden" id="myUsername" value="@c.sendvId" />
-                        <textarea id="message-text" style="height: 24px;overflow-y:hidden" placeholder="Write a message..."></textarea>
+                        <textarea id="message-text" required style="height: 24px;overflow-y:hidden" placeholder="Write a message..."></textarea>
                         <i class="far fa-smile"></i>
                         <button id="btn-send" onclick="sendMessage('@c.revId')">
                             <i class="fas fa-paper-plane"></i>
@@ -73,5 +73,7 @@
     <script src="~/js/chat.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="https://kit.fontawesome.com/6eb1355a84.js" crossorigin="anonymous"></script>
+    
+
 
 }
