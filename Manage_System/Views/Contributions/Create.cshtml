@@ -14,16 +14,7 @@
     </nav>
 </div>
 
-@if(ViewBag.Error != null){
-    <div class="toast align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
-            <div class="toast-body">
-                ViewBag.Error
-            </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-    </div>
-}
+
 
 <div class="card">
     <div class="card-body">
@@ -82,6 +73,13 @@
                         File Upload
                     </div>
                     <span asp-validation-for="ImgFile" class="text-danger"></span>
+
+                    @if (ViewBag.Error != null)
+                    {
+                        <div class="alert alert-danger col-lg-4 m-l-10">
+                            @ViewBag.Error
+                        </div>
+                    }
                     <div class="card-body">
                         <input type="file" asp-for="ImgFile" id="file-upload" multiple hidden />
                         <div id="drop-area" class="drop-area border border-primary rounded p-3 mb-2">

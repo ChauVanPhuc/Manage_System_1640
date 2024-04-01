@@ -153,7 +153,7 @@ namespace Manage_System.Controllers
 
                    
                         _db.Contributions.Add(contribution);
-                        
+                        _db.SaveChanges();
 
                         string img = null;
                         if (model.ImgFile != null)
@@ -185,10 +185,13 @@ namespace Manage_System.Controllers
 
                                 }else
                                 {
+                                    _db.Contributions.Remove(contribution);
+                                    _db.SaveChanges();
+
                                     var currentYear1 = DateTime.Now.Year;
                                     ViewData["MagazineId"] = new SelectList(_db.Magazines.Where(m => m.ClosureDay.Value.Year == currentYear1), "Id", "Description").ToList();
-                                    _notyf.Success("Only accepts Images or files 'doc' and '.docx' ");
-                                ViewData["Error"] = "Only accepts Images or files 'doc' and '.docx' ";
+                                    _notyf.Error("Only accepts Images or files 'doc' and '.docx' ");
+                                    ViewData["Error"] = "Only accepts Images or files 'doc' and '.docx' ";
                                     return View(model);
                             }
 
@@ -196,7 +199,7 @@ namespace Manage_System.Controllers
 
                         }
 
-                            _db.SaveChanges();
+                            _db.SaveChangesAsync();
                         }
 
                     var user = _db.Users.Include(x => x.Role).AsNoTracking().SingleOrDefault(x => x.Id == int.Parse(account));
