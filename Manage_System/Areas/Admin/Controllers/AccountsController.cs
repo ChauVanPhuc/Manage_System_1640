@@ -117,7 +117,7 @@ namespace Manage_System.Areas.Admin.Controllers
                 {
 
 
-                    string img = "";
+                    string img = null;
                     if (model.avatar != null)
                     {
                         img = _formFile.SaveImage(model.avatar);
