@@ -27,7 +27,7 @@
                 </div>
                 <div class="m-l-15">
                     <a href="javascript:void(0);" class="text-dark m-b-0 font-weight-semibold">@Model.User.FullName</a>
-                    <p class="m-b-0 text-muted font-size-13">@Model.SubmissionDate  </p>
+                    <p class="m-b-0 text-muted font-size-13">@Model.SubmissionDate.Value.ToShortDateString()  </p>
                 </div>
             </div>
 
@@ -117,14 +117,21 @@
         <div>
             <textarea asp-for="Comment" class="w-100" style="height:150px" placeholder="Enter Comment .........."></textarea>
         </div>
+            @{
+                var submit = Model.SubmissionDate.Value.AddDays(14);
+                var dayNow = DateTime.Now;
+                var timeLeft = submit - dayNow; 
+            }
 
-            @if (Model.Magazine.ClosureDay.Value.AddDays(14) > DateTime.Now)
+            @if (dayNow < submit)
             {
-                <button type="submit" class="btn btn-primary m-r-5 " disabled>Submit</button>
+                <button type="submit" class="btn btn-primary m-r-5">Submit</button>
             }
             else
             {
-                <button type="submit" class="btn btn-primary m-r-5 ">Submit</button>
+            
+                <button type="submit" class="btn btn-primary m-r-5" disabled>Submit</button>
+                <span>@timeLeft.Days days remaining</span>
             }
             
         </form>

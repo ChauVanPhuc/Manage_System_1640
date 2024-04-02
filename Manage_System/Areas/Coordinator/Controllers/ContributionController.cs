@@ -328,7 +328,7 @@ namespace Manage_System.Areas.Coordinator.Controllers
                 }
 
                 // Trả về tệp Zip dưới dạng phản hồi HTTP
-                _notyf.Success("Download File Success");
+                
                 return File(memoryStream.ToArray(), "application/zip", "" + userName.ToString() + ".zip");
 
             }

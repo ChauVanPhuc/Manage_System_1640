@@ -3,11 +3,13 @@ using Manage_System.Extension;
 using Manage_System.models;
 using Manage_System.ModelViews;
 using Manage_System.Service;
+using Manage_System.Views.Profile;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Security.Claims;
 
 namespace Manage_System.Controllers
@@ -25,6 +27,8 @@ namespace Manage_System.Controllers
             _notyf = notyf;
             _fileService = fileService;
         }
+
+       
 
         [Route("/Login")]
         public IActionResult Login()
@@ -90,6 +94,7 @@ namespace Manage_System.Controllers
                         new Claim(account.Role.Name,account.Role.Name),
                     };
 
+                    Information.avatar = account.Avatar;
                    
 
                     ClaimsIdentity claims = new ClaimsIdentity(claim, "AccountId"

@@ -199,7 +199,7 @@ namespace Manage_System.Controllers
 
                         }
 
-                            _db.SaveChangesAsync();
+                            _db.SaveChanges();
                         }
 
                     var user = _db.Users.Include(x => x.Role).AsNoTracking().SingleOrDefault(x => x.Id == int.Parse(account));
@@ -216,7 +216,7 @@ namespace Manage_System.Controllers
                     {
                         foreach (var item in sendEmail)
                         {
-                            _emailService.SendEmailAsync(item.Email, "Contribution new", user.FullName + " has made a new contribution");
+                            await _emailService.SendEmailAsync(item.Email, "Contribution new", user.FullName + " has made a new contribution");
 
                         }
 
@@ -411,8 +411,7 @@ namespace Manage_System.Controllers
 
                 }
 
-                // Trả về tệp Zip dưới dạng phản hồi HTTP
-                _notyf.Success("Download File Success");
+                
                 return File(memoryStream.ToArray(), "application/zip", "" + userName.ToString() + ".zip");
 
             }
