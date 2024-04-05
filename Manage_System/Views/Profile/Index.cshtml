@@ -1,8 +1,16 @@
 ﻿@model Manage_System.ModelViews.ProfileModelDisplay
 
 @{
+    var role = ViewBag.role;
+    if (role == "Student")
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }else 
+    {
+        Layout = "~/Areas/"+role+"/Views/Shared/_Layout.cshtml";
+    }
 
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    
 }
 
 <style>
