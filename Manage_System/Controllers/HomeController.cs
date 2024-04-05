@@ -164,6 +164,9 @@ namespace Manage_System.Controllers
 
         }
 
+
+
+
         private IEnumerable<Contribution> GetContributions(int magazineId)
         {
             IEnumerable<Contribution> contribution = _db.Contributions
@@ -174,6 +177,16 @@ namespace Manage_System.Controllers
                 .Where(x => x.Publics == true)
                 .ToList();
 
+            var faculty = _db.Faculties.Include(c => c.Users).ThenInclude(x => x.Contributions).ToList();
+            var lable = faculty.Select(x => x.Name).ToList();
+
+            var facultyContributionCounts = faculty.Select(f => f.Users
+                                                    .SelectMany(u => u.Contributions)
+                                                    .Where(x => x.Publics == true)
+                                                    .Count())
+                                                    .ToList();
+
+
             if (magazineId != 0)
             {
                 contribution = _db.Contributions
@@ -183,10 +196,17 @@ namespace Manage_System.Controllers
                 .Include(x => x.User)
                 .Where(x => x.Publics == true && x.MagazineId == magazineId)
                 .ToList();
+
+                facultyContributionCounts = faculty.Select(f => f.Users
+                                                     .SelectMany(u => u.Contributions)
+                                                     .Where(x => x.Publics == true && x.MagazineId == magazineId)
+                                                     .Count())
+                                                     .ToList();
+                
             }
 
-            
-            
+            ViewBag.facultyCounts = facultyContributionCounts;
+            ViewBag.facultyName = lable;
 
             return contribution;
         }
