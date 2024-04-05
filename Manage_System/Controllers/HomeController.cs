@@ -146,11 +146,11 @@ namespace Manage_System.Controllers
         public IActionResult Guest(int magazineId = 0)
         {
             var account = HttpContext.Session.GetString("AccountId");
-
+            var user = _db.Users.Include(x => x.Faculty).AsNoTracking().FirstOrDefault(x => x.Id == int.Parse(account));
             if (account != null)
             {
-               
-                IEnumerable<Contribution> contributions = GetContributions(magazineId);
+                int faculty = user.Faculty.Id;  
+                IEnumerable<Contribution> contributions = GetContributions(magazineId, faculty);
                 IEnumerable<Magazine> magazines =  _db.Magazines.ToList() ;
                 GuesModelDisplay guesModelDisplay = new GuesModelDisplay
                 {
@@ -172,12 +172,22 @@ namespace Manage_System.Controllers
 
             if (account != null)
             {
+                var user = _db.Users.Include(x => x.Faculty).AsNoTracking().FirstOrDefault(x => x.Id == int.Parse(account));
+
                 IEnumerable<Contribution> contribution = _db.Contributions
                 .Include(x => x.ImgFiles)
                 .Include(x => x.Comments)
                 .Include(x => x.Magazine)
                 .Include(x => x.User)
-                .Where(x => x.Publics == true)
+                .Where(x => x.Publics == true && x.User.FacultyId == user.FacultyId)
+                .ToList();
+
+                IEnumerable<Contribution> contributions = _db.Contributions
+                .Include(x => x.ImgFiles)
+                .Include(x => x.Comments)
+                .Include(x => x.Magazine)
+                .Include(x => x.User )
+                .Where(x => x.User.FacultyId == user.FacultyId)
                 .ToList();
 
                 IEnumerable<Magazine> magazines = _db.Magazines.ToList();
@@ -187,31 +197,29 @@ namespace Manage_System.Controllers
                 };
 
                 var faculty = _db.Faculties.Include(c => c.Users).ThenInclude(x => x.Contributions).ToList();
-                var lable = faculty.Select(x => x.Name).ToList();
 
                 var facultyContributionCounts = faculty.Select(f => f.Users
                                                         .SelectMany(u => u.Contributions)
-                                                        .Where(x => x.Publics == true)
+                                                        .Where(x => x.Publics == true && x.User.FacultyId == user.FacultyId)
                                                         .Count())
                                                         .ToList();
 
-                var contriApproved = contribution.Where(x => x.Status == "Approved").Count();
-                var contriReject = contribution.Where(x => x.Status == "Reject").Count();
+                var contriApproved = contributions.Where(x => x.Status == "Approved").Count();
+                var contriReject = contributions.Where(x => x.Status == "Reject").Count();
 
                 if (magazineId != 0)
                 {
                     facultyContributionCounts = faculty.Select(f => f.Users
                                                      .SelectMany(u => u.Contributions)
-                                                     .Where(x => x.Publics == true && x.MagazineId == magazineId)
+                                                     .Where(x => x.Publics == true && x.MagazineId == magazineId && x.User.FacultyId == user.FacultyId)
                                                      .Count())
                                                      .ToList();
 
-                    contriApproved = contribution.Where(x => x.Status == "Approved" && x.MagazineId == magazineId).Count();
-                    contriReject = contribution.Where(x => x.Status == "Reject" && x.MagazineId == magazineId).Count();
+                    contriApproved = contributions.Where(x => x.Status == "Approved" && x.MagazineId == magazineId && x.User.FacultyId == user.FacultyId).Count();
+                    contriReject = contributions.Where(x => x.Status == "Reject" && x.MagazineId == magazineId && x.User.FacultyId == user.FacultyId).Count();
                 }
 
                 ViewBag.facultyCounts = facultyContributionCounts;
-                ViewBag.facultyName = lable;
 
                 ViewBag.contriApproved = contriApproved;
                 ViewBag.contriReject = contriReject;
@@ -222,14 +230,15 @@ namespace Manage_System.Controllers
 
         }
 
-        private IEnumerable<Contribution> GetContributions(int magazineId)
+        private IEnumerable<Contribution> GetContributions(int magazineId, int facultyId)
         {
+
             IEnumerable<Contribution> contribution = _db.Contributions
                 .Include(x => x.ImgFiles)
                 .Include(x => x.Comments)
                 .Include(x => x.Magazine)
                 .Include(x => x.User)
-                .Where(x => x.Publics == true)
+                .Where(x => x.Publics == true && x.User.FacultyId == facultyId)
                 .ToList();
 
 
@@ -241,7 +250,7 @@ namespace Manage_System.Controllers
                 .Include(x => x.Comments)
                 .Include(x => x.Magazine)
                 .Include(x => x.User)
-                .Where(x => x.Publics == true && x.MagazineId == magazineId)
+                .Where(x => x.Publics == true && x.MagazineId == magazineId && x.User.FacultyId == facultyId)
                 .ToList();
                 
             }

@@ -169,6 +169,11 @@ namespace Manage_System.Areas.Coordinator.Controllers
                     {
                         contri.Status = "Reject";
 
+                        if (contri.Publics == true)
+                        {
+                            contri.Publics = false;
+                        }
+
                         var contributions = _db.Contributions.AsNoTracking().SingleOrDefault(x => x.Id == id);
                         var account = HttpContext.Session.GetString("AccountId");
                         var user = _db.Users.AsNoTracking().SingleOrDefault(x => x.Id == int.Parse(account));

@@ -37,7 +37,7 @@
             <div class="card col-lg-6">
                 <div class="card-body">
                     <div style="text-align:center">
-                        <h6>Contributions</h6>
+                        <h6>Number of contributions within each Faculty for each academic year.</h6>
                         <canvas id="ContributionsChart"></canvas>
                     </div>
 
@@ -89,13 +89,24 @@
                 }]
             },
             options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                const total = context.dataset.data.reduce((prev, curr) => prev + curr, 0);
+                                const currentValue = context.raw;
+                                const percentage = Math.round((currentValue / total) * 100);
+                                label += `${percentage}%`;
+                                return label;
+                            }
                         }
-                    }]
-                }
+                    }
+                },
+                // ... other options
             }
         });
 

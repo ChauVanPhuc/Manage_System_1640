@@ -72,7 +72,7 @@
 
             type: 'pie',
             data: {
-                labels: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.facultyName)),
+                labels: ['Publish'],
                 datasets: [{
                     label: 'Number of Contributions',
                     data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.facultyCounts)),
@@ -136,13 +136,24 @@
                 }]
             },
             options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                const total = context.dataset.data.reduce((prev, curr) => prev + curr, 0);
+                                const currentValue = context.raw;
+                                const percentage = Math.round((currentValue / total) * 100);
+                                label += `${percentage}%`;
+                                return label;
+                            }
                         }
-                    }]
-                }
+                    }
+                },
+                // ... other options
             }
         });
 

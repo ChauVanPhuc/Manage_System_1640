@@ -25,7 +25,7 @@
 
     @foreach (var item in Model)
     {
-        <div class="card">
+        <div class="card" style="background-color:#dbecf4">
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-4">
@@ -43,25 +43,25 @@
                         <div class="row">
                         <h4 class="m-b-10 col-10">@item.Title</h4>
                         @if(item.Status == "Processing"){
-                                <p class="m-b-10 col-2 text-center alert alert-warning bold" style="color:black">@item.Status</p>
+                                <p class=" m-t-5 m-b-10 col-5 text-center alert alert-warning bold" style="color:black">@item.Status</p>
                             }
                             else if (item.Status == "Approved")
                             {
                                 if (item.Publics == true)
                                 {
-                                    <p class="m-b-10 col-2 text-center alert alert-success bold avatar-cyan" style="color:green">
+                                    <p class="m-t-5 m-b-10 col-5 text-center alert alert-success bold avatar-cyan" style="color:green">
                                         <i class="anticon anticon-check-circle"></i>
                                         Publish
                                     </p>
                                 }
                                 else
                                 {
-                                    <p class="m-b-10 col-2 text-center alert alert-success bold" style="color:blue">@item.Status</p>
+                                    <p class="m-t-5 m-b-10 col-5 text-center alert alert-success bold" style="color:blue">@item.Status</p>
                                 }
                             }
                             else
                             {
-                                <p class="m-b-10 col-2 text-center alert alert-danger bold" style="color:red">@item.Status</p>
+                                <p class="m-t-5 m-b-10 col-5 text-center alert alert-danger bold" style="color:red">@item.Status</p>
                             }
 
                         </div>

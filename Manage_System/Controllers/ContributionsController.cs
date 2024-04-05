@@ -209,7 +209,7 @@ namespace Manage_System.Controllers
                                       on users.FacultyId equals Faculty.Id
                                       join role in _db.Roles
                                       on users.RoleId equals role.Id
-                                      where role.Name == "Coordinator"
+                                      where role.Name == "Coordinator" && Faculty.Id == user.FacultyId
                                            select users).ToList();
 
                     if (sendEmail != null)
