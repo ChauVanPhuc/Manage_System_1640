@@ -115,8 +115,6 @@ namespace Manage_System.Areas.Admin.Controllers
             {
                 if (ModelState.IsValid)
                 {
-
-
                     string img = null ;
                     if (model.avatar != null)
                     {
