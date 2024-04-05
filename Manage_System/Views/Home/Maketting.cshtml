@@ -1,6 +1,144 @@
-﻿@{
+﻿@model IEnumerable<Manage_System.models.Magazine>
+
+@{
 
     Layout = "~/Areas/Maketting/Views/Shared/_Layout.cshtml";
 }
 
-<H5>maketting</H5>
+<H5>Maketting</H5>
+
+<div class="card">
+    <div class="card-body">
+        <form>
+            <label class="visually-hidden" for="magazineId">Magazine</label>
+            <div class="row">
+                <div class="form-group col-lg-4">
+                    <div>
+
+                        <select class="form-control" id="magazineId" name="magazineId">
+                            <option>Choose Magazines</option>
+                            @foreach (var genre in Model)
+                            {
+                                <option value="@genre.Id">@genre.Description @* @genre.ClosureDay.Value.ToString("yyyy") *@</option>
+                            }
+                        </select>
+
+                    </div>
+
+                </div>
+
+                <div class="col-2">
+                    <button type="submit" asp-controller="Home" asp-action="Maketting" class="btn btn-primary"><i class="anticon anticon-search"></i></button>
+                </div>
+            </div>
+        </form>
+
+        <div class="row">
+            <div class="card col-lg-6">
+                <div class="card-body">
+                    <div style="text-align:center">
+                        <h6>Contributions</h6>
+                        <canvas id="ContributionsChart"></canvas>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card col-lg-6">
+                <div class="card-body">
+                    <div style="text-align:center">
+                        <h6>Contributions Status</h6>
+                        <canvas id="ContributionsStatusChart"></canvas>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var ctx = document.getElementById('ContributionsChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+
+            type: 'pie',
+            data: {
+                labels: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.facultyName)),
+                datasets: [{
+                    label: 'Number of Contributions',
+                    data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.facultyCounts)),
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+
+    </script>
+
+    <script>
+        var ctx = document.getElementById('ContributionsStatusChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+
+            type: 'pie',
+            data: {
+                labels: ['Publish', 'Reject'],
+                datasets: [{
+                    label: 'Number of Contributions',
+                    data: [@ViewBag.contriPublish, @ViewBag.contriReject],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+
+    </script>
+}

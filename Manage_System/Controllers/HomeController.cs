@@ -350,14 +350,57 @@ namespace Manage_System.Controllers
 
         [Route("/Maketting")]
         [Authorize(Policy = "Maketting")]
-        public IActionResult Maketting()
+        public IActionResult Maketting(int magazineId = 0)
         {
             var account = HttpContext.Session.GetString("AccountId");
+
             if (account != null)
             {
-                return View();
+                IEnumerable<Contribution> contribution = _db.Contributions
+                .Include(x => x.ImgFiles)
+                .Include(x => x.Comments)
+                .Include(x => x.Magazine)
+                .Include(x => x.User)
+                .Where(x => x.Status == "Approved")
+                .ToList();
+
+                IEnumerable<Magazine> magazines = _db.Magazines.ToList();
+                
+
+                var faculty = _db.Faculties.Include(c => c.Users).ThenInclude(x => x.Contributions).ToList();
+                var lable = faculty.Select(x => x.Name).ToList();
+
+                var facultyContributionCounts = faculty.Select(f => f.Users
+                                                        .SelectMany(u => u.Contributions)
+                                                        .Where(x => x.Status == "Approved")
+                                                        .Count())
+                                                        .ToList();
+
+                var contriPublish = contribution.Where(x => x.Publics == true).Count();
+                var contriReject = contribution.Where(x => x.Publics == false).Count();
+
+                if (magazineId != 0)
+                {
+                    facultyContributionCounts = faculty.Select(f => f.Users
+                                                     .SelectMany(u => u.Contributions)
+                                                     .Where(x => x.Status == "Approved" && x.MagazineId == magazineId)
+                                                     .Count())
+                                                     .ToList();
+
+                    contriPublish = contribution.Where(x => x.Publics ==  true && x.MagazineId == magazineId).Count();
+                    contriReject = contribution.Where(x => x.Publics == false && x.MagazineId == magazineId).Count();
+                }
+
+                ViewBag.facultyCounts = facultyContributionCounts;
+                ViewBag.facultyName = lable;
+
+                ViewBag.contriPublish = contriPublish;
+                ViewBag.contriReject = contriReject;
+
+                return View(magazines);
             }
             return Redirect("/Login");
+
 
         }
 
