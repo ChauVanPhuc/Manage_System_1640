@@ -411,14 +411,14 @@ namespace Manage_System.Controllers
             var account = HttpContext.Session.GetString("AccountId");
             if (account != null)
             {
-                var contributions = _db.Contributions
+               /* var contributions = _db.Contributions
                     .Include(x => x.ImgFiles)
                     .Include(x => x.Comments)
                     .Include(x => x.Magazine)
                     .Include(x => x.User)
                     .Where(x => x.UserId == int.Parse(account) && x.Publics == true)
                     .OrderByDescending(x => x.Id)
-                    .ToList();
+                    .ToList();*/
 
                 var contri = _db.Contributions.Where(x => x.UserId == int.Parse(account)).ToList();
 
@@ -443,8 +443,9 @@ namespace Manage_System.Controllers
                 var comment = _db.Comments.Where(x => x.UserId == int.Parse(account)).ToList();
                 ViewBag.totalcomment = comment.Count();
 
+                ViewBag.totalPublish = _db.Contributions.Where(x => x.Publics == true).Count();
 
-                return View(contributions);
+                return View();
             }
             return Redirect("/Login");
 

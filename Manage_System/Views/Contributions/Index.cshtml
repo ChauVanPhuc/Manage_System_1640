@@ -47,7 +47,17 @@
                             }
                             else if (item.Status == "Approved")
                             {
-                                <p class="m-b-10 col-2 text-center alert alert-success bold" style="color:blue">@item.Status</p>
+                                if (item.Publics == true)
+                                {
+                                    <p class="m-b-10 col-2 text-center alert alert-success bold avatar-cyan" style="color:green">
+                                        <i class="anticon anticon-check-circle"></i>
+                                        Publish
+                                    </p>
+                                }
+                                else
+                                {
+                                    <p class="m-b-10 col-2 text-center alert alert-success bold" style="color:blue">@item.Status</p>
+                                }
                             }
                             else
                             {
