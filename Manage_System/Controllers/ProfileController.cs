@@ -3,6 +3,7 @@ using Manage_System.Extension;
 using Manage_System.models;
 using Manage_System.ModelViews;
 using Manage_System.Service;
+using Manage_System.Views.Profile;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -90,6 +91,7 @@ namespace Manage_System.Controllers
                     }
 
                     user.Avatar = img;
+                    Information.avatar = img;
                 }
 
                 user.FullName = model.Infor.FullName;

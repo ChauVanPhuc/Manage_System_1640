@@ -120,7 +120,7 @@
             @{
                 var submit = Model.SubmissionDate.Value.AddDays(14);
                 var dayNow = DateTime.Now;
-                var timeLeft = submit - dayNow; 
+                
             }
 
             @if (dayNow < submit)
@@ -131,7 +131,7 @@
             {
             
                 <button type="submit" class="btn btn-primary m-r-5" disabled>Submit</button>
-                <span>@timeLeft.Days days remaining</span>
+                
             }
             
         </form>

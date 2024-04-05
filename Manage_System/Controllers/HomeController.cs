@@ -31,7 +31,9 @@ namespace Manage_System.Controllers
             _env = env;
         }
 
+
         [Route("/Student/Person")]
+        [Authorize(Policy = "Student")]
         public async Task<IActionResult> Person()
         {
             var account = HttpContext.Session.GetString("AccountId");
@@ -80,6 +82,7 @@ namespace Manage_System.Controllers
         }
 
         [Route("/Student/Chat/{id:}")]
+        [Authorize(Policy = "Student")]
         public async Task<IActionResult> Chat(int id)
         {
             var account = HttpContext.Session.GetString("AccountId");
@@ -186,6 +189,7 @@ namespace Manage_System.Controllers
         }
 
         [Route("Guest/Contributions/Detail/{id:}")]
+
         public IActionResult ContriDetail(int id)
         {
 
@@ -242,6 +246,7 @@ namespace Manage_System.Controllers
 
 
         [Route("/Admin")]
+        [Authorize(Policy = "Admin")]
         public IActionResult Admin()
         {
             var account = HttpContext.Session.GetString("AccountId");
@@ -270,6 +275,7 @@ namespace Manage_System.Controllers
         }
 
         [Route("/Coordinator")]
+        [Authorize(Policy = "Coordinator")]
         public IActionResult Coordinator()
         {
             var account = HttpContext.Session.GetString("AccountId");
@@ -282,6 +288,7 @@ namespace Manage_System.Controllers
         }
 
         [Route("/Maketting")]
+        [Authorize(Policy = "Maketting")]
         public IActionResult Maketting()
         {
             var account = HttpContext.Session.GetString("AccountId");
@@ -294,6 +301,7 @@ namespace Manage_System.Controllers
         }
 
         [Route("/Student")]
+        [Authorize(Policy = "Student")]
         public IActionResult Student()
         {
             var account = HttpContext.Session.GetString("AccountId");

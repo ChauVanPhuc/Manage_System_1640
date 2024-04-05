@@ -40,7 +40,21 @@
                         
                     </div>
                     <div class="col-md-8">
-                        <h4 class="m-b-10">@item.Title</h4>
+                        <div class="row">
+                        <h4 class="m-b-10 col-10">@item.Title</h4>
+                        @if(item.Status == "Processing"){
+                                <p class="m-b-10 col-2 text-center alert alert-warning bold" style="color:black">@item.Status</p>
+                            }
+                            else if (item.Status == "Approved")
+                            {
+                                <p class="m-b-10 col-2 text-center alert alert-success bold" style="color:blue">@item.Status</p>
+                            }
+                            else
+                            {
+                                <p class="m-b-10 col-2 text-center alert alert-danger bold" style="color:red">@item.Status</p>
+                            }
+
+                        </div>
                         <div class="d-flex align-items-center m-t-5 m-b-15">
                             <div class="avatar avatar-image avatar-sm">
                                 @if(item.User.Avatar != null){

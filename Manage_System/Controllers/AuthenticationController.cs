@@ -28,8 +28,6 @@ namespace Manage_System.Controllers
             _fileService = fileService;
         }
 
-       
-
         [Route("/Login")]
         public IActionResult Login()
         {
@@ -95,7 +93,6 @@ namespace Manage_System.Controllers
                     };
 
                     Information.avatar = account.Avatar;
-                   
 
                     ClaimsIdentity claims = new ClaimsIdentity(claim, "AccountId"
                         /*Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationDefaults.AuthenticationScheme*/
@@ -106,7 +103,7 @@ namespace Manage_System.Controllers
 
                     
 
-                    var lastlogin = await _db.LastLogins.AsNoTracking().FirstOrDefaultAsync(x => x.UserId == account.Id);
+                    LastLogin lastlogin = await _db.LastLogins.AsNoTracking().FirstOrDefaultAsync(x => x.UserId == account.Id);
 
                     
                     
@@ -127,12 +124,14 @@ namespace Manage_System.Controllers
                     else
                     {
                         _notyf.Success("Login Success");
-                        lastlogin.History = DateTime.Now;
                         
-                        _db.Update(lastlogin);
-                        _db.SaveChanges();
 
                         TempData["TextLogin"] = "Wellcom Back";
+                        TempData["TextLastLogin"] = "Last Login: "+lastlogin.History+" ";
+                        lastlogin.History = DateTime.Now;
+
+                        _db.Update(lastlogin);
+                        _db.SaveChanges();
                     }
 
 
