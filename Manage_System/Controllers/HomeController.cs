@@ -337,15 +337,61 @@ namespace Manage_System.Controllers
 
         [Route("/Coordinator")]
         [Authorize(Policy = "Coordinator")]
-        public IActionResult Coordinator()
+        public IActionResult Coordinator(int magazineId = 0)
         {
             var account = HttpContext.Session.GetString("AccountId");
+
+            User u = _db.Users.SingleOrDefault(x => x.Id == int.Parse(account));
             if (account != null)
             {
-                return View();
+                var facultyId = _db.Faculties.AsNoTracking().SingleOrDefault(x => x.Id == u.FacultyId);
+
+                var contributions = _db.Contributions
+                    .Include(x => x.ImgFiles)
+                    .Include(x => x.Comments)
+                    .Include(x => x.Magazine)
+                    .Include(x => x.User)
+                    .ThenInclude(x => x.Faculty)
+                    .Where(x => x.User.FacultyId == x.User.Faculty.Id && x.User.Faculty.Id == facultyId.Id)
+                    .OrderByDescending(x => x.Id)
+                    .ToList();
+
+                IEnumerable<Magazine> magazines = _db.Magazines.ToList();
+
+                var stu = _db.Users
+                    .Include(x => x.Role)
+                    .Include(x => x.Faculty)
+                    .Include(x => x.Contributions)
+                    .Where(x => x.Role.Name == "Student" && x.Faculty.Id == u.FacultyId).ToList();
+
+                var stuName = stu.Select(x => x.FullName).ToList();
+                var contriCount = stu.Select(f => f.Contributions.Count()).ToList();
+
+                var contriApproved = contributions.Where(x => x.Status == "Approved").Count();
+                var contriReject = contributions.Where(x => x.Status == "Reject").Count();
+                var contriProcessing = contributions.Where(x => x.Status == "Processing").Count();
+
+                if (magazineId != 0)
+                {
+                   contriCount = stu.Select(f => f.Contributions.Where(x => x.Magazine.Id == magazineId).Count()).ToList();
+
+                   contriProcessing = contributions.Where(x => x.Status == "Processing" && x.MagazineId == magazineId).Count();
+                   contriReject = contributions.Where(x => x.Status == "Reject" && x.MagazineId == magazineId).Count();
+                   contriApproved = contributions.Where(x => x.Status == "Approved" && x.MagazineId == magazineId).Count();
+                }
+
+               
+                ViewBag.stuName = stuName;
+                ViewBag.contriCount = contriCount;
+
+                ViewBag.contriApproved = contriApproved;
+                ViewBag.contriProcessing = contriProcessing;
+                ViewBag.contriReject = contriReject;
+
+
+                return View(magazines);
             }
             return Redirect("/Login");
-
         }
 
         [Route("/Maketting")]

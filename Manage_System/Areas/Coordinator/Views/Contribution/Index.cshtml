@@ -22,6 +22,7 @@
                         <th>Title</th>
                         <th>Short Description</th>
                         <th>submissionDate</th>
+                        <th>Magazine</th>
                         <th>status</th>
                         <th></th>
                         <th></th>
@@ -44,6 +45,7 @@
         -webkit-box-orient: vertical;">
                                 @contribution.ShortDescription</td>
                             <td>@contribution.SubmissionDate</td>
+                            <td>@contribution.Magazine.Description</td>
                             <td>@contribution.Status</td>
                             <td>
                                 <a asp-controller="Contribution" asp-action="Allow" asp-route-id="@contribution.Id">
@@ -71,6 +73,7 @@
                         <th>Title</th>
                         <th>Short Description</th>
                         <th>submissionDate</th>
+                        <th>Magazine</th>
                         <th>status</th>
                         <th></th>
                         <th></th>
