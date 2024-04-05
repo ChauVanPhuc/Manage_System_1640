@@ -37,9 +37,13 @@ namespace Manage_System.Controllers
                 return Redirect("/Login");
             }
 
-            var user = _db.Users.Find(int.Parse(account));
+            var user = _db.Users.Include(x => x.Role).AsNoTracking().FirstOrDefault(x=> x.Id == int.Parse(account));
 
 
+            if(user.Role != null){
+                var role = user.Role.Name;
+                ViewData["Role"] = role;
+            }
 
             ProfileModelDisplay model = new ProfileModelDisplay
             {
