@@ -180,6 +180,12 @@ namespace Manage_System.Controllers
                 .Where(x => x.Publics == true)
                 .ToList();
 
+                IEnumerable<Magazine> magazines = _db.Magazines.ToList();
+                GuesModelDisplay guesModelDisplay = new GuesModelDisplay
+                {
+                    Magazines = magazines
+                };
+
                 var faculty = _db.Faculties.Include(c => c.Users).ThenInclude(x => x.Contributions).ToList();
                 var lable = faculty.Select(x => x.Name).ToList();
 
@@ -188,6 +194,10 @@ namespace Manage_System.Controllers
                                                         .Where(x => x.Publics == true)
                                                         .Count())
                                                         .ToList();
+
+                var contriApproved = contribution.Where(x => x.Status == "Approved").Count();
+                var contriReject = contribution.Where(x => x.Status == "Reject").Count();
+
                 if (magazineId != 0)
                 {
                     facultyContributionCounts = faculty.Select(f => f.Users
@@ -195,12 +205,18 @@ namespace Manage_System.Controllers
                                                      .Where(x => x.Publics == true && x.MagazineId == magazineId)
                                                      .Count())
                                                      .ToList();
+
+                    contriApproved = contribution.Where(x => x.Status == "Approved" && x.MagazineId == magazineId).Count();
+                    contriReject = contribution.Where(x => x.Status == "Reject" && x.MagazineId == magazineId).Count();
                 }
 
                 ViewBag.facultyCounts = facultyContributionCounts;
                 ViewBag.facultyName = lable;
 
-                return View();
+                ViewBag.contriApproved = contriApproved;
+                ViewBag.contriReject = contriReject;
+
+                return View(guesModelDisplay);
             }
             return Redirect("/Login");
 
@@ -216,14 +232,6 @@ namespace Manage_System.Controllers
                 .Where(x => x.Publics == true)
                 .ToList();
 
-            var faculty = _db.Faculties.Include(c => c.Users).ThenInclude(x => x.Contributions).ToList();
-            var lable = faculty.Select(x => x.Name).ToList();
-
-            var facultyContributionCounts = faculty.Select(f => f.Users
-                                                    .SelectMany(u => u.Contributions)
-                                                    .Where(x => x.Publics == true)
-                                                    .Count())
-                                                    .ToList();
 
 
             if (magazineId != 0)
@@ -235,17 +243,8 @@ namespace Manage_System.Controllers
                 .Include(x => x.User)
                 .Where(x => x.Publics == true && x.MagazineId == magazineId)
                 .ToList();
-
-                facultyContributionCounts = faculty.Select(f => f.Users
-                                                     .SelectMany(u => u.Contributions)
-                                                     .Where(x => x.Publics == true && x.MagazineId == magazineId)
-                                                     .Count())
-                                                     .ToList();
                 
             }
-
-            ViewBag.facultyCounts = facultyContributionCounts;
-            ViewBag.facultyName = lable;
 
             return contribution;
         }
