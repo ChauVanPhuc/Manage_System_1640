@@ -195,8 +195,6 @@ namespace Manage_System.Controllers
                                     return View(model);
                             }
 
-
-
                         }
 
                             _db.SaveChanges();

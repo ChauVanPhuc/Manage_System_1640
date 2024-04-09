@@ -61,21 +61,21 @@ namespace Manage_System.Controllers
                     if (account == null)
                     {
                         _notyf.Error("Account is not registered ");
-                        return Redirect("/Login");
+                        return View();
                     }
 
                     string password = HashMD5.ToMD5(model.Password);
                     if (account.Password != password)
                     {
                         _notyf.Error("Invalid information");
-                        return Redirect("/Login");
+                        return View();
                     }
 
                     ////check account disable ?
                     if (account.Status == false)
                     {
                         _notyf.Error("Account Block");
-                        return Redirect("/Login");
+                        return View();
                     }
 
 
@@ -143,7 +143,7 @@ namespace Manage_System.Controllers
             catch
             {
                 _notyf.Success("Login Fail");
-                return Redirect("/Login");
+                return View(model);
             }
             _notyf.Success("Login Fail");
             return View(model);

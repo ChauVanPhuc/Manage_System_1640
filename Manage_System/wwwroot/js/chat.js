@@ -2,10 +2,8 @@
 
 var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build(),
     connectionId;
-
 //Disable send button until connection is established
 $("#sendButton").disabled = true;
-
 connection.start().then(function () {
     $("#sendButton").disabled = false;
     connection.invoke('getConnectionId', $('#myUsername').val())
@@ -15,13 +13,11 @@ connection.start().then(function () {
 }).catch(function (err) {
     return console.error(err.toString());
 });
-
 connection.on("RecieveMessage", function (message, time) {
     $('.chat-wrapper.shown .chat').append('<div class="bubble other"><span class="message-text">' + message + ' </span>'
         + '<span class="message-time">' + time + '</span></div>');
     scrollToBottom();
 })
-
 var sendMessage = function (recipient) {
     event.preventDefault();
 

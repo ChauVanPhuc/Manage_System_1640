@@ -498,7 +498,7 @@ namespace Manage_System.Controllers
                 var comment = _db.Comments.Where(x => x.UserId == int.Parse(account)).ToList();
                 ViewBag.totalcomment = comment.Count();
 
-                ViewBag.totalPublish = _db.Contributions.Where(x => x.Publics == true).Count();
+                ViewBag.totalPublish = _db.Contributions.Include(x => x.User).Where(x => x.Publics == true && x.UserId == int.Parse(account)).Count();
 
                 return View();
             }

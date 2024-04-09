@@ -112,7 +112,9 @@
 
 
 @section Scripts {
-
+    <script>
+        @await Component.InvokeAsync("Notyf");
+    </script>
     <script>
         // Get the checkbox and submit button elements
         const agreeCheckbox = document.getElementById('check');
