@@ -55,6 +55,18 @@
             </div>
         </div>
 
+        <div class="row">
+            <div class="card col-lg-12">
+                <div class="card-body">
+                    <div style="text-align:center">
+                        <h6>Contributions Comment</h6>
+                        <canvas id="ContributionsCommentChart"></canvas>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
 
     </div>
 </div>
@@ -88,13 +100,76 @@
                 }]
             },
             options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                const total = context.dataset.data.reduce((prev, curr) => prev + curr, 0);
+                                const currentValue = context.raw;
+                                const percentage = Math.round((currentValue / total) * 100);
+                                // Now add both the currentValue and the percentage to the label
+                                label += `${currentValue} (${percentage}%)`;
+                                return label;
+                            }
                         }
-                    }]
-                }
+                    },
+                },
+                // ... other options
+            }
+        });
+
+    </script>
+    <script>
+        var ctx = document.getElementById('ContributionsCommentChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Contributions without a comment', 'Contributions without a comment after 14 days', 'Contributions alreadly have comments'],
+                datasets: [{
+                    label: 'Number of Contributions',
+                    data: [@ViewBag.numberComment, @ViewBag.numberComment14Day , @ViewBag.numberNotComment],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                const total = context.dataset.data.reduce((prev, curr) => prev + curr, 0);
+                                const currentValue = context.raw;
+                                const percentage = Math.round((currentValue / total) * 100);
+                                // Now add both the currentValue and the percentage to the label
+                                label += `${currentValue} (${percentage}%)`;
+                                return label;
+                            }
+                        }
+                    },
+                },
+                // ... other options
             }
         });
 
@@ -129,13 +204,25 @@
                 }]
             },
             options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                const total = context.dataset.data.reduce((prev, curr) => prev + curr, 0);
+                                const currentValue = context.raw;
+                                const percentage = Math.round((currentValue / total) * 100);
+                                // Now add both the currentValue and the percentage to the label
+                                label += `${currentValue} (${percentage}%)`;
+                                return label;
+                            }
                         }
-                    }]
-                }
+                    },
+                },
+                // ... other options
             }
         });
 

@@ -2,6 +2,7 @@
 using Manage_System.models;
 using Manage_System.Models;
 using Manage_System.ModelViews;
+using Manage_System.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +13,7 @@ using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
+using System.Text.Encodings.Web;
 
 namespace Manage_System.Controllers
 {
@@ -22,13 +24,16 @@ namespace Manage_System.Controllers
         private readonly ManageSystem1640Context _db;
         private readonly INotyfService _notyf;
         IWebHostEnvironment _env;
+        private readonly IEmailService _email;
 
-        public HomeController(ILogger<HomeController> logger, ManageSystem1640Context db, INotyfService notyf, IWebHostEnvironment env)
+        public HomeController(ILogger<HomeController> logger,
+            ManageSystem1640Context db, INotyfService notyf, IWebHostEnvironment env, IEmailService email)
         {
             _logger = logger;
             _db = db;
             _notyf = notyf;
             _env = env;
+            _email = email;
         }
 
 
@@ -197,21 +202,22 @@ namespace Manage_System.Controllers
                 };
 
                 var faculty = _db.Faculties.Include(c => c.Users).ThenInclude(x => x.Contributions).ToList();
+              
+                var lable = faculty.Select(x => x.Name).ToList();
+                var contriApproved = contributions.Where(x => x.Status == "Approved").Count();
+                var contriReject = contributions.Where(x => x.Status == "Reject").Count();
 
                 var facultyContributionCounts = faculty.Select(f => f.Users
                                                         .SelectMany(u => u.Contributions)
-                                                        .Where(x => x.Publics == true && x.User.FacultyId == user.FacultyId)
+                                                        .Where(x => x.Status == "Approved")
                                                         .Count())
                                                         .ToList();
-
-                var contriApproved = contributions.Where(x => x.Status == "Approved").Count();
-                var contriReject = contributions.Where(x => x.Status == "Reject").Count();
 
                 if (magazineId != 0)
                 {
                     facultyContributionCounts = faculty.Select(f => f.Users
                                                      .SelectMany(u => u.Contributions)
-                                                     .Where(x => x.Publics == true && x.MagazineId == magazineId && x.User.FacultyId == user.FacultyId)
+                                                     .Where(x => x.Status == "Approved" && x.MagazineId == magazineId)
                                                      .Count())
                                                      .ToList();
 
@@ -220,6 +226,8 @@ namespace Manage_System.Controllers
                 }
 
                 ViewBag.facultyCounts = facultyContributionCounts;
+                ViewBag.facultyName = lable;
+
 
                 ViewBag.contriApproved = contriApproved;
                 ViewBag.contriReject = contriReject;
@@ -397,6 +405,17 @@ namespace Manage_System.Controllers
                 ViewBag.contriProcessing = contriProcessing;
                 ViewBag.contriReject = contriReject;
 
+                ViewBag.numberComment = contributions
+                                       .Where(c => c.Comments.Any() )
+                                       .Count();
+
+                ViewBag.numberComment14Day = contributions
+                                      .Where(c => !c.Comments.Any() && c.SubmissionDate.Value.AddDays(14) < DateTime.Now)
+                                      .Count();
+
+                ViewBag.numberNotComment = contributions
+                                       .Where(c => !c.Comments.Any() && c.SubmissionDate.Value.AddDays(14) > DateTime.Now)
+                                       .Count();
 
                 return View(magazines);
             }
@@ -563,5 +582,9 @@ namespace Manage_System.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+
+        
+
     }
 }

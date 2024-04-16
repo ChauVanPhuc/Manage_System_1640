@@ -40,7 +40,6 @@ namespace Manage_System.Areas.Admin.ModelView
         [Display(Name = "Phone")]
         public string? Phone { get; set; }
 
-        [Display(Name = "Birthday")]
        
         public int? roleId { get; set; }
         public int? facultyId { get; set; }

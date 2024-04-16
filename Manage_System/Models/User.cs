@@ -25,6 +25,10 @@ public partial class User
 
     public string? Avatar { get; set; }
 
+    public string? PasswordResetToken { get; set; }
+
+    public DateTime? TokenExpiration { get; set; }
+
     public virtual ICollection<Comment> Comments { get; } = new List<Comment>();
 
     public virtual ICollection<Contribution> Contributions { get; } = new List<Contribution>();

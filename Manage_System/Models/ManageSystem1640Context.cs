@@ -37,7 +37,6 @@ public partial class ManageSystem1640Context : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Comment>(entity =>
@@ -266,12 +265,18 @@ public partial class ManageSystem1640Context : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("password");
+            entity.Property(e => e.PasswordResetToken)
+                .IsUnicode(false)
+                .HasColumnName("passwordResetToken");
             entity.Property(e => e.Phone)
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("phone");
             entity.Property(e => e.RoleId).HasColumnName("roleId");
             entity.Property(e => e.Status).HasColumnName("status");
+            entity.Property(e => e.TokenExpiration)
+                .HasColumnType("datetime")
+                .HasColumnName("tokenExpiration");
 
             entity.HasOne(d => d.Faculty).WithMany(p => p.Users)
                 .HasForeignKey(d => d.FacultyId)

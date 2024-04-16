@@ -6,11 +6,13 @@ using Manage_System.Service;
 using Manage_System.Views.Profile;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Security.Claims;
+using System.Text.Encodings.Web;
 
 namespace Manage_System.Controllers
 {
@@ -20,12 +22,16 @@ namespace Manage_System.Controllers
         private readonly ManageSystem1640Context _db;
         private readonly INotyfService _notyf;
         private readonly IFileService _fileService;
-
-        public AuthenticationController(ManageSystem1640Context db, INotyfService notyf, IFileService fileService)
+        private readonly IEmailService _email;
+        private readonly IUserService _userService;
+        public AuthenticationController(ManageSystem1640Context db, IEmailService email, IUserService userService,
+            INotyfService notyf, IFileService fileService)
         {
             _db = db;
             _notyf = notyf;
             _fileService = fileService;
+            _userService = userService;
+            _email = email;
         }
 
         [Route("/Login")]
@@ -270,6 +276,91 @@ namespace Manage_System.Controllers
             {
                 return Redirect("/Admin");
             }
+        }
+
+        [HttpGet]
+        [Route("/ForgotPassword")]
+        public async Task<IActionResult> ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [Route("/ForgotPassword")]
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            try
+            {
+                var user = await _userService.FindByEmailAsync(model.Email);
+                if (user == null)
+                {
+                    _notyf.Error("Invalid email, please try again");
+                    return View();
+                }
+
+                var token = await _userService.GeneratePasswordResetTokenAsync(user);
+                var callbackUrl = Url.Action("ResetPassword", "Authentication", new { token, email = user.Email }, Request.Scheme);
+
+                await _email.SendEmailAsync(model.Email, "Reset Password", $"Please reset your password by clicking here: {callbackUrl}. Time one miius");
+
+                _notyf.Success("Check your email to reset password");
+                return Redirect("/login");
+            }
+            catch 
+            {
+                // Log the exception details here
+                _notyf.Error("An error occurred while processing your request.");
+                return View(model);
+            }
+        }
+
+
+        [HttpGet]
+        [Route("/ResetPassword")]
+        public IActionResult ResetPassword(string token, string email)
+        {
+           
+            if (string.IsNullOrEmpty(token) || string.IsNullOrEmpty(email))
+            {
+                return NotFound();
+            }
+
+            var model = new ResetPasswordViewModel { Token = token, Email = email };
+            return View(model);
+        }
+
+
+
+        [HttpPost]
+        [Route("/ResetPassword")]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            var user = await _userService.FindByEmailAsync(model.Email);
+            if (user == null || user.PasswordResetToken != model.Token || user.TokenExpiration < DateTime.UtcNow)
+            {
+                
+                return View(model);
+            }
+
+            if (user.Password == HashMD5.ToMD5(model.NewPassword))
+            {
+                _notyf.Error("This is your old password,please try again");
+                return View(model);
+            }
+            
+            user.Password = HashMD5.ToMD5(model.NewPassword); 
+            user.PasswordResetToken = null; 
+            user.TokenExpiration = null; 
+            await _db.SaveChangesAsync();
+
+            _notyf.Success("Reset Password Success");
+            return Redirect("/Login");
         }
     }
 }

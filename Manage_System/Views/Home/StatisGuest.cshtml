@@ -43,7 +43,7 @@
             <div class="card col-lg-6">
                 <div class="card-body">
                     <div style="text-align:center">
-                        <h6>Contributions</h6>
+                        <h6>Number of contributions within each Faculty for each academic year.</h6>
                         <canvas id="ContributionsChart"></canvas>
                     </div>
 
@@ -53,7 +53,7 @@
             <div class="card col-lg-6">
                 <div class="card-body">
                     <div style="text-align:center">
-                        <h6>Contributions Status</h6>
+                        <h6>Contributions publishing rate in IT</h6>
                         <canvas id="ContributionsStatusChart"></canvas>
                     </div>
 
@@ -72,7 +72,7 @@
 
             type: 'pie',
             data: {
-                labels: ['Publish'],
+                labels: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.facultyName)),
                 datasets: [{
                     label: 'Number of Contributions',
                     data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.facultyCounts)),
@@ -95,13 +95,25 @@
                 }]
             },
             options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                const total = context.dataset.data.reduce((prev, curr) => prev + curr, 0);
+                                const currentValue = context.raw;
+                                const percentage = Math.round((currentValue / total) * 100);
+                                // Now add both the currentValue and the percentage to the label
+                                label += `${currentValue} (${percentage}%)`;
+                                return label;
+                            }
                         }
-                    }]
-                }
+                    },
+                },
+                // ... other options
             }
         });
 

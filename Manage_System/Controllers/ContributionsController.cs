@@ -273,7 +273,8 @@ namespace Manage_System.Controllers
                 ImgFiles = contributions.ImgFiles,
             };
 
-            ViewData["MagazineId"] = new SelectList(_db.Magazines, "Id", "Description").ToList();
+            var currentYear = DateTime.Now.Year;
+            ViewData["MagazineId"] = new SelectList(_db.Magazines.Where(m => m.ClosureDay.Value.Year == currentYear), "Id", "Description").ToList();
             return View(model);
         }
 
@@ -335,6 +336,7 @@ namespace Manage_System.Controllers
                         }
                     }
 
+
                     _db.Contributions.Update(contributions);
                     _db.SaveChanges();
 
@@ -343,12 +345,16 @@ namespace Manage_System.Controllers
                 }
                 catch
                 {
+                    var currentYear = DateTime.Now.Year;
+                    ViewData["MagazineId"] = new SelectList(_db.Magazines.Where(m => m.ClosureDay.Value.Year == currentYear), "Id", "Description").ToList();
                     _notyf.Success("Update Contributions Fail");
                     return View(model);
                 }
             }
             else
             {
+                var currentYear = DateTime.Now.Year;
+                ViewData["MagazineId"] = new SelectList(_db.Magazines.Where(m => m.ClosureDay.Value.Year == currentYear), "Id", "Description").ToList();
                 _notyf.Success("Update Contributions Fail");
                 return View(model);
             }

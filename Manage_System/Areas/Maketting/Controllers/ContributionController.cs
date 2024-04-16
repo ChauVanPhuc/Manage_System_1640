@@ -32,7 +32,7 @@ namespace Manage_System.Areas.Maketting.Controllers
                 .Include(x => x.Comments)
                 .Include(x => x.Magazine)
                 .Include(x => x.User)
-                .Where(x => x.Status == "Approved" && x.SubmissionDate.Value.AddDays(14) > DateTime.Now)
+                .Where(x => x.Status == "Approved")
                 .ToList();
 
             return View(contributions);

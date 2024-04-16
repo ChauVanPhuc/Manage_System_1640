@@ -59,6 +59,7 @@ builder.Services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
 builder.Services.AddTransient<IFileService, FileService>();
 builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddTransient<IChatService, ChatService>();
+builder.Services.AddTransient<IUserService>();
 
 var app = builder.Build();
 

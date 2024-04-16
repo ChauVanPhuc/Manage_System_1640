@@ -212,13 +212,25 @@
                 }]
             },
             options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                const total = context.dataset.data.reduce((prev, curr) => prev + curr, 0);
+                                const currentValue = context.raw;
+                                const percentage = Math.round((currentValue / total) * 100);
+                                // Now add both the currentValue and the percentage to the label
+                                label += `${currentValue} (${percentage}%)`;
+                                return label;
+                            }
                         }
-                    }]
-                }
+                    },
+                },
+                // ... other options
             }
         });
 
@@ -254,13 +266,25 @@
                 }]
             },
             options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                const total = context.dataset.data.reduce((prev, curr) => prev + curr, 0);
+                                const currentValue = context.raw;
+                                const percentage = Math.round((currentValue / total) * 100);
+                                // Now add both the currentValue and the percentage to the label
+                                label += `${currentValue} (${percentage}%)`;
+                                return label;
+                            }
                         }
-                    }]
-                }
+                    },
+                },
+                // ... other options
             }
         });
 

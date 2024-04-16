@@ -96,9 +96,27 @@
 
 <div class="card">
     <div class="card-body">
-        <a class="btn btn-hover font-weight-semibold" asp-controller="Contributions" asp-action="Edit" asp-route-id="@Model.Id">
+
+        @{
+            var submitEdit = Model.Magazine.ClosureDay;
+            var dayNow = DateTime.Now;
+
+        }
+
+        @if (dayNow < submitEdit)
+        {
+            <a class="btn btn-hover font-weight-semibold" asp-controller="Contributions" asp-action="Edit" asp-route-id="@Model.Id">
             <span>Edit Contributions</span>
         </a>
+        }
+        else
+        {
+
+            <a class="btn btn-hover font-weight-semibold" disabled asp-controller="Contributions" asp-action="Edit" asp-route-id="@Model.Id">
+                <span>Edit Contributions</span>
+            </a>
+        }
+        
     </div>
 </div>
 
@@ -129,7 +147,22 @@
             <div>
                 <textarea asp-for="Comment" class="w-100" style="height:150px" placeholder="Enter Comment .........."></textarea>
             </div>
-            <button type="submit" class="btn btn-primary m-r-5 ">Submit</button>
+            @{
+                var submit = Model.SubmissionDate.Value.AddDays(14);
+               
+
+            }
+
+            @if (dayNow < submit)
+            {
+                <button type="submit" class="btn btn-primary m-r-5">Submit</button>
+            }
+            else
+            {
+
+                <button type="submit" class="btn btn-primary m-r-5" disabled>Submit</button>
+
+            }
         </form>
     </div>
 
