@@ -446,7 +446,7 @@ namespace Manage_System.Controllers
 
                 var facultyContributionCounts = faculty.Select(f => f.Users
                                                         .SelectMany(u => u.Contributions)
-                                                        .Where(x => x.Status == "Approved")
+                                                        
                                                         .Count())
                                                         .ToList();
 
@@ -457,7 +457,7 @@ namespace Manage_System.Controllers
                 {
                     facultyContributionCounts = faculty.Select(f => f.Users
                                                      .SelectMany(u => u.Contributions)
-                                                     .Where(x => x.Status == "Approved" && x.MagazineId == magazineId)
+                                                     .Where(x => x.MagazineId == magazineId)
                                                      .Count())
                                                      .ToList();
 

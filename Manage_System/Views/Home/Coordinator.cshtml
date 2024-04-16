@@ -128,7 +128,7 @@
         var myChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['Contributions without a comment', 'Contributions without a comment after 14 days', 'Contributions alreadly have comments'],
+                labels: ['Contributions alreadly have comment', 'Contributions without a comment after 14 days', 'Contributions without a comments'],
                 datasets: [{
                     label: 'Number of Contributions',
                     data: [@ViewBag.numberComment, @ViewBag.numberComment14Day , @ViewBag.numberNotComment],

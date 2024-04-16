@@ -19,7 +19,11 @@
             <div class="modal-body">
                 @TempData["TextLogin"]
                 <br />
-                @TempData["TextLastLogin"]
+                @if (@TempData["TextLastLogin"] != null)
+                {
+                    @TempData["TextLastLogin"]
+                }
+                
             </div>
             <div class="modal-footer justify-content-center">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -98,6 +102,7 @@
     <div class="card col-lg-6">
         <div class="card-body">
             <div style="text-align:center">
+                <h6>Contributions Status</h6>
                 <canvas id="myChart"></canvas>
             </div>
 
@@ -106,6 +111,7 @@
     <div class="card col-lg-6">
         <div class="card-body">
             <div style="text-align:center">
+                <h6>Contributions File</h6>
                 <canvas id="fileChart"></canvas>
             </div>
 

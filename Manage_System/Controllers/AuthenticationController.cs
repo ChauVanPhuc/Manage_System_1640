@@ -307,7 +307,7 @@ namespace Manage_System.Controllers
                 var token = await _userService.GeneratePasswordResetTokenAsync(user);
                 var callbackUrl = Url.Action("ResetPassword", "Authentication", new { token, email = user.Email }, Request.Scheme);
 
-                await _email.SendEmailAsync(model.Email, "Reset Password", $"Please reset your password by clicking here: {callbackUrl}. Time one miius");
+                await _email.SendEmailAsync(model.Email, "Reset Password", $"Please reset your password by clicking here: {callbackUrl}. Time 5 minutes");
 
                 _notyf.Success("Check your email to reset password");
                 return Redirect("/login");
@@ -325,11 +325,13 @@ namespace Manage_System.Controllers
         [Route("/ResetPassword")]
         public IActionResult ResetPassword(string token, string email)
         {
-           
-            if (string.IsNullOrEmpty(token) || string.IsNullOrEmpty(email))
+            var user = _db.Users.AsNoTracking().FirstOrDefault(x => x.Email == email);
+
+            if (user.PasswordResetToken == null)
             {
-                return NotFound();
+                return Redirect("/AccessDenied");
             }
+            
 
             var model = new ResetPasswordViewModel { Token = token, Email = email };
             return View(model);

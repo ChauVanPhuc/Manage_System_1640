@@ -19,9 +19,9 @@ namespace Manage_System.Service
 
         public async Task<string> GeneratePasswordResetTokenAsync(User user)
         {
-            // Sinh một token ngẫu nhiên, lưu vào database
+            
             user.PasswordResetToken = Guid.NewGuid().ToString();
-            user.TokenExpiration = DateTime.UtcNow.AddHours(1); // Token hết hạn sau 1 giờ
+            user.TokenExpiration = DateTime.UtcNow.AddMinutes(5); // Token
             await _context.SaveChangesAsync();
             return user.PasswordResetToken;
         }
